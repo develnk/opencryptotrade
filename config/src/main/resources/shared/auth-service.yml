@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    database: postgresql
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        jdbc:
+          time_zone: UTC
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth
+    username: admin
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+server:
+  servlet:
+    context-path: /uaa
+  port: 5000
