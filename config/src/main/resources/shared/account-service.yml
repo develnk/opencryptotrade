@@ -20,8 +20,8 @@ spring:
         jdbc:
           time_zone: UTC
   datasource:
-    url: jdbc:postgresql://localhost:5432/auth
-    username: admin
+    url: jdbc:postgresql://localhost:5434/auth
+    username: root
     password: root
     driver-class-name: org.postgresql.Driver
 

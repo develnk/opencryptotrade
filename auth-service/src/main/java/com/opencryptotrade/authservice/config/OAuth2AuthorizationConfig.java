@@ -1,6 +1,6 @@
 package com.opencryptotrade.authservice.config;
 
-import com.opencryptotrade.authservice.service.security.MongoUserDetailsService;
+import com.opencryptotrade.authservice.service.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -27,21 +26,24 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableAuthorizationServer
 public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
-    private TokenStore tokenStore = new InMemoryTokenStore();
-
     private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60;
-    private static final int FREFRESH_TOKEN_VALIDITY_SECONDS = 6*60*60;
+    private static final int REFRESH_TOKEN_VALIDITY_SECONDS = 6 * 60 * 60;
 
     @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private MongoUserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
     }
 
     @Bean
@@ -70,6 +72,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         // TODO persist clients details
         configurer.inMemory()
                 .withClient("browser")
+                .secret(encoder().encode("xxx"))
                 .authorizedGrantTypes("refresh_token", "password")
                 .scopes("ui")
                 .and()
@@ -77,7 +80,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
                 .secret(encoder().encode("xxx"))
                 .authorizedGrantTypes("client_credentials", "refresh_token", "password")
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
-                .refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS)
+                .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
                 .scopes("server")
                 .and()
                 .withClient("statistics-service")
@@ -93,17 +96,17 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore)
+        endpoints.tokenStore(tokenStore())
             .authenticationManager(authenticationManager)
             .userDetailsService(userDetailsService);
     }
 
-//    @Override
-//    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-//        oauthServer
-//                .tokenKeyAccess("permitAll()")
-//                .checkTokenAccess("isAuthenticated()")
-//                .passwordEncoder(encoder());
-//    }
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        oauthServer
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()")
+                .passwordEncoder(encoder());
+    }
 
 }
