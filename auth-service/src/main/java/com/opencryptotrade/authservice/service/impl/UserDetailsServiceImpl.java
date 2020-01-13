@@ -1,10 +1,9 @@
-package com.opencryptotrade.authservice.service.security;
+package com.opencryptotrade.authservice.service.impl;
 
 import com.opencryptotrade.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +13,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private UserRepository repository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-		return repository.findOneByUsername(username).orElseThrow(()->new UsernameNotFoundException(username));
+	public UserDetails loadUserByUsername(String username) {
+		return repository.findByUsername(username);
 	}
 }

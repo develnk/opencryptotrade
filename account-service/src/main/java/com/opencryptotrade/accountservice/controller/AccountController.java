@@ -16,7 +16,7 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 
-	@PreAuthorize("#oauth2.hasScope('server') or #name.equals('demo')")
+	@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(path = "/{name}", method = RequestMethod.GET)
 	public Account getAccountByName(@PathVariable String name) {
 		return accountService.findByName(name);

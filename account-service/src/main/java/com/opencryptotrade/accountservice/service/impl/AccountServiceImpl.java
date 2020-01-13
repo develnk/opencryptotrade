@@ -1,10 +1,11 @@
-package com.opencryptotrade.accountservice.service;
+package com.opencryptotrade.accountservice.service.impl;
 
 import com.opencryptotrade.accountservice.client.AuthServiceClient;
 import com.opencryptotrade.accountservice.client.StatisticsServiceClient;
 import com.opencryptotrade.accountservice.domain.Account;
 import com.opencryptotrade.accountservice.domain.User;
 import com.opencryptotrade.accountservice.repository.AccountRepository;
+import com.opencryptotrade.accountservice.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

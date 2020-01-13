@@ -1,22 +1,22 @@
 package com.opencryptotrade.authservice.controller;
 
 import com.opencryptotrade.authservice.domain.User;
+import com.opencryptotrade.authservice.dto.UserDto;
 import com.opencryptotrade.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 	@Autowired
 	private UserService userService;
@@ -28,7 +28,14 @@ public class UserController {
 
 	@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(method = RequestMethod.POST)
-	public void createUser(@Valid @RequestBody User user) {
+	public void createUser(@Valid @RequestBody UserDto user) {
 		userService.create(user);
+	}
+
+	@PreAuthorize("#oauth2.hasAnyScope('server', 'ui')")
+	@Secured({ROLE_ADMIN})
+	@GetMapping
+	public List<UserDto> listUsers(Principal principal) {
+		return userService.findAll();
 	}
 }

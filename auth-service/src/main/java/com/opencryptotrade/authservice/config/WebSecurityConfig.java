@@ -1,6 +1,6 @@
 package com.opencryptotrade.authservice.config;
 
-import com.opencryptotrade.authservice.service.security.UserDetailsServiceImpl;
+import com.opencryptotrade.authservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
