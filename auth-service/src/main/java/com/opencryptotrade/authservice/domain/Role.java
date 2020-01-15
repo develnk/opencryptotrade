@@ -1,5 +1,7 @@
 package com.opencryptotrade.authservice.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -20,9 +22,11 @@ public class Role implements Serializable {
     private String description;
 
     @Column(name = "CREATED_ON")
+    @JsonIgnore
     private Long createdOn;
 
     @Column(name = "MODIFIED_ON")
+    @JsonIgnore
     private Long modifiedOn;
 
     public RoleType getName() {

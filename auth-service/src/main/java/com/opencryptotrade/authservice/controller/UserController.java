@@ -1,6 +1,5 @@
 package com.opencryptotrade.authservice.controller;
 
-import com.opencryptotrade.authservice.domain.User;
 import com.opencryptotrade.authservice.dto.UserDto;
 import com.opencryptotrade.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class UserController {
 	@PreAuthorize("#oauth2.hasAnyScope('server', 'ui')")
 	@Secured({ROLE_ADMIN})
 	@GetMapping
-	public List<UserDto> listUsers(Principal principal) {
+	public List<UserDto> listUsers() {
 		return userService.findAll();
 	}
 }

@@ -3,6 +3,7 @@ package com.opencryptotrade.authservice.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencryptotrade.authservice.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -59,7 +60,7 @@ public class User implements UserDetails {
 
 	@Override
 	public List<GrantedAuthority> getAuthorities() {
-		return null;
+		return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().toString())).collect(Collectors.toList());
 	}
 
 	public void setUsername(String username) {
