@@ -21,8 +21,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -45,6 +45,11 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private TokenStore tokenStore;
+
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
+    }
 
     @Bean
     public WebResponseExceptionTranslator loggingExceptionTranslator() {
@@ -97,6 +102,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(this.tokenStore)
+            .tokenEnhancer(tokenEnhancer())
             .authenticationManager(authenticationManager)
             .userDetailsService(userDetailsService);
     }
@@ -114,6 +120,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     @Primary
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
+        tokenServices.setTokenEnhancer(tokenEnhancer());
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setTokenStore(this.tokenStore);
         return tokenServices;
