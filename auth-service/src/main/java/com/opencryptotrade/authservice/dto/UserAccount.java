@@ -7,18 +7,15 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public class UserDto implements Serializable {
+public class UserAccount implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Setter @Getter
     private long id;
 
     @Setter @Getter
     private String login;
-
-    @Setter @Getter
-    private String password;
 
     @Setter @Getter
     private String email;
@@ -32,11 +29,4 @@ public class UserDto implements Serializable {
     @Setter @Getter
     private OffsetDateTime updated;
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                '}';
-    }
 }

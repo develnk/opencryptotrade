@@ -3,7 +3,9 @@ package com.opencryptotrade.accountservice.service.impl;
 import com.opencryptotrade.accountservice.client.AuthServiceClient;
 import com.opencryptotrade.accountservice.client.StatisticsServiceClient;
 import com.opencryptotrade.accountservice.domain.Account;
-import com.opencryptotrade.accountservice.domain.User;
+import com.opencryptotrade.accountservice.dto.AccountUser;
+import com.opencryptotrade.accountservice.dto.User;
+import com.opencryptotrade.accountservice.dto.UserAuth;
 import com.opencryptotrade.accountservice.repository.AccountRepository;
 import com.opencryptotrade.accountservice.service.AccountService;
 import org.slf4j.Logger;
@@ -12,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -33,9 +37,9 @@ public class AccountServiceImpl implements AccountService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Account findByName(String accountName) {
-		Assert.hasLength(accountName);
-		return repository.findByName(accountName);
+	public Account findByName(String login) {
+		Assert.hasLength(login);
+		return repository.findByLogin(login);
 	}
 
 	/**
@@ -43,20 +47,18 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public Account create(User user) {
+		Account existing = repository.findByLogin(user.getLogin());
+		Assert.isNull(existing, "account already exists: " + user.getLogin());
 
-		Account existing = repository.findByName(user.getUsername());
-		Assert.isNull(existing, "account already exists: " + user.getUsername());
-
-		authClient.createUser(user);
-
+		UserAuth userAuth = authClient.createUser(user);
 		Account account = new Account();
-		account.setName(user.getUsername());
-		account.setLastSeen(new Date());
-
+		account.setLogin(userAuth.getLogin());
+		account.setFirstName(user.getFirstName());
+		account.setLastName(user.getLastName());
+		account.setLastSeen(OffsetDateTime.now());
 		repository.save(account);
 
-		log.info("new account has been created: " + account.getName());
-
+		log.info("New account has been created: " + account.getLogin());
 		return account;
 	}
 
@@ -64,17 +66,38 @@ public class AccountServiceImpl implements AccountService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void saveChanges(String name, Account update) {
+	public void saveChanges(String login, Account update) {
 
-		Account account = repository.findByName(name);
-		Assert.notNull(account, "can't find account with name " + name);
+		Account account = repository.findByLogin(login);
+		Assert.notNull(account, "Can't find account with login: " + login);
 
 		account.setNote(update.getNote());
-		account.setLastSeen(new Date());
+		account.setLastSeen(OffsetDateTime.now());
 		repository.save(account);
 
-		log.debug("account {} changes has been saved", name);
+		log.debug("Account {} changes has been saved", login);
 
-		statisticsClient.updateStatistics(name, account);
+		statisticsClient.updateStatistics(login, account);
+	}
+
+	@Override
+	public List<AccountUser> allAccounts() {
+		List<Account> accountList = (List<Account>) repository.findAll();
+		List<AccountUser> accounts = authClient.getUsers().stream().map(user -> {
+			Account account = accountList.stream().filter(account1 -> user.getLogin().equals(account1.getLogin())).findFirst().orElse(null);
+			AccountUser accountUser = new AccountUser();
+			accountUser.setEmail(user.getEmail());
+			accountUser.setCreated(user.getCreated());
+			accountUser.setUpdated(user.getUpdated());
+			accountUser.setLogin(user.getLogin());
+			accountUser.setRole(user.getRole());
+			accountUser.setFirstName(account.getFirstName());
+			accountUser.setLastName(account.getLastName());
+			accountUser.setLastSeen(account.getLastSeen());
+			accountUser.setId(account.getId());
+			return accountUser;
+		}).collect(Collectors.toList());
+
+		return accounts;
 	}
 }

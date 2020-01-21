@@ -11,21 +11,21 @@ public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "NAME")
+    @Column(name = "name")
     private RoleType name;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "CREATED_ON")
+    @Column(name = "created_on")
     @JsonIgnore
     private Long createdOn;
 
-    @Column(name = "MODIFIED_ON")
+    @Column(name = "modified_on")
     @JsonIgnore
     private Long modifiedOn;
 

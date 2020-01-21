@@ -1,17 +1,22 @@
 package com.opencryptotrade.accountservice.controller;
 
 import com.opencryptotrade.accountservice.domain.Account;
-import com.opencryptotrade.accountservice.domain.User;
+import com.opencryptotrade.accountservice.dto.AccountUser;
+import com.opencryptotrade.accountservice.dto.User;
 import com.opencryptotrade.accountservice.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class AccountController {
+
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 	@Autowired
 	private AccountService accountService;
@@ -35,5 +40,12 @@ public class AccountController {
 	@RequestMapping(path = "/", method = RequestMethod.POST)
 	public Account createNewAccount(@Valid @RequestBody User user) {
 		return accountService.create(user);
+	}
+
+	@PreAuthorize("#oauth2.hasScope('ui')")
+	@Secured({ROLE_ADMIN})
+	@RequestMapping(path = "/getAll", method = RequestMethod.GET)
+	public List<AccountUser> listAccounts() {
+		return accountService.allAccounts();
 	}
 }

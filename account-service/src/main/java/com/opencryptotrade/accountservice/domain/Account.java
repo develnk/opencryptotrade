@@ -1,61 +1,49 @@
 package com.opencryptotrade.accountservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.integration.annotation.Default;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+import javax.ws.rs.DefaultValue;
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "accounts")
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Account {
+@Table(name = "Accounts")
+public class Account implements Serializable {
+
+	private static final long serialVersionUID = 3373812230395363132L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column
+	@Setter	@Getter
 	@JsonIgnore
 	private Long id;
 
-	private String name;
+	@Column
+	@Setter	@Getter
+	@Length(max = 255)
+	private String login;
 
-	private Date lastSeen;
+	@Column
+	@Setter	@Getter
+	private String firstName;
 
-	@Length(min = 0, max = 20_000)
+	@Column
+	@Setter	@Getter
+	private String lastName;
+
+	@Column
+	@Setter	@Getter
+	private OffsetDateTime lastSeen;
+
+	@Column
+	@Setter	@Getter
+	@Length(max = 20000)
 	private String note;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Date getLastSeen() {
-		return lastSeen;
-	}
-
-	public void setLastSeen(Date lastSeen) {
-		this.lastSeen = lastSeen;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 }

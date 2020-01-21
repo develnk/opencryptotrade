@@ -47,6 +47,8 @@ dependencies {
     compile('com.sun.xml.bind:jaxb-core:2.2.11')
     compile('com.sun.xml.bind:jaxb-impl:2.2.11')
     compile('javax.activation:activation:1.1.1')
+    compileOnly('org.projectlombok:lombok:1.18.10')
+    annotationProcessor('org.projectlombok:lombok:1.18.10')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.security:spring-security-test')
 }

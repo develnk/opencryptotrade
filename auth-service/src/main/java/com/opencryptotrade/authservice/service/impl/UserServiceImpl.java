@@ -3,10 +3,14 @@ package com.opencryptotrade.authservice.service.impl;
 import com.opencryptotrade.authservice.domain.Role;
 import com.opencryptotrade.authservice.domain.RoleType;
 import com.opencryptotrade.authservice.domain.User;
+import com.opencryptotrade.authservice.dto.UserAccount;
 import com.opencryptotrade.authservice.dto.UserDto;
 import com.opencryptotrade.authservice.repository.RoleRepository;
 import com.opencryptotrade.authservice.repository.UserRepository;
 import com.opencryptotrade.authservice.service.UserService;
+import org.javers.core.Javers;
+import org.javers.core.JaversBuilder;
+import org.javers.core.diff.Diff;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,10 +46,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public void create(UserDto userDto) {
-		User userWithDuplicateUsername = userRepository.findByUsername(userDto.getUsername());
+	public UserDto create(UserDto userDto) {
+		User userWithDuplicateUsername = userRepository.findByUsername(userDto.getLogin());
 		if(userWithDuplicateUsername != null && userDto.getId() != userWithDuplicateUsername.getId()) {
-			log.error(String.format("Duplicate username %s", userDto.getUsername()));
+			log.error(String.format("Duplicate username %s", userDto.getLogin()));
 			throw new IllegalArgumentException("Duplicate username.");
 		}
 		User userWithDuplicateEmail = userRepository.findByEmail(userDto.getEmail());
@@ -53,25 +58,45 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 			throw new IllegalArgumentException("Duplicate email.");
 		}
 
+		OffsetDateTime currentTime = OffsetDateTime.now();
 		User user = new User();
 		user.setEmail(userDto.getEmail());
-		user.setFirstName(userDto.getFirstName());
-		user.setLastName(userDto.getLastName());
-		user.setUsername(userDto.getUsername());
+		user.setUsername(userDto.getLogin());
 		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		user.setCreated(currentTime);
+		user.setUpdated(currentTime);
 		if (userDto.getRole().size() >= 1) {
 			List<RoleType> roleTypes = new ArrayList<>();
 			userDto.getRole().stream().map(role -> roleTypes.add(RoleType.valueOf(role)));
 			user.setRoles(roleRepository.find(userDto.getRole()));
 		}
-		userRepository.save(user);
-		log.info("New user has been created: {}", userDto.getUsername());
+		User savedUser = userRepository.save(user);
+		log.info("New user has been created: {}", userDto.getLogin());
+		return savedUser.toUserDto();
 	}
 
 	@Override
-	public List<UserDto> findAll() {
-		List<UserDto> users = new ArrayList<>();
-		userRepository.findAll().iterator().forEachRemaining(user -> users.add(user.toUserDto()));
+	public User update(UserDto user) {
+		Javers javers = JaversBuilder.javers().build();
+		User foundUser = userRepository.findByUsername(user.getLogin());
+		if (foundUser == null) {
+			throw new UsernameNotFoundException("Unknown user!");
+		}
+		UserDto foundUserDto = foundUser.toShortUserDto();
+		Diff diff = javers.compare(user, foundUserDto);
+		if (diff.hasChanges()) {
+			foundUser.setEmail(user.getEmail());
+			foundUser.setUpdated(OffsetDateTime.now());
+			userRepository.save(foundUser);
+		}
+
+		return foundUser;
+	}
+
+	@Override
+	public List<UserAccount> findAll() {
+		List<UserAccount> users = new ArrayList<>();
+		userRepository.findAll().iterator().forEachRemaining(user -> users.add(user.toUserAccount()));
 		return users;
 	}
 

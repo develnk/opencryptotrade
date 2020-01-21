@@ -115,7 +115,6 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
                 .passwordEncoder(encoder());
     }
 
-
     @Bean
     @Primary
     public DefaultTokenServices tokenServices() {

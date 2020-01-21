@@ -1,12 +1,17 @@
 package com.opencryptotrade.authservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.opencryptotrade.authservice.dto.UserAccount;
 import com.opencryptotrade.authservice.dto.UserDto;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,60 +20,43 @@ import java.util.stream.Collectors;
 @Table(name = "Users")
 public class User implements UserDetails {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
+	@Column(name = "id")
+	@Setter @Getter
 	@JsonIgnore
 	private Long id;
 
-	@Column(name = "USERNAME")
+	@Column(name = "login")
+	@Setter @Getter
 	private String username;
 
-	@Column(name = "PASSWORD")
+	@Column(name = "password")
+	@Setter @Getter
 	private String password;
 
-	@Column(name = "FIRST_NAME")
-	private String firstName;
-
-	@Column(name = "LAST_NAME")
-	private String lastName;
-
-	@Column(name = "EMAIL")
+	@Column(name = "email")
+	@Setter @Getter
 	private String email;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "User_ROLES", joinColumns = @JoinColumn(name ="USER_ID"), inverseJoinColumns = @JoinColumn(name="ROLE_ID"))
+	@JoinTable(name = "User_ROLES", joinColumns = @JoinColumn(name ="user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
+	@Setter @Getter
 	private Set<Role> roles;
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+	@Column(name = "created", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+	@Setter @Getter
+	private OffsetDateTime created;
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	@Override
-	public String getUsername() {
-		return username;
-	}
+	@Column(name = "updated", columnDefinition= "TIMESTAMP WITH TIME ZONE")
+	@Setter @Getter
+	private OffsetDateTime updated;
 
 	@Override
 	public List<GrantedAuthority> getAuthorities() {
 		return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().toString())).collect(Collectors.toList());
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Override
@@ -91,46 +79,33 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public UserDto toUserDto(){
+	public UserDto toUserDto() {
 		UserDto userDto = new UserDto();
-		userDto.setId(this.id);
-		userDto.setEmail(this.email);
-		userDto.setFirstName(this.firstName);
-		userDto.setLastName(this.lastName);
-		userDto.setUsername(this.username);
+		userDto.setId(this.getId());
+		userDto.setEmail(this.getEmail());
+		userDto.setLogin(this.getUsername());
 		userDto.setRole(this.roles.stream().map(role -> role.getName().toString()).collect(Collectors.toList()));
+		userDto.setCreated(this.getCreated());
+		userDto.setUpdated(this.getUpdated());
 		return userDto;
 	}
+
+	public UserAccount toUserAccount() {
+		UserAccount userAccount = new UserAccount();
+		userAccount.setId(this.getId());
+		userAccount.setLogin(this.getUsername());
+		userAccount.setEmail(this.getEmail());
+		userAccount.setCreated(this.getCreated());
+		userAccount.setUpdated(this.getUpdated());
+		userAccount.setRole(this.roles.stream().map(role -> role.getName().toString()).collect(Collectors.toList()));
+		return userAccount;
+	}
+
+	public UserDto toShortUserDto() {
+		UserDto userDto = new UserDto();
+		userDto.setEmail(this.getEmail());
+		userDto.setLogin(this.getUsername());
+		return userDto;
+	}
+
 }

@@ -1,9 +1,10 @@
 package com.opencryptotrade.authservice.controller;
 
+import com.opencryptotrade.authservice.domain.User;
+import com.opencryptotrade.authservice.dto.UserAccount;
 import com.opencryptotrade.authservice.dto.UserDto;
 import com.opencryptotrade.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,10 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-	public static final String ROLE_ADMIN = "ROLE_ADMIN";
-
 	@Autowired
 	private UserService userService;
 
+	@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(value = "/current", method = RequestMethod.GET)
 	public Principal getUser(Principal principal) {
 		return principal;
@@ -27,14 +27,19 @@ public class UserController {
 
 	@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(method = RequestMethod.POST)
-	public void createUser(@Valid @RequestBody UserDto user) {
-		userService.create(user);
+	public UserDto createUser(@Valid @RequestBody UserDto user) {
+		return userService.create(user);
 	}
 
-	@PreAuthorize("#oauth2.hasAnyScope('server', 'ui')")
-	@Secured({ROLE_ADMIN})
+	@PreAuthorize("#oauth2.hasScope('server')")
+	@RequestMapping(method = RequestMethod.PUT)
+	public User updateUser(@Valid @RequestBody UserDto user) {
+		return userService.update(user);
+	}
+
+	@PreAuthorize("#oauth2.hasScope('server')")
 	@GetMapping
-	public List<UserDto> listUsers() {
+	public List<UserAccount> listUsers() {
 		return userService.findAll();
 	}
 }

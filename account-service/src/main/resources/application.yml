@@ -4,3 +4,9 @@ spring:
     port: 5672
     username: user
     password: password
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC

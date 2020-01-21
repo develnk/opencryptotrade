@@ -1,7 +1,10 @@
 package com.opencryptotrade.accountservice.service;
 
 import com.opencryptotrade.accountservice.domain.Account;
-import com.opencryptotrade.accountservice.domain.User;
+import com.opencryptotrade.accountservice.dto.AccountUser;
+import com.opencryptotrade.accountservice.dto.User;
+
+import java.util.List;
 
 public interface AccountService {
 
@@ -31,4 +34,6 @@ public interface AccountService {
 	 * @param update
 	 */
 	void saveChanges(String name, Account update);
+
+	List<AccountUser> allAccounts();
 }
