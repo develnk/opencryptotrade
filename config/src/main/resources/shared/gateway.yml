@@ -31,11 +31,6 @@ zuul:
         stripPrefix: false
         sensitiveHeaders:
 
-    statistics-service:
-        path: /statistics/**
-        serviceId: statistics-service
-        stripPrefix: false
-        sensitiveHeaders:
 
     notification-service:
         path: /notifications/**

@@ -1,7 +1,6 @@
 package com.opencryptotrade.accountservice.service.impl;
 
 import com.opencryptotrade.accountservice.client.AuthServiceClient;
-import com.opencryptotrade.accountservice.client.StatisticsServiceClient;
 import com.opencryptotrade.accountservice.domain.Account;
 import com.opencryptotrade.accountservice.dto.AccountUser;
 import com.opencryptotrade.accountservice.dto.User;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,9 +21,6 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements AccountService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
-
-	@Autowired
-	private StatisticsServiceClient statisticsClient;
 
 	@Autowired
 	private AuthServiceClient authClient;
@@ -76,8 +71,6 @@ public class AccountServiceImpl implements AccountService {
 		repository.save(account);
 
 		log.debug("Account {} changes has been saved", login);
-
-		statisticsClient.updateStatistics(login, account);
 	}
 
 	@Override
