@@ -36,4 +36,6 @@ public interface AccountService {
 	void saveChanges(String name, Account update);
 
 	List<AccountUser> allAccounts();
+
+	AccountUser updateAccountUser(AccountUser accountUser);
 }

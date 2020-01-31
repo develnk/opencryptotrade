@@ -62,7 +62,6 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public void saveChanges(String login, Account update) {
-
 		Account account = repository.findByLogin(login);
 		Assert.notNull(account, "Can't find account with login: " + login);
 
@@ -79,6 +78,7 @@ public class AccountServiceImpl implements AccountService {
 		List<AccountUser> accounts = authClient.getUsers().stream().map(user -> {
 			Account account = accountList.stream().filter(account1 -> user.getLogin().equals(account1.getLogin())).findFirst().orElse(null);
 			AccountUser accountUser = new AccountUser();
+			accountUser.setId(account.getId());
 			accountUser.setEmail(user.getEmail());
 			accountUser.setCreated(user.getCreated());
 			accountUser.setUpdated(user.getUpdated());
@@ -86,11 +86,34 @@ public class AccountServiceImpl implements AccountService {
 			accountUser.setRole(user.getRole());
 			accountUser.setFirstName(account.getFirstName());
 			accountUser.setLastName(account.getLastName());
+			accountUser.setNote(account.getNote());
 			accountUser.setLastSeen(account.getLastSeen());
-			accountUser.setId(account.getId());
 			return accountUser;
 		}).collect(Collectors.toList());
 
 		return accounts;
+	}
+
+	@Override
+	public AccountUser updateAccountUser(AccountUser accountUser) {
+		Account account = repository.findAccountById(accountUser.getId());
+		Assert.notNull(account, "Can't find account with account id: " + accountUser.getId());
+
+		account.setFirstName(accountUser.getFirstName());
+		account.setLastName(accountUser.getLastName());
+//		account.setLogin(accountUser.getLogin());
+		account.setNote(accountUser.getNote());
+		account.setLastSeen(OffsetDateTime.now());
+		repository.save(account);
+
+		// Update account user object.
+		accountUser.setLastSeen(account.getLastSeen());
+
+		User user = new User();
+		user.setLogin(accountUser.getLogin());
+		user.setEmail(accountUser.getEmail());
+		UserAuth updatedUserAuth = authClient.updateUser(user);
+		accountUser.setUpdated(updatedUserAuth.getUpdated());
+		return accountUser;
 	}
 }

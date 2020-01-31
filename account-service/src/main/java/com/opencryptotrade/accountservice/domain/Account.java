@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.integration.annotation.Default;
 
 import javax.persistence.*;
-import javax.ws.rs.DefaultValue;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 

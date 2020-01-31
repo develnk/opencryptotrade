@@ -5,6 +5,7 @@ import com.opencryptotrade.accountservice.dto.AccountUser;
 import com.opencryptotrade.accountservice.dto.User;
 import com.opencryptotrade.accountservice.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +48,12 @@ public class AccountController {
 	@RequestMapping(path = "/getAll", method = RequestMethod.GET)
 	public List<AccountUser> listAccounts() {
 		return accountService.allAccounts();
+	}
+
+	@PreAuthorize("#oauth2.hasScope('ui')")
+	@Secured({ROLE_ADMIN})
+	@RequestMapping(path = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public Object updateAccountUser(@Valid @RequestBody AccountUser accountUser) {
+		return accountService.updateAccountUser(accountUser);
 	}
 }
