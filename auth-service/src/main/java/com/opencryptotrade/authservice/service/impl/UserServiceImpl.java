@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		if (userDto.getRole().size() >= 1) {
 			List<RoleType> roleTypes = new ArrayList<>();
 			userDto.getRole().stream().map(role -> roleTypes.add(RoleType.valueOf(role)));
+			// @TODO Need refactor
 			user.setRoles(roleRepository.find(userDto.getRole()));
 		}
 		User savedUser = userRepository.save(user);
@@ -86,6 +87,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		Diff diff = javers.compare(user, foundUserDto);
 		if (diff.hasChanges()) {
 			foundUser.setEmail(user.getEmail());
+			// @TODO Need refactor
+			foundUser.setRoles(roleRepository.find(user.getRole()));
 			foundUser.setUpdated(OffsetDateTime.now());
 			userRepository.save(foundUser);
 		}

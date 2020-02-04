@@ -112,6 +112,7 @@ public class AccountServiceImpl implements AccountService {
 		User user = new User();
 		user.setLogin(accountUser.getLogin());
 		user.setEmail(accountUser.getEmail());
+		user.setRole(accountUser.getRole());
 		UserAuth updatedUserAuth = authClient.updateUser(user);
 		accountUser.setUpdated(updatedUserAuth.getUpdated());
 		return accountUser;
