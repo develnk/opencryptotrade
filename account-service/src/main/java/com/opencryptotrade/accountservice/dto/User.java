@@ -26,10 +26,15 @@ public class User implements Serializable {
 	@Setter	@Getter
 	private String lastName;
 
+	@NotNull
 	@Setter	@Getter
 	private String email;
 
+	@NotNull
 	@Setter	@Getter
 	private List<String> role;
+
+	@Setter	@Getter
+	private String note;
 
 }

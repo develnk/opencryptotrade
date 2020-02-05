@@ -51,6 +51,7 @@ public class AccountServiceImpl implements AccountService {
 		account.setFirstName(user.getFirstName());
 		account.setLastName(user.getLastName());
 		account.setLastSeen(OffsetDateTime.now());
+		account.setNote(user.getNote());
 		repository.save(account);
 
 		log.info("New account has been created: " + account.getLogin());
