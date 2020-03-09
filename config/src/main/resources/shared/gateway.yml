@@ -31,6 +31,11 @@ zuul:
         stripPrefix: false
         sensitiveHeaders:
 
+    smtp-service:
+      path: /smtp/**
+      serviceId: smtp-service
+      stripPrefix: false
+      sensitiveHeaders:
 
     notification-service:
         path: /notifications/**

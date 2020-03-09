@@ -1,0 +1,35 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    lazy-initialization: false
+
+  config:
+    location: file:./smtp-service/smtp.properties
+
+  properties:
+    refreshDelay: 2001
+
+  application:
+    name: smtp-service
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: user
+    password: password
+
+  cloud:
+    config:
+      uri: http://127.0.0.1:8890
+      fail-fast: true
+      password: root
+      username: user
+
+
+debug: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh

@@ -8,6 +8,11 @@ spring:
       password: root
       username: user
 
+management:
+  trace:
+    http:
+      enabled: true
+
 eureka:
   instance:
     hostname: localhost

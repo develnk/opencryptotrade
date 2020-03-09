@@ -1,0 +1,37 @@
+security:
+  oauth2:
+    client:
+      clientId: smtp-service
+      clientSecret: xxx
+      accessTokenUri: http://localhost:5000/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
+spring:
+  jpa:
+    database: postgresql
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        jdbc:
+          time_zone: UTC
+  datasource:
+    url: jdbc:postgresql://localhost:5434/mail
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+server:
+  servlet:
+    context-path: /smtp
+  port: 6001

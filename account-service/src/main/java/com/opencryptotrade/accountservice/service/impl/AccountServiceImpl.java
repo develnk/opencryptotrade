@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,9 @@ public class AccountServiceImpl implements AccountService {
 		List<Account> accountList = (List<Account>) repository.findAll();
 		List<AccountUser> accounts = authClient.getUsers().stream().map(user -> {
 			Account account = accountList.stream().filter(account1 -> user.getLogin().equals(account1.getLogin())).findFirst().orElse(null);
+			if (account == null) {
+				return null;
+			}
 			AccountUser accountUser = new AccountUser();
 			accountUser.setId(account.getId());
 			accountUser.setEmail(user.getEmail());
@@ -92,6 +96,7 @@ public class AccountServiceImpl implements AccountService {
 			return accountUser;
 		}).collect(Collectors.toList());
 
+		accounts.removeAll(Collections.singleton(null));
 		return accounts;
 	}
 

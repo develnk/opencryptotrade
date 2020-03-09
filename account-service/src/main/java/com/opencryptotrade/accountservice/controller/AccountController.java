@@ -52,7 +52,7 @@ public class AccountController {
 
 	@PreAuthorize("#oauth2.hasScope('ui')")
 	@Secured({ROLE_ADMIN})
-	@RequestMapping(path = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(path = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object updateAccountUser(@Valid @RequestBody AccountUser accountUser) {
 		return accountService.updateAccountUser(accountUser);
 	}
