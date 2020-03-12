@@ -1,4 +1,4 @@
-package com.opencryptotrade.smtpservice;
+package com.opencryptotrade.templatebuilder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,10 +18,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableFeignClients
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableScheduling
-public class SmtpServiceApplication {
+public class TemplateBuilderApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SmtpServiceApplication.class, args);
+        SpringApplication.run(TemplateBuilderApplication.class, args);
     }
 
 }

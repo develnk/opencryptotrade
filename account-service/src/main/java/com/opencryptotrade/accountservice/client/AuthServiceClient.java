@@ -12,12 +12,12 @@ import java.util.List;
 @FeignClient(name = "auth-service")
 public interface AuthServiceClient {
 
-	@RequestMapping(method = RequestMethod.POST, value = "/uaa/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(method = RequestMethod.POST, value = "/uaa/users", consumes = MediaType.APPLICATION_JSON_VALUE)
 	UserAuth createUser(User user);
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/uaa/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(method = RequestMethod.PUT, value = "/uaa/users", consumes = MediaType.APPLICATION_JSON_VALUE)
 	UserAuth updateUser(User user);
 
-	@RequestMapping(method = RequestMethod.GET, value = "/uaa/users", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(method = RequestMethod.GET, value = "/uaa/users", consumes = MediaType.APPLICATION_JSON_VALUE)
 	List<UserAuth> getUsers();
 }

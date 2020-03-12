@@ -1,0 +1,8 @@
+turbine:
+#  aggregator:
+#    clusterConfig: account-service, auth-service, smtp-service, template-builder
+  appConfig: template-builder-service, smtp-service, account-service
+  clusterNameExpression: new String("default")
+
+logging:
+  level: DEBUG

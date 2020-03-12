@@ -27,9 +27,15 @@ spring:
 
 server:
   servlet:
-    context-path: /accounts
+    context-path: /
   port: 6000
 
 feign:
   hystrix:
     enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

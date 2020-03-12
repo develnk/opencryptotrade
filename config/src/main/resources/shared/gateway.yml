@@ -7,8 +7,8 @@ hystrix:
             timeoutInMilliseconds: 20000
 
 ribbon:
-  ReadTimeout: 20000
-  ConnectTimeout: 20000
+  ReadTimeout: 5000
+  ConnectTimeout: 15000
   eureka:
     enabled: true
 
@@ -28,13 +28,19 @@ zuul:
     account-service:
         path: /accounts/**
         serviceId: account-service
-        stripPrefix: false
+        stripPrefix: true
         sensitiveHeaders:
 
     smtp-service:
       path: /smtp/**
       serviceId: smtp-service
-      stripPrefix: false
+      stripPrefix: true
+      sensitiveHeaders:
+
+    template-builder-service:
+      path: /template-builder/**
+      serviceId: smtp-service
+      stripPrefix: true
       sensitiveHeaders:
 
     notification-service:

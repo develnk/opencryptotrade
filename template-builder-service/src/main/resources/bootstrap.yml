@@ -3,11 +3,8 @@ spring:
     allow-bean-definition-overriding: true
     lazy-initialization: false
 
-  config:
-    location: file:./smtp-service/smtp.properties
-
   application:
-    name: smtp-service
+    name: template-builder-service
 
   rabbitmq:
     host: 127.0.0.1
@@ -22,5 +19,4 @@ spring:
       password: root
       username: user
 
-
-debug: false
+debug: true

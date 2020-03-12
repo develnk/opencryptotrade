@@ -1,6 +1,6 @@
-package com.opencryptotrade.accountservice.config;
+package com.opencryptotrade.templatebuilder.config;
 
-import com.opencryptotrade.accountservice.service.security.CustomUserInfoTokenServices;
+import com.opencryptotrade.templatebuilder.security.CustomUserInfoTokenServices;
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
@@ -54,4 +54,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated();
     }
+
 }

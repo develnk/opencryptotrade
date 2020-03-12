@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.2.5.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -26,13 +26,15 @@ repositories {
 
 
 ext {
-    springCloudVersion = 'Hoxton.SR2'
+    springCloudVersion = 'Hoxton.SR3'
 }
 
 dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
     implementation('org.springframework.cloud:spring-cloud-starter-config')
     implementation('org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard')
-    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+    implementation('org.springframework.cloud:spring-cloud-netflix-turbine')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 

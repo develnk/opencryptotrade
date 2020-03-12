@@ -57,6 +57,7 @@ public class MailConfig {
         sender.setUsername(environment.getProperty("mail.credentials.username"));
         sender.setPassword(environment.getProperty("mail.credentials.password"));
         sender.getJavaMailProperties().setProperty("mail.debug", String.valueOf(data.isDebug()));
+        // @TODO Need refactor
         if (data.isSsl()) {
             sender.getJavaMailProperties().setProperty("mail.ssl", String.valueOf(data.isSsl()));
             sender.getJavaMailProperties().setProperty("mail.tls", String.valueOf(false));
@@ -81,6 +82,7 @@ public class MailConfig {
         properties.setProperty("mail.credentials.username", data.getUserName());
         properties.setProperty("mail.credentials.password", data.getPassword());
         properties.setProperty("mail.debug", data.isDebug());
+        // @TODO Need refactor
         if (data.isSsl()) {
             properties.setProperty("mail.ssl", data.isSsl());
             properties.setProperty("mail.tls", false);

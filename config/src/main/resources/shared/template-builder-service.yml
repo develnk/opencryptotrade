@@ -20,7 +20,7 @@ spring:
         jdbc:
           time_zone: UTC
   datasource:
-    url: jdbc:postgresql://localhost:5434/mail
+    url: jdbc:postgresql://localhost:5434/templatebuilder
     username: root
     password: root
     driver-class-name: org.postgresql.Driver
@@ -28,7 +28,7 @@ spring:
 server:
   servlet:
     context-path: /
-  port: 6001
+  port: 6002
 
 management:
   endpoints:
