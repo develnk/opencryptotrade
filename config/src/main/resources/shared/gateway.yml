@@ -39,7 +39,7 @@ zuul:
 
     template-builder-service:
       path: /template-builder/**
-      serviceId: smtp-service
+      serviceId: template-builder-service
       stripPrefix: true
       sensitiveHeaders:
 

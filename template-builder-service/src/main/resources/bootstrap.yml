@@ -19,4 +19,4 @@ spring:
       password: root
       username: user
 
-debug: true
+debug: false

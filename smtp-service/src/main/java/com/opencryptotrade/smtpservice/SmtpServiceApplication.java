@@ -12,10 +12,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableCircuitBreaker
 @EnableOAuth2Client
 @EnableHystrix
 @EnableFeignClients
+@EnableCircuitBreaker
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableScheduling
 public class SmtpServiceApplication {
