@@ -42,6 +42,7 @@ dependencies {
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
     implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
     implementation('org.springframework.cloud:spring-cloud-starter-bus-amqp')
+    implementation('org.modelmapper:modelmapper:2.3.6')
     compile('org.apache.logging.log4j:log4j-core')
     compile('org.apache.logging.log4j:log4j-api')
     compile('org.postgresql:postgresql')
