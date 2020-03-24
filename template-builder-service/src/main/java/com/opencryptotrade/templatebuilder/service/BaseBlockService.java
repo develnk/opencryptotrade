@@ -1,5 +1,6 @@
 package com.opencryptotrade.templatebuilder.service;
 
+import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlock;
 import com.opencryptotrade.templatebuilder.enums.BaseBlockType;
 
@@ -14,7 +15,7 @@ public interface BaseBlockService {
      * @param html Full html text of block's.
      * @return Created base block.
      */
-    BaseBlock create(BaseBlockType type, String html);
+    BaseBlockDTO create(String type, String html);
 
     /**
      * Update existing base block.
@@ -24,7 +25,7 @@ public interface BaseBlockService {
      * @param html Full html text of block's.
      * @return Updated base block.
      */
-    BaseBlock update(Long id, BaseBlockType type, String html);
+    BaseBlockDTO update(Long id, String type, String html);
 
     /**
      * Delete base block from DB.
@@ -40,13 +41,13 @@ public interface BaseBlockService {
      * @param type enum.
      * @return The list of base blocks by type.
      */
-    List<BaseBlock> getBaseBlocksType(BaseBlockType type);
+    List<BaseBlockDTO> getBaseBlocksType(String type);
 
     /**
      * Get all list of base blocks.
      *
      * @return All base blocks.
      */
-    List<BaseBlock> getAllBaseBlocks();
+    List<BaseBlockDTO> getAllBaseBlocks();
 
 }

@@ -2,6 +2,7 @@ package com.opencryptotrade.templatebuilder.config;
 
 import com.opencryptotrade.templatebuilder.security.CustomUserInfoTokenServices;
 import feign.RequestInterceptor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -31,6 +32,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @ConfigurationProperties(prefix = "security.oauth2.client")
     public ClientCredentialsResourceDetails clientCredentialsResourceDetails() {
         return new ClientCredentialsResourceDetails();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
     @Bean

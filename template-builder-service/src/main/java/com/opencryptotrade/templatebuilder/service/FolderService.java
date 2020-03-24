@@ -1,5 +1,6 @@
 package com.opencryptotrade.templatebuilder.service;
 
+import com.opencryptotrade.templatebuilder.dto.FolderDTO;
 import com.opencryptotrade.templatebuilder.entity.Folder;
 
 import java.util.List;
@@ -12,15 +13,14 @@ public interface FolderService {
      * @param name
      * @return Created folder
      */
-    Folder create(String name);
+    FolderDTO create(String name);
 
     /**
      * Update folder.
      *
-     * @param name
      * @return Updated folder
      */
-    Folder update(Long folderId, String name);
+    FolderDTO update(FolderDTO folder);
 
     /**
      * Delete folder from system.
@@ -35,5 +35,5 @@ public interface FolderService {
      *
      * @return All folders.
      */
-    List<Folder> getAllFolders();
+    List<FolderDTO> getAllFolders();
 }

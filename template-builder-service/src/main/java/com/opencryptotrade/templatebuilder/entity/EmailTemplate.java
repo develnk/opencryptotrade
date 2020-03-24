@@ -4,15 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "email_template")
-public class EmailTemplate {
+public class EmailTemplate  implements Serializable  {
+
     private static final long serialVersionUID = 3328044920395369472L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
     @Getter
     private Long id;
 
@@ -21,7 +22,6 @@ public class EmailTemplate {
     private String name;
 
     @Setter @Getter
-    @Column()
     private String subject;
 
     @Lob
