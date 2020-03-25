@@ -15,7 +15,7 @@ public class Folder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    @Getter
+    @Setter @Getter
     private Long id;
 
     @Column

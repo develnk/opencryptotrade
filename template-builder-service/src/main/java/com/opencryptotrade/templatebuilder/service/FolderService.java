@@ -10,10 +10,9 @@ public interface FolderService {
     /**
      * Create new folder.
      *
-     * @param name
      * @return Created folder
      */
-    FolderDTO create(String name);
+    FolderDTO create(FolderDTO folderDTO);
 
     /**
      * Update folder.

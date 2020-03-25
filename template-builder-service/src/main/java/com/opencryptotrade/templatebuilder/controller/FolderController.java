@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/folder")
 public class FolderController {
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -25,27 +24,27 @@ public class FolderController {
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @Secured({ROLE_ADMIN})
-    @RequestMapping(path = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public FolderDTO create(@Valid @RequestBody String name) {
-        return folderService.create(name);
+    @RequestMapping(path = "/folder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public FolderDTO create(@Valid @RequestBody FolderDTO folder) {
+        return folderService.create(folder);
     }
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @Secured({ROLE_ADMIN})
-    @RequestMapping(path = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/folder", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public FolderDTO update(@Valid @RequestBody FolderDTO folder) {
         return folderService.update(folder);
     }
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @Secured({ROLE_ADMIN})
-    @RequestMapping(path = "/", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/folder", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean delete(@Valid @RequestBody FolderDTO folder) {
         return folderService.delete(folder.getId());
     }
 
     @PreAuthorize("#oauth2.hasScope('ui')")
-    @RequestMapping(path = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/folder", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<FolderDTO> get() {
         return folderService.getAllFolders();
     }

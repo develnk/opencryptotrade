@@ -25,27 +25,27 @@ public class BaseBlockServiceImpl implements BaseBlockService {
     }
 
     @Override
-    public BaseBlockDTO create(String type, String html) {
+    public BaseBlockDTO create(BaseBlockDTO baseBlockDTO) {
         BaseBlock baseBlock = new BaseBlock();
-        baseBlock.setType(BaseBlockType.valueOf(type));
-        baseBlock.setHtml(html);
+        baseBlock.setType(baseBlockDTO.getType());
+        baseBlock.setHtml(baseBlockDTO.getHtml());
         BaseBlock savedBaseBlock = baseBlockRepository.save(baseBlock);
         return modelMapper.map(savedBaseBlock, BaseBlockDTO.class);
     }
 
     @Override
-    public BaseBlockDTO update(Long id, String type, String html) {
+    public BaseBlockDTO update(BaseBlockDTO baseBlockDTO) {
         // @TODO convert to DTO object
-        BaseBlock baseBlock = baseBlockRepository.findById(id).orElseThrow();
-        baseBlock.setType(BaseBlockType.valueOf(type));
-        baseBlock.setHtml(html);
+        BaseBlock baseBlock = baseBlockRepository.findById(baseBlockDTO.getId()).orElseThrow();
+        baseBlock.setType(baseBlockDTO.getType());
+        baseBlock.setHtml(baseBlockDTO.getHtml());
         BaseBlock updatedBaseBlock = baseBlockRepository.save(baseBlock);
         return modelMapper.map(updatedBaseBlock, BaseBlockDTO.class);
     }
 
     @Override
-    public boolean delete(Long id) {
-        BaseBlock baseBlock = baseBlockRepository.findById(id).orElseThrow();
+    public boolean delete(BaseBlockDTO baseBlockDTO) {
+        BaseBlock baseBlock = baseBlockRepository.findById(baseBlockDTO.getId()).orElseThrow();
         // @TODO need check to use base block in templates.
         baseBlockRepository.delete(baseBlock);
         return true;

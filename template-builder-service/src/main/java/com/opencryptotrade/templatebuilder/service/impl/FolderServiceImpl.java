@@ -5,11 +5,13 @@ import com.opencryptotrade.templatebuilder.entity.Folder;
 import com.opencryptotrade.templatebuilder.exception.FolderAlreadyExist;
 import com.opencryptotrade.templatebuilder.repository.FolderRepository;
 import com.opencryptotrade.templatebuilder.service.FolderService;
+import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class FolderServiceImpl implements FolderService {
@@ -24,18 +26,21 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public FolderDTO create(String name) {
-        Folder folder = folderRepository.findByName(name);
+    public FolderDTO create(FolderDTO folderDTO) {
+        Folder folder = folderRepository.findByName(folderDTO.getName());
         if (folder != null) {
             throw new FolderAlreadyExist("Folder already exist.");
         }
 
-        return saveNewFolder(name);
+        return saveNewFolder(folderDTO.getName());
     }
 
     @Override
     public FolderDTO update(FolderDTO folderDTO) {
-        Folder folder = folderRepository.findById(folderDTO.getId()).orElseThrow();
+        Folder folder = folderRepository.findNewById(folderDTO.getId());
+        if (folder == null) {
+            throw new NoSuchElementException("No value present");
+        }
         folder.setName(folderDTO.getName());
         folderRepository.save(folder);
         return modelMapper.map(folder, FolderDTO.class);
@@ -43,7 +48,10 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public boolean delete(Long folderId) {
-        Folder folder = folderRepository.findById(folderId).orElseThrow();
+        Folder folder = folderRepository.findNewById(folderId);
+        if (folder == null) {
+            throw new NoSuchElementException("No value present");
+        }
         // @TODO need check to exist templates in folder.
         folderRepository.delete(folder);
         return true;

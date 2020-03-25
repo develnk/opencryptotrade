@@ -3,6 +3,7 @@ package com.opencryptotrade.templatebuilder.entity;
 import com.opencryptotrade.templatebuilder.enums.BaseBlockType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ public class BaseBlock implements Serializable {
     @Setter @Getter
     private BaseBlockType type;
 
-    @Lob
+    @Lob @Type(type = "org.hibernate.type.TextType")
     @Setter @Getter
     private String html;
 }
