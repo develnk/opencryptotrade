@@ -1,15 +1,15 @@
 package com.opencryptotrade.templatebuilder.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
-import java.util.Set;
 
-public class EmailTemplateDTO  implements Serializable {
+@JsonIgnoreProperties(value={ "templateId", }, allowSetters = true)
+public class BaseBlockLinkDTO implements Serializable {
 
     @Setter @Getter
     @Valid
@@ -18,26 +18,27 @@ public class EmailTemplateDTO  implements Serializable {
     @Setter @Getter
     @Valid
     @NotNull
-    private String name;
-
-    @Setter  @Getter
-    @Valid
-    @NotNull
-    private String subject;
+    private short weight;
 
     @Setter @Getter
     @Valid
     @NotNull
-    private String folder;
+    private String baseBlockId;
+
+    @Setter @Getter
+    @Valid
+    private String templateId;
+
+    @Setter @Getter
+    @Valid
+    private String baseBlockCopyId;
 
     @Setter @Getter
     @Valid
     @NotNull
-    private Integer trigger;
+    private boolean editFlag;
 
     @Setter @Getter
-    @Valid
-    @NotNull
-    private Set<BaseBlockLinkDTO> baseBlockLinks;
+    private String html;
 
 }

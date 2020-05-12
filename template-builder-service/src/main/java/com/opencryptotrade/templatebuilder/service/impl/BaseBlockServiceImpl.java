@@ -5,6 +5,7 @@ import com.opencryptotrade.templatebuilder.entity.BaseBlock;
 import com.opencryptotrade.templatebuilder.enums.BaseBlockType;
 import com.opencryptotrade.templatebuilder.repository.BaseBlockRepository;
 import com.opencryptotrade.templatebuilder.service.BaseBlockService;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,7 @@ public class BaseBlockServiceImpl implements BaseBlockService {
 
     @Override
     public BaseBlockDTO update(BaseBlockDTO baseBlockDTO) {
-        // @TODO convert to DTO object
-        BaseBlock baseBlock = baseBlockRepository.findById(baseBlockDTO.getId()).orElseThrow();
+        BaseBlock baseBlock = baseBlockRepository.findById(new ObjectId(baseBlockDTO.getId())).orElseThrow();
         baseBlock.setType(baseBlockDTO.getType());
         baseBlock.setHtml(baseBlockDTO.getHtml());
         BaseBlock updatedBaseBlock = baseBlockRepository.save(baseBlock);
@@ -45,7 +45,7 @@ public class BaseBlockServiceImpl implements BaseBlockService {
 
     @Override
     public boolean delete(BaseBlockDTO baseBlockDTO) {
-        BaseBlock baseBlock = baseBlockRepository.findById(baseBlockDTO.getId()).orElseThrow();
+        BaseBlock baseBlock = baseBlockRepository.findById(new ObjectId(baseBlockDTO.getId())).orElseThrow();
         // @TODO need check to use base block in templates.
         baseBlockRepository.delete(baseBlock);
         return true;

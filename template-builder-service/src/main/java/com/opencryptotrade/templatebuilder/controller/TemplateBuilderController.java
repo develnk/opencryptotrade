@@ -4,6 +4,7 @@ import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
 import com.opencryptotrade.templatebuilder.dto.TriggerDTO;
 import com.opencryptotrade.templatebuilder.feign.SmtpService;
 import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
+import org.bson.types.ObjectId;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,12 @@ public class TemplateBuilderController {
 	}
 
 	@PreAuthorize("#oauth2.hasScope('ui')")
+	@RequestMapping(path = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<EmailTemplateDTO> index() {
+		return emailTemplateService.getEmailTemplates();
+	}
+
+	@PreAuthorize("#oauth2.hasScope('ui')")
 	@RequestMapping(path = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public EmailTemplateDTO update(@Valid @RequestBody EmailTemplateDTO templateDTO) {
 		return emailTemplateService.update(templateDTO);
@@ -43,7 +50,7 @@ public class TemplateBuilderController {
 
 	@PreAuthorize("#oauth2.hasScope('ui')")
 	@RequestMapping(path = "/", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public boolean delete(@Valid @RequestBody Long id) {
+	public boolean delete(@Valid @RequestBody ObjectId id) {
 		return emailTemplateService.delete(id);
 	}
 

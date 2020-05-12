@@ -2,6 +2,7 @@ package com.opencryptotrade.templatebuilder.controller;
 
 import com.opencryptotrade.templatebuilder.dto.FolderDTO;
 import com.opencryptotrade.templatebuilder.service.FolderService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -40,7 +41,7 @@ public class FolderController {
     @Secured({ROLE_ADMIN})
     @RequestMapping(path = "/folder", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean delete(@Valid @RequestBody FolderDTO folder) {
-        return folderService.delete(folder.getId());
+        return folderService.delete(new ObjectId(folder.getId()));
     }
 
     @PreAuthorize("#oauth2.hasScope('ui')")

@@ -1,8 +1,10 @@
 package com.opencryptotrade.templatebuilder.controller;
 
 import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
+import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
+import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
+import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
 import com.opencryptotrade.templatebuilder.service.BaseBlockService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +15,14 @@ import java.util.List;
 @RestController
 public class BaseBlockController {
 
-    @Autowired
-    BaseBlockService baseBlockService;
+    final BaseBlockService baseBlockService;
+
+    final BaseBlockLinkService baseBlockLinkService;
+
+    public BaseBlockController(BaseBlockService baseBlockService, BaseBlockLinkService baseBlockLinkService) {
+        this.baseBlockService = baseBlockService;
+        this.baseBlockLinkService = baseBlockLinkService;
+    }
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @RequestMapping(path = "/base_block", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -45,5 +53,19 @@ public class BaseBlockController {
     public List<BaseBlockDTO> getBlocksType(@Valid @RequestParam String type) {
         return baseBlockService.getBaseBlocksType(type);
     }
+
+    @PreAuthorize("#oauth2.hasScope('ui')")
+    @RequestMapping(path = "/add_base_block_links", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public BaseBlockLinkDTO addBaseBlockLink(@Valid @RequestBody BaseBlockLinkDTO baseBlockLinkDTO) {
+        // Need Template id and block to add to template.
+        return baseBlockLinkService.addToTemplate(baseBlockLinkDTO);
+    }
+
+//    @PreAuthorize("#oauth2.hasScope('ui')")
+//    @RequestMapping(path = "/delete_base_block_links", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public boolean addBaseBlockLink(@Valid @RequestBody BaseBlockLinkDTO baseBlockLinkDTO) {
+//        // Need Template id and blocks to add to template.
+//
+//    }
 
 }

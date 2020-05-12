@@ -13,7 +13,7 @@ public class TriggerService {
 
     public List<TriggerDTO> getAll() {
         List<TriggerDTO> triggers = new LinkedList<>();
-        Arrays.stream(Trigger.values()).forEach((tr) -> triggers.add(new TriggerDTO(tr.name(), tr.getValue())));
+        Arrays.stream(Trigger.values()).forEach((tr) -> triggers.add(new TriggerDTO(tr.name(), tr.getValue(), tr.getId())));
         return triggers;
     }
 

@@ -1,6 +1,9 @@
 package com.opencryptotrade.templatebuilder.service;
 
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
+import org.bson.types.ObjectId;
+
+import java.util.List;
 
 public interface EmailTemplateService {
 
@@ -8,6 +11,8 @@ public interface EmailTemplateService {
 
     EmailTemplateDTO update(EmailTemplateDTO template);
 
-    boolean delete(Long id);
+    List<EmailTemplateDTO> getEmailTemplates();
+
+    boolean delete(ObjectId id);
 
 }

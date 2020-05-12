@@ -2,38 +2,56 @@ package com.opencryptotrade.templatebuilder.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "email_template")
-public class EmailTemplate  implements Serializable  {
-
-    private static final long serialVersionUID = 3328044920395369472L;
+@Document
+public class EmailTemplate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    private Long id;
+    @Setter @Getter
+    private ObjectId id;
 
     @Setter @Getter
-    @Column(length = 64)
+    @Valid
+    @NotNull
     private String name;
 
     @Setter @Getter
+    @Valid
+    @NotNull
     private String subject;
 
-    @Lob
     @Setter @Getter
-    private String body;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "folder_id")
-    @Setter @Getter
+    @Valid
+    @NotNull
+    @DBRef
     private Folder folder;
 
     @Setter @Getter
-    private String trigger;
+    @Valid
+    @NotNull
+    private Integer trigger;
+
+    @Setter @Getter
+    @Valid
+    @NotNull
+    @DBRef
+    private Set<BaseBlockLink> baseBlockLinks = new HashSet<>();
+
+    public void addBaseBlockLink(BaseBlockLink baseBlockLink) {
+        baseBlockLinks.add(baseBlockLink);
+    }
+
+    public void removeBaseBlockLink(BaseBlockLink baseBlockLink) {
+        baseBlockLinks.remove(baseBlockLink);
+    }
 
 }

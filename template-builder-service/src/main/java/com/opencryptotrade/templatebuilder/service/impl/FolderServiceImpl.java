@@ -5,7 +5,7 @@ import com.opencryptotrade.templatebuilder.entity.Folder;
 import com.opencryptotrade.templatebuilder.exception.FolderAlreadyExist;
 import com.opencryptotrade.templatebuilder.repository.FolderRepository;
 import com.opencryptotrade.templatebuilder.service.FolderService;
-import feign.FeignException;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public FolderDTO update(FolderDTO folderDTO) {
-        Folder folder = folderRepository.findNewById(folderDTO.getId());
+        Folder folder = folderRepository.findById(new ObjectId(folderDTO.getId())).orElseGet(() -> folderRepository.findByName("Default"));
         if (folder == null) {
             throw new NoSuchElementException("No value present");
         }
@@ -47,8 +47,8 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public boolean delete(Long folderId) {
-        Folder folder = folderRepository.findNewById(folderId);
+    public boolean delete(ObjectId folderId) {
+        Folder folder = folderRepository.findById(folderId).get();
         if (folder == null) {
             throw new NoSuchElementException("No value present");
         }

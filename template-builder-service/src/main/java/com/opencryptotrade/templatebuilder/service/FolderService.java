@@ -2,6 +2,7 @@ package com.opencryptotrade.templatebuilder.service;
 
 import com.opencryptotrade.templatebuilder.dto.FolderDTO;
 import com.opencryptotrade.templatebuilder.entity.Folder;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface FolderService {
      * @param folderId
      * @return Result of operation.
      */
-    boolean delete(Long folderId);
+    boolean delete(ObjectId folderId);
 
     /**
      * Get all folders from DB.

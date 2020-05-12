@@ -10,15 +10,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Document
-public class Folder {
+public class BaseBlockCopy {
 
     @Id
     @Setter @Getter
     private ObjectId id;
 
-    @Setter	@Getter
+    @Setter @Getter
     @Valid
     @NotNull
-    private String name;
+    private String html;
 
 }

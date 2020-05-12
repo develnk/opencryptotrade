@@ -8,22 +8,10 @@ security:
       scope: server
 
 spring:
-  jpa:
-    database: postgresql
-    show-sql: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
-        jdbc:
-          time_zone: UTC
-  datasource:
-    url: jdbc:postgresql://localhost:5434/templatebuilder
-    username: root
-    password: root
-    driver-class-name: org.postgresql.Driver
+  data:
+    mongodb:
+      database: templatebuilder
+      uri: mongodb://test:test@localhost:27018/templatebuilder
 
 server:
   servlet:

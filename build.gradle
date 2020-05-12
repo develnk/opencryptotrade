@@ -30,4 +30,5 @@ repositories {
 
 dependencies {
     implementation("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+    implementation 'org.jetbrains:annotations:15.0'
 }
