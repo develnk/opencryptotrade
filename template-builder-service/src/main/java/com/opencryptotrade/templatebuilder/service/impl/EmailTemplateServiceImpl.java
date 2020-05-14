@@ -1,9 +1,6 @@
 package com.opencryptotrade.templatebuilder.service.impl;
 
-import com.opencryptotrade.templatebuilder.dto.BaseBlockCopyDTO;
-import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
-import com.opencryptotrade.templatebuilder.entity.BaseBlockCopy;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
 import com.opencryptotrade.templatebuilder.entity.Folder;
@@ -15,7 +12,6 @@ import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
 import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import org.bson.types.ObjectId;
 import org.modelmapper.AbstractConverter;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
