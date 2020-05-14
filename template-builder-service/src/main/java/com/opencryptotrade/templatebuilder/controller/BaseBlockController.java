@@ -61,11 +61,11 @@ public class BaseBlockController {
         return baseBlockLinkService.addToTemplate(baseBlockLinkDTO);
     }
 
-//    @PreAuthorize("#oauth2.hasScope('ui')")
-//    @RequestMapping(path = "/delete_base_block_links", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public boolean addBaseBlockLink(@Valid @RequestBody BaseBlockLinkDTO baseBlockLinkDTO) {
-//        // Need Template id and blocks to add to template.
-//
-//    }
+    @PreAuthorize("#oauth2.hasScope('ui')")
+    @RequestMapping(path = "/delete_base_block_links", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean deleteBaseBlockLink(@Valid @RequestBody BaseBlockLinkDTO baseBlockLinkDTO) {
+        // Need Template id.
+        return baseBlockLinkService.delete(baseBlockLinkDTO);
+    }
 
 }

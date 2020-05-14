@@ -1,7 +1,6 @@
 package com.opencryptotrade.templatebuilder.service.impl;
 
 import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
-import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockCopy;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
@@ -14,8 +13,6 @@ import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
@@ -52,7 +49,7 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
         template.addBaseBlockLink(savedBaseBlockLink);
         emailTemplateRepository.save(template);
         // @TODO Add custom exception.
-        BaseBlockLink insertedBaseBlockLink = template.getBaseBlockLinks().stream().filter(b -> (b.equalsFull(baseBlockLink))).reduce((a, b) -> b).orElseThrow();
+        BaseBlockLink insertedBaseBlockLink = template.getBaseBlockLinks().stream().filter(b -> (b.equalsFull(baseBlockLink))).findFirst().orElseThrow();
         return modelMapper.map(insertedBaseBlockLink, BaseBlockLinkDTO.class);
     }
 
@@ -60,9 +57,12 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
     public boolean update(BaseBlockLinkDTO baseBlockLinkDTO) {
         BaseBlockLink baseBlockLink = updateBaseBlockLink(baseBlockLinkDTO);
         EmailTemplate template = emailTemplateRepository.findById(new ObjectId(baseBlockLinkDTO.getTemplateId())).orElseThrow();
-        BaseBlockLink baseBlockLinkToUpdate = template.getBaseBlockLinks().stream().filter(b -> (b.equals(baseBlockLink))).reduce((a, b) -> b).orElseThrow();
+        BaseBlockLink baseBlockLinkToUpdate = template.getBaseBlockLinks().stream().filter(b -> (b.equals(baseBlockLink))).findFirst().orElseThrow();
         if (!baseBlockLinkDTO.isEditFlag()) {
-            // Delete link to BaseBlockCopy
+            // Need delete link to BaseBlockCopy manually.
+            if (baseBlockLinkDTO.getBaseBlockCopyId() != null) {
+                deleteBaseBlockCopy(new ObjectId(baseBlockLinkDTO.getBaseBlockCopyId()));
+            }
             baseBlockLinkToUpdate.setBaseBlockCopy(null);
         }
         else {
@@ -77,39 +77,18 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
             }
         }
         emailTemplateRepository.save(template);
-        return false;
+        return true;
     }
 
     @Override
     public boolean delete(BaseBlockLinkDTO baseBlockLinkDTO) {
-        return false;
-    }
-
-    private void updateBaseBlockLinks(EmailTemplate template, EmailTemplateDTO templateDTO) {
-        templateDTO.getBaseBlockLinks().forEach(baseBlockLinkDTO -> {
-            AtomicInteger count = new AtomicInteger(0);
-            template.getBaseBlockLinks().forEach(baseBlockLink -> {
-                if (baseBlockLinkDTO.getId() != null && baseBlockLinkDTO.getId().equals(baseBlockLink.getId().toString())) {
-                    // Update exist Template Base Block object
-                    count.incrementAndGet();
-                    baseBlockLink.setWeight(baseBlockLinkDTO.getWeight());
-                    baseBlockLink.setEditFlag(baseBlockLinkDTO.isEditFlag());
-                    if (baseBlockLinkDTO.isEditFlag()) {
-                        if (baseBlockLink.getBaseBlockCopy() == null) {
-                            BaseBlockCopy baseBlockCopy = new BaseBlockCopy();
-                            baseBlockCopy.setHtml(baseBlockLinkDTO.getHtml());
-                            baseBlockLink.setBaseBlockCopy(baseBlockCopy);
-                        }
-                        else {
-                            baseBlockLink.getBaseBlockCopy().setHtml(baseBlockLinkDTO.getHtml());
-                        }
-                    }
-                    else {
-                        baseBlockLink.setBaseBlockCopy(null);
-                    }
-                }
-            });
-        });
+        EmailTemplate template = emailTemplateRepository.findById(new ObjectId(baseBlockLinkDTO.getTemplateId())).orElseThrow();
+        BaseBlockLink baseBlockLink = template.getBaseBlockLinks().stream().filter(b -> b.getId().equals(new ObjectId(baseBlockLinkDTO.getId()))).findFirst().orElseThrow();
+        // Need delete BaseBlockLink manually.
+        deleteBaseBlockLink(baseBlockLink);
+        template.removeBaseBlockLink(baseBlockLink);
+        emailTemplateRepository.save(template);
+        return true;
     }
 
     public BaseBlockLink addNewBaseBlockLink(BaseBlockLinkDTO baseBlockLinkDTO) {
@@ -159,6 +138,19 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
         }
 
         return baseBlockLinkRepository.save(baseBlockLink);
+    }
+
+    private void deleteBaseBlockLink(BaseBlockLink baseBlockLink) {
+        if (baseBlockLink.getBaseBlockCopy() != null) {
+            deleteBaseBlockCopy(baseBlockLink.getBaseBlockCopy().getId());
+        }
+
+        baseBlockLinkRepository.delete(baseBlockLink);
+    }
+
+    private void deleteBaseBlockCopy(ObjectId baseBlockCopyId) {
+        BaseBlockCopy baseBlockCopy = baseBlockCopyRepository.findById(baseBlockCopyId).orElseThrow();
+        baseBlockCopyRepository.delete(baseBlockCopy);
     }
 
 }
