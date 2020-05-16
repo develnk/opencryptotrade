@@ -66,4 +66,9 @@ public class BaseBlockServiceImpl implements BaseBlockService {
         return blocks;
     }
 
+    @Override
+    public BaseBlock findById(ObjectId id) {
+        return baseBlockRepository.findById(id).orElseThrow();
+    }
+
 }

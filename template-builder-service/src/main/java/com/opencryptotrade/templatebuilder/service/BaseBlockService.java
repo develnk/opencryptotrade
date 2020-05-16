@@ -1,6 +1,8 @@
 package com.opencryptotrade.templatebuilder.service;
 
 import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
+import com.opencryptotrade.templatebuilder.entity.BaseBlock;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -40,5 +42,13 @@ public interface BaseBlockService {
      * @return All base blocks.
      */
     List<BaseBlockDTO> getAllBaseBlocks();
+
+    /**
+     * Find Base Block by id.
+     *
+     * @param id
+     * @return
+     */
+    BaseBlock findById(ObjectId id);
 
 }

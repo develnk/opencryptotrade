@@ -25,10 +25,11 @@ public interface FolderService {
     /**
      * Delete folder from system.
      *
-     * @param folderId
+     * @param id
+     *   Folder id.
      * @return Result of operation.
      */
-    boolean delete(ObjectId folderId);
+    boolean delete(ObjectId id);
 
     /**
      * Get all folders from DB.
@@ -36,4 +37,13 @@ public interface FolderService {
      * @return All folders.
      */
     List<FolderDTO> getAllFolders();
+
+    /**
+     * Find folder by id.
+     *
+     * @param id
+     *   Folder id.
+     * @return Found folder.
+     */
+    Folder findFolderById(ObjectId id);
 }

@@ -1,6 +1,5 @@
 package com.opencryptotrade.templatebuilder.service;
 
-import com.opencryptotrade.templatebuilder.dto.BaseBlockCopyDTO;
 import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockCopy;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;

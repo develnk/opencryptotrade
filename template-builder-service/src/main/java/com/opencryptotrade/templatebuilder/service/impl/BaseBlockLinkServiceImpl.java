@@ -4,34 +4,35 @@ import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockCopy;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
-import com.opencryptotrade.templatebuilder.repository.BaseBlockCopyRepository;
 import com.opencryptotrade.templatebuilder.repository.BaseBlockLinkRepository;
-import com.opencryptotrade.templatebuilder.repository.BaseBlockRepository;
-import com.opencryptotrade.templatebuilder.repository.EmailTemplateRepository;
+import com.opencryptotrade.templatebuilder.service.BaseBlockCopyService;
 import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
+import com.opencryptotrade.templatebuilder.service.BaseBlockService;
+import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
 
-    final BaseBlockRepository baseBlockRepository;
-
-    final BaseBlockCopyRepository baseBlockCopyRepository;
-
     final BaseBlockLinkRepository baseBlockLinkRepository;
 
-    final EmailTemplateRepository emailTemplateRepository;
+    final BaseBlockService baseBlockService;
+
+    final BaseBlockCopyService baseBlockCopyService;
+
+    final EmailTemplateService emailTemplateService;
 
     final ModelMapper modelMapper;
 
-    public BaseBlockLinkServiceImpl(BaseBlockRepository baseBlockRepository, BaseBlockCopyRepository baseBlockCopyRepository, BaseBlockLinkRepository baseBlockLinkRepository, EmailTemplateRepository emailTemplateRepository, ModelMapper modelMapper) {
-        this.baseBlockRepository = baseBlockRepository;
-        this.baseBlockCopyRepository = baseBlockCopyRepository;
+    public BaseBlockLinkServiceImpl(BaseBlockService baseBlockService, BaseBlockCopyService baseBlockCopyService, BaseBlockLinkRepository baseBlockLinkRepository, @Lazy EmailTemplateService emailTemplateService, ModelMapper modelMapper) {
+        this.baseBlockService = baseBlockService;
+        this.baseBlockCopyService = baseBlockCopyService;
         this.baseBlockLinkRepository = baseBlockLinkRepository;
-        this.emailTemplateRepository = emailTemplateRepository;
+        this.emailTemplateService = emailTemplateService;
         this.modelMapper = modelMapper;
         this.modelMapper.addMappings(new PropertyMap<BaseBlockLink, BaseBlockLinkDTO>() {
             @Override
@@ -45,9 +46,9 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
     public BaseBlockLinkDTO addToTemplate(BaseBlockLinkDTO baseBlockLinkDTO) {
         BaseBlockLink baseBlockLink = addNewBaseBlockLink(baseBlockLinkDTO);
         BaseBlockLink savedBaseBlockLink = save(baseBlockLink);
-        EmailTemplate template = emailTemplateRepository.findById(new ObjectId(baseBlockLinkDTO.getTemplateId())).orElseThrow();
+        EmailTemplate template = emailTemplateService.findById(new ObjectId(baseBlockLinkDTO.getTemplateId()));
         template.addBaseBlockLink(savedBaseBlockLink);
-        emailTemplateRepository.save(template);
+        emailTemplateService.save(template);
         // @TODO Add custom exception.
         BaseBlockLink insertedBaseBlockLink = template.getBaseBlockLinks().stream().filter(b -> (b.equalsFull(baseBlockLink))).findFirst().orElseThrow();
         return modelMapper.map(insertedBaseBlockLink, BaseBlockLinkDTO.class);
@@ -56,12 +57,12 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
     @Override
     public boolean update(BaseBlockLinkDTO baseBlockLinkDTO) {
         BaseBlockLink baseBlockLink = updateBaseBlockLink(baseBlockLinkDTO);
-        EmailTemplate template = emailTemplateRepository.findById(new ObjectId(baseBlockLinkDTO.getTemplateId())).orElseThrow();
+        EmailTemplate template = emailTemplateService.findById(new ObjectId(baseBlockLinkDTO.getTemplateId()));
         BaseBlockLink baseBlockLinkToUpdate = template.getBaseBlockLinks().stream().filter(b -> (b.equals(baseBlockLink))).findFirst().orElseThrow();
         if (!baseBlockLinkDTO.isEditFlag()) {
             // Need delete link to BaseBlockCopy manually.
             if (baseBlockLinkDTO.getBaseBlockCopyId() != null) {
-                deleteBaseBlockCopy(new ObjectId(baseBlockLinkDTO.getBaseBlockCopyId()));
+                baseBlockCopyService.deleteById(new ObjectId(baseBlockLinkDTO.getBaseBlockCopyId()));
             }
             baseBlockLinkToUpdate.setBaseBlockCopy(null);
         }
@@ -76,18 +77,18 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
                 baseBlockLinkToUpdate.setBaseBlockCopy(baseBlockCopy);
             }
         }
-        emailTemplateRepository.save(template);
+        emailTemplateService.save(template);
         return true;
     }
 
     @Override
     public boolean delete(BaseBlockLinkDTO baseBlockLinkDTO) {
-        EmailTemplate template = emailTemplateRepository.findById(new ObjectId(baseBlockLinkDTO.getTemplateId())).orElseThrow();
+        EmailTemplate template = emailTemplateService.findById(new ObjectId(baseBlockLinkDTO.getTemplateId()));
         BaseBlockLink baseBlockLink = template.getBaseBlockLinks().stream().filter(b -> b.getId().equals(new ObjectId(baseBlockLinkDTO.getId()))).findFirst().orElseThrow();
         // Need delete BaseBlockLink manually.
         deleteBaseBlockLink(baseBlockLink);
         template.removeBaseBlockLink(baseBlockLink);
-        emailTemplateRepository.save(template);
+        emailTemplateService.save(template);
         return true;
     }
 
@@ -95,7 +96,7 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
         BaseBlockLink baseBlockLink = new BaseBlockLink();
         baseBlockLink.setWeight(baseBlockLinkDTO.getWeight());
         baseBlockLink.setEditFlag(baseBlockLinkDTO.isEditFlag());
-        baseBlockLink.setBaseBlock(baseBlockRepository.findById(new ObjectId(baseBlockLinkDTO.getBaseBlockId())).orElseThrow());
+        baseBlockLink.setBaseBlock(baseBlockService.findById(new ObjectId(baseBlockLinkDTO.getBaseBlockId())));
 
         if (baseBlockLinkDTO.isEditFlag()) {
             BaseBlockCopy baseBlockCopy = new BaseBlockCopy();
@@ -110,12 +111,12 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
         BaseBlockLink baseBlockLink = baseBlockLinkRepository.findById(new ObjectId(baseBlockLinkDTO.getId())).orElseThrow();
         baseBlockLink.setWeight(baseBlockLinkDTO.getWeight());
         baseBlockLink.setEditFlag(baseBlockLinkDTO.isEditFlag());
-        baseBlockLink.setBaseBlock(baseBlockRepository.findById(new ObjectId(baseBlockLinkDTO.getBaseBlockId())).orElseThrow());
+        baseBlockLink.setBaseBlock(baseBlockService.findById(new ObjectId(baseBlockLinkDTO.getBaseBlockId())));
 
         if (baseBlockLinkDTO.isEditFlag()) {
             BaseBlockCopy baseBlockCopy = new BaseBlockCopy();
             if (baseBlockLinkDTO.getBaseBlockCopyId() != null) {
-                baseBlockCopy = baseBlockCopyRepository.findById(new ObjectId(baseBlockLinkDTO.getBaseBlockCopyId())).orElseThrow();
+                baseBlockCopy = baseBlockCopyService.findById(new ObjectId(baseBlockLinkDTO.getBaseBlockCopyId()));
             }
             if (!baseBlockLinkDTO.getHtml().equals(baseBlockCopy.getHtml())) {
                 baseBlockCopy.setHtml(baseBlockLinkDTO.getHtml());
@@ -128,7 +129,7 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
 
     @Override
     public BaseBlockCopy saveBaseBlockCopy(BaseBlockCopy baseBlockCopy) {
-        return baseBlockCopyRepository.save(baseBlockCopy);
+        return baseBlockCopyService.save(baseBlockCopy);
     }
 
     @Override
@@ -142,15 +143,10 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
 
     private void deleteBaseBlockLink(BaseBlockLink baseBlockLink) {
         if (baseBlockLink.getBaseBlockCopy() != null) {
-            deleteBaseBlockCopy(baseBlockLink.getBaseBlockCopy().getId());
+            baseBlockCopyService.deleteById(baseBlockLink.getBaseBlockCopy().getId());
         }
 
         baseBlockLinkRepository.delete(baseBlockLink);
-    }
-
-    private void deleteBaseBlockCopy(ObjectId baseBlockCopyId) {
-        BaseBlockCopy baseBlockCopy = baseBlockCopyRepository.findById(baseBlockCopyId).orElseThrow();
-        baseBlockCopyRepository.delete(baseBlockCopy);
     }
 
 }

@@ -47,11 +47,8 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public boolean delete(ObjectId folderId) {
-        Folder folder = folderRepository.findById(folderId).get();
-        if (folder == null) {
-            throw new NoSuchElementException("No value present");
-        }
+    public boolean delete(ObjectId id) {
+        Folder folder = folderRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No value present"));
         // @TODO need check to exist templates in folder.
         folderRepository.delete(folder);
         return true;
@@ -64,6 +61,12 @@ public class FolderServiceImpl implements FolderService {
             folders.add(modelMapper.map(folder, FolderDTO.class));
         });
         return folders;
+    }
+
+    @Override
+    public Folder findFolderById(ObjectId id) {
+        return folderRepository.findById(id).orElseGet(() -> folderRepository.findByName("Default"));
+
     }
 
     private FolderDTO saveNewFolder(String name) {
