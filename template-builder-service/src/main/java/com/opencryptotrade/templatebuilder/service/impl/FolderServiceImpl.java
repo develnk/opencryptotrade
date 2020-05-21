@@ -18,7 +18,9 @@ public class FolderServiceImpl implements FolderService {
 
     private final FolderRepository folderRepository;
 
-    final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    private final String folderNotExist = "Folder not exist";
 
     public FolderServiceImpl(FolderRepository folderRepository, ModelMapper modelMapper) {
         this.folderRepository = folderRepository;
@@ -29,7 +31,7 @@ public class FolderServiceImpl implements FolderService {
     public FolderDTO create(FolderDTO folderDTO) {
         Folder folder = folderRepository.findByName(folderDTO.getName());
         if (folder != null) {
-            throw new FolderAlreadyExist("Folder already exist.");
+            throw new FolderAlreadyExist("Folder already exist");
         }
 
         return saveNewFolder(folderDTO.getName());
@@ -37,18 +39,15 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public FolderDTO update(FolderDTO folderDTO) {
-        Folder folder = folderRepository.findById(new ObjectId(folderDTO.getId())).orElseGet(() -> folderRepository.findByName("Default"));
-        if (folder == null) {
-            throw new NoSuchElementException("No value present");
-        }
+        Folder folder = folderRepository.findById(new ObjectId(folderDTO.getId())).orElseThrow(() -> new NoSuchElementException(folderNotExist));
         folder.setName(folderDTO.getName());
-        folderRepository.save(folder);
-        return modelMapper.map(folder, FolderDTO.class);
+        Folder savedFolder = folderRepository.save(folder);
+        return modelMapper.map(savedFolder, FolderDTO.class);
     }
 
     @Override
     public boolean delete(ObjectId id) {
-        Folder folder = folderRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No value present"));
+        Folder folder = folderRepository.findById(id).orElseThrow(() -> new NoSuchElementException(folderNotExist));
         // @TODO need check to exist templates in folder.
         folderRepository.delete(folder);
         return true;

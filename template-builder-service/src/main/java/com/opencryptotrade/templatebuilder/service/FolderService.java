@@ -46,4 +46,5 @@ public interface FolderService {
      * @return Found folder.
      */
     Folder findFolderById(ObjectId id);
+
 }
