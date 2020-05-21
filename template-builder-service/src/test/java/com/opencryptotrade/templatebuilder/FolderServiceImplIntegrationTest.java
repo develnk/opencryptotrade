@@ -13,11 +13,12 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
@@ -83,6 +84,13 @@ public class FolderServiceImplIntegrationTest {
         // save
         doAnswer(invocation -> newFolder).when(folderRepository).save(any());
 
+        // findAll
+        List<Folder> folderList = new ArrayList<>();
+        folderList.add(folder);
+        folderList.add(defaultFolder);
+        folderList.add(newFolder);
+        doAnswer(invocation -> folderList).when(folderRepository).findAll();
+
         folderService = new FolderServiceImpl(folderRepository, modelMapper);
     }
 
@@ -114,7 +122,7 @@ public class FolderServiceImplIntegrationTest {
     }
 
     @Test
-    public void whetFolderUpdate_thenFolderShouldBeUpdated() {
+    public void whenFolderUpdate_thenFolderShouldBeUpdated() {
         Folder updatedFolder = new Folder();
         updatedFolder.setId(folderId);
         updatedFolder.setName("Updated");
@@ -134,6 +142,24 @@ public class FolderServiceImplIntegrationTest {
         folderDTO.setId(ObjectId.get().toString());
         NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> folderService.update(folderDTO));
         assertEquals("Folder not exist", exception.getMessage());
+    }
+
+    @Test
+    public void whenFolderDelete_thenReturnTrue() {
+        boolean result = folderService.delete(folderId);
+        assertTrue(result);
+    }
+
+    @Test
+    public void whenFolderDeleteUnknown_thenReturnException() {
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> folderService.delete(new ObjectId()));
+        assertEquals("Folder not exist", exception.getMessage());
+    }
+
+    @Test
+    public void whenGetAllFolders_thenReturnAllFolders() {
+        List<FolderDTO> folders = folderService.getAllFolders();
+        assertEquals(3, folders.size());
     }
 
 }
