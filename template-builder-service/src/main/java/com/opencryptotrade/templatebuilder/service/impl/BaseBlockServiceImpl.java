@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -18,7 +17,7 @@ public class BaseBlockServiceImpl implements BaseBlockService {
 
     private final BaseBlockRepository baseBlockRepository;
 
-    final ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public BaseBlockServiceImpl(BaseBlockRepository baseBlockRepository, ModelMapper modelMapper) {
         this.baseBlockRepository = baseBlockRepository;
@@ -53,7 +52,7 @@ public class BaseBlockServiceImpl implements BaseBlockService {
 
     @Override
     public List<BaseBlockDTO> getBaseBlocksType(String type) {
-        List<BaseBlockDTO> result = new LinkedList<>();
+        List<BaseBlockDTO> result = new ArrayList<>();
         List<BaseBlock> blocks = baseBlockRepository.findByType(BaseBlockType.valueOf(type));
         blocks.forEach(baseBlock -> result.add(modelMapper.map(baseBlock, BaseBlockDTO.class)));
         return result;

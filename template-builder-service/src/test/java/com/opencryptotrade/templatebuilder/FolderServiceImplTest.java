@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
 @ExtendWith(SpringExtension.class)
-public class FolderServiceImplIntegrationTest {
+public class FolderServiceImplTest {
 
     private FolderServiceImpl folderService;
 
@@ -33,11 +33,11 @@ public class FolderServiceImplIntegrationTest {
     @Mock
     private ModelMapper modelMapper;
 
-    Folder folder;
+    private Folder folder;
 
-    Folder newFolder;
+    private Folder newFolder;
 
-    Folder defaultFolder;
+    private Folder defaultFolder;
 
     private final ObjectId folderId = ObjectId.get();
 
