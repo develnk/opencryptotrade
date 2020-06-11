@@ -1,11 +1,12 @@
 package com.opencryptotrade.templatebuilder.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.bson.types.ObjectId;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TriggerDTO implements Serializable {
 
     @Setter @Getter
@@ -17,9 +18,4 @@ public class TriggerDTO implements Serializable {
     @Setter @Getter
     private String name;
 
-    public TriggerDTO(String value, String name, Long id) {
-        this.value = value;
-        this.name = name;
-        this.id = id;
-    }
 }

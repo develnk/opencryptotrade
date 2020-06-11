@@ -1,14 +1,15 @@
 package com.opencryptotrade.templatebuilder.dto;
 
 import com.opencryptotrade.templatebuilder.enums.BaseBlockType;
-import lombok.Getter;
-import lombok.Setter;
-import org.bson.types.ObjectId;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseBlockDTO implements Serializable {
 
     @Setter @Getter
