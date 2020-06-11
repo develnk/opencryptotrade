@@ -1,19 +1,9 @@
-buildscript {
-    ext {
-        springBootVersion = '2.2.5.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 group = 'com.opencryptotrade'
 version = '0.0.1-SNAPSHOT'
@@ -21,12 +11,10 @@ sourceCompatibility = 11
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.spring.io/milestone" }
 }
 
-
 ext {
-    springCloudVersion = 'Hoxton.SR3'
+    set('springCloudVersion', "Hoxton.SR5")
 }
 
 dependencies {
@@ -51,7 +39,9 @@ dependencies {
     compile('org.postgresql:postgresql')
     compileOnly('org.projectlombok:lombok:1.18.10')
     annotationProcessor('org.projectlombok:lombok:1.18.10')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
     testImplementation('org.springframework.security:spring-security-test')
 }
 
