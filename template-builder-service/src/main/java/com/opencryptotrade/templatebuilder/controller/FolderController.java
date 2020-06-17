@@ -4,13 +4,12 @@ import com.opencryptotrade.templatebuilder.dto.FolderDTO;
 import com.opencryptotrade.templatebuilder.service.FolderService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,9 +38,10 @@ public class FolderController {
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @Secured({ROLE_ADMIN})
-    @RequestMapping(path = "/folder", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean delete(@Valid @RequestBody FolderDTO folder) {
-        return folderService.delete(new ObjectId(folder.getId()));
+    @DeleteMapping(value = "/folder/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> delete(@PathVariable String id) {
+        boolean result =  folderService.delete(new ObjectId(id));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PreAuthorize("#oauth2.hasScope('ui')")
