@@ -9,8 +9,7 @@ import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BaseBlockServiceImpl implements BaseBlockService {
@@ -62,6 +61,7 @@ public class BaseBlockServiceImpl implements BaseBlockService {
     public List<BaseBlockDTO> getAllBaseBlocks() {
         List<BaseBlockDTO> blocks = new ArrayList<>();
         baseBlockRepository.findAll().forEach(baseBlock -> blocks.add(modelMapper.map(baseBlock, BaseBlockDTO.class)));
+        Collections.sort(blocks);
         return blocks;
     }
 

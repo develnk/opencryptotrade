@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseBlockDTO implements Serializable {
+public class BaseBlockDTO implements Serializable, Comparable<BaseBlockDTO> {
 
     @Setter @Getter
     @Valid
@@ -25,5 +25,11 @@ public class BaseBlockDTO implements Serializable {
     @Valid
     @NotNull
     private String html;
+
+    @Override
+    public int compareTo(BaseBlockDTO o) {
+        int compareType = o.getType().ordinal();
+        return this.getType().ordinal() - compareType;
+    }
 
 }
