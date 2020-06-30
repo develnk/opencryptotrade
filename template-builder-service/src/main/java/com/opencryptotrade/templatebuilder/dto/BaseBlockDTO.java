@@ -14,7 +14,6 @@ public class BaseBlockDTO implements Serializable {
 
     @Setter @Getter
     @Valid
-    @NotNull
     private String id;
 
     @Setter @Getter
