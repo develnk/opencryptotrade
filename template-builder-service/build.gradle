@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'eclipse'
-    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
@@ -21,7 +21,8 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "Hoxton.SR5")
+    set('springCloudVersion', "Hoxton.SR6")
+    set('springVersion', '5.2.7.RELEASE')
 }
 
 test {
@@ -41,7 +42,7 @@ dependencies {
     implementation('org.springframework.cloud:spring-cloud-starter-openfeign')
     implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
     implementation('org.springframework.cloud:spring-cloud-starter-bus-amqp')
-    implementation('org.modelmapper:modelmapper:2.3.7')
+    implementation('org.modelmapper:modelmapper:2.3.8')
     compile('org.apache.logging.log4j:log4j-core')
     compile('org.apache.logging.log4j:log4j-api')
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
@@ -60,6 +61,9 @@ dependencies {
 }
 
 dependencyManagement {
+    dependencies {
+        dependency "org.springframework:spring-core:${springVersion}"
+    }
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
