@@ -3,6 +3,7 @@ package com.opencryptotrade.templatebuilder.controller;
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
 import com.opencryptotrade.templatebuilder.dto.TriggerDTO;
 import com.opencryptotrade.templatebuilder.feign.SmtpService;
+import com.opencryptotrade.templatebuilder.model.json.request.TemplateRequest;
 import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import org.bson.types.ObjectId;
 import org.springframework.http.MediaType;
@@ -50,8 +51,8 @@ public class TemplateBuilderController {
 
 	@PreAuthorize("#oauth2.hasScope('ui')")
 	@RequestMapping(path = "/", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public boolean delete(@Valid @RequestBody ObjectId id) {
-		return emailTemplateService.delete(id);
+	public boolean delete(@Valid @RequestBody TemplateRequest request) {
+		return emailTemplateService.delete(new ObjectId(request.getId()));
 	}
 
 }
