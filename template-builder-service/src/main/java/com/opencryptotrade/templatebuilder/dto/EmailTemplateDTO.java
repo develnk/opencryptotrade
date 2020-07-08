@@ -5,7 +5,7 @@ import lombok.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -39,6 +39,6 @@ public class EmailTemplateDTO  implements Serializable {
     @Setter @Getter
     @Valid
     @NotNull
-    private Set<BaseBlockLinkDTO> baseBlockLinks;
+    private List<BaseBlockLinkDTO> baseBlockLinks;
 
 }

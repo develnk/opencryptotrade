@@ -10,6 +10,8 @@ import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
 import com.opencryptotrade.templatebuilder.service.BaseBlockService;
 import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import org.bson.types.ObjectId;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Lazy;
@@ -37,7 +39,14 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
         this.modelMapper.addMappings(new PropertyMap<BaseBlockLink, BaseBlockLinkDTO>() {
             @Override
             protected void configure() {
-                map().setHtml(source.getBaseBlockCopy().getHtml());
+                Converter<String, String> converter = new AbstractConverter<>() {
+                    @Override
+                    protected String convert(String sourceArg) {
+                        return sourceArg.isEmpty() ? source.getBaseBlockCopy().getHtml() : sourceArg;
+                    }
+                };
+
+                using(converter).map(source.getBaseBlock().getHtml(), destination.getHtml());
             }
         });
     }

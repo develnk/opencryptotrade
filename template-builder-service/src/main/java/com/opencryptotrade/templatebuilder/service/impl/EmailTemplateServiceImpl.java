@@ -1,5 +1,6 @@
 package com.opencryptotrade.templatebuilder.service.impl;
 
+import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
@@ -50,7 +51,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Override
     public EmailTemplateDTO create(EmailTemplateDTO templateDTO) {
         EmailTemplate template = new EmailTemplate();
-        Set<BaseBlockLink> baseBlockLinks = templateDTO.getBaseBlockLinks().stream().map(baseBlockLinkService::addNewBaseBlockLink).collect(Collectors.toSet());
+        List<BaseBlockLink> baseBlockLinks = templateDTO.getBaseBlockLinks().stream().map(baseBlockLinkService::addNewBaseBlockLink).collect(Collectors.toList());
         template.setBaseBlockLinks(baseBlockLinks);
         template.setName(templateDTO.getName());
         template.setSubject(templateDTO.getSubject());
@@ -65,7 +66,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         template.setTrigger(templateDTO.getTrigger());
         template.setSubject(templateDTO.getSubject());
         template.setName(templateDTO.getName());
-        Set<BaseBlockLink> baseBlockLinks = templateDTO.getBaseBlockLinks().stream().map(baseBlockLinkService::updateBaseBlockLink).collect(Collectors.toSet());
+        List<BaseBlockLink> baseBlockLinks = templateDTO.getBaseBlockLinks().stream().map(baseBlockLinkService::updateBaseBlockLink).collect(Collectors.toList());
         template.getBaseBlockLinks().clear();
         template.getBaseBlockLinks().addAll(baseBlockLinks);
         return saveTemplate(template, templateDTO);
@@ -74,7 +75,11 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
     @Override
     public List<EmailTemplateDTO> getEmailTemplates() {
         List<EmailTemplateDTO> emailTemplates = new LinkedList<>();
-        emailTemplateRepository.findAll().forEach(e -> emailTemplates.add(modelMapper.map(e, EmailTemplateDTO.class)));
+        emailTemplateRepository.findAll().forEach(e -> {
+            EmailTemplateDTO template = modelMapper.map(e, EmailTemplateDTO.class);
+            Collections.sort(template.getBaseBlockLinks());
+            emailTemplates.add(template);
+        });
         return emailTemplates;
     }
 
@@ -95,13 +100,12 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         return emailTemplateRepository.findById(id).orElseThrow();
     }
 
-
     private EmailTemplateDTO saveTemplate(EmailTemplate template, EmailTemplateDTO templateDTO) {
         // Find folder by name or load default folder.
         Folder folder = folderService.findFolderById(new ObjectId(templateDTO.getFolder()));
         template.setFolder(folder);
         // Save BaseBlockLinks separately
-        template.setBaseBlockLinks(template.getBaseBlockLinks().stream().map(baseBlockLinkService::save).collect(Collectors.toSet()));
+        template.setBaseBlockLinks(template.getBaseBlockLinks().stream().map(baseBlockLinkService::save).collect(Collectors.toList()));
         EmailTemplate savedTemplate = emailTemplateRepository.save(template);
         return modelMapper.map(savedTemplate, EmailTemplateDTO.class);
     }

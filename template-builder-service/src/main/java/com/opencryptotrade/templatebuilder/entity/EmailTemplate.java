@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Document
 public class EmailTemplate {
@@ -44,7 +44,7 @@ public class EmailTemplate {
     @Valid
     @NotNull
     @DBRef
-    private Set<BaseBlockLink> baseBlockLinks = new HashSet<>();
+    private List<BaseBlockLink> baseBlockLinks = new LinkedList<>();
 
     public void addBaseBlockLink(BaseBlockLink baseBlockLink) {
         baseBlockLinks.add(baseBlockLink);

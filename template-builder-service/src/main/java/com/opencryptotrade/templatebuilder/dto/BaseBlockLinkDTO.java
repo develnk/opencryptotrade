@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(value={ "templateId", }, allowSetters = true)
-public class BaseBlockLinkDTO implements Serializable {
+public class BaseBlockLinkDTO implements Serializable, Comparable<BaseBlockLinkDTO> {
 
     @Setter @Getter
     @Valid
@@ -43,4 +43,10 @@ public class BaseBlockLinkDTO implements Serializable {
     @Setter @Getter
     private String html;
 
+
+    @Override
+    public int compareTo(BaseBlockLinkDTO o) {
+        final short weight = o.weight;
+        return this.getWeight() - weight;
+    }
 }
