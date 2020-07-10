@@ -1,6 +1,5 @@
 package com.opencryptotrade.templatebuilder.service.impl;
 
-import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
@@ -10,7 +9,6 @@ import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
 import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import com.opencryptotrade.templatebuilder.service.FolderService;
 import org.bson.types.ObjectId;
-import org.modelmapper.AbstractConverter;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
@@ -33,19 +31,6 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         this.baseBlockLinkService = baseBlockLinkService;
         this.folderService = folderService;
         this.modelMapper = modelMapper;
-        // @TODO Move to separately Bean
-        this.modelMapper.addConverter(new AbstractConverter<ObjectId, String>() {
-            @Override
-            protected String convert(ObjectId source) {
-                return source == null ? null : source.toString();
-            }
-        });
-        this.modelMapper.addConverter(new AbstractConverter<Folder, String>() {
-            @Override
-            protected String convert(Folder source) {
-                return source == null ? null : source.getId().toString();
-            }
-        });
     }
 
     @Override

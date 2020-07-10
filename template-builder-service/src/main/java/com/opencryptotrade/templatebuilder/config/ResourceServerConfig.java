@@ -3,9 +3,13 @@ package com.opencryptotrade.templatebuilder.config;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
+import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
+import com.opencryptotrade.templatebuilder.entity.Folder;
 import com.opencryptotrade.templatebuilder.security.CustomUserInfoTokenServices;
 import feign.RequestInterceptor;
-import org.modelmapper.ModelMapper;
+import org.bson.types.ObjectId;
+import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -43,6 +47,34 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
+
+        // Converter any ObjectId field to field id.
+        modelMapper.addConverter(new AbstractConverter<ObjectId, String>() {
+            @Override
+            protected String convert(ObjectId source) {
+                return source == null ? null : source.toString();
+            }
+        });
+
+        // Converter Folder object to folder id field.
+        modelMapper.addConverter(new AbstractConverter<Folder, String>() {
+            @Override
+            protected String convert(Folder source) {
+                return source == null ? null : source.getId().toString();
+            }
+        });
+
+        // BaseBlockLink converters.
+        modelMapper.typeMap(BaseBlockLink.class, BaseBlockLinkDTO.class).addMappings(mapper -> {
+            Converter<BaseBlockLink, String> converter = new AbstractConverter<>() {
+                @Override
+                protected String convert(BaseBlockLink sourceArg) {
+                    return sourceArg.getBaseBlockCopy() == null ? sourceArg.getBaseBlock().getHtml() : sourceArg.getBaseBlockCopy().getHtml();
+                }
+            };
+
+            mapper.using(converter).map(source -> source, (dest, v) -> dest.setHtml((String) v));
+        });
         return modelMapper;
     }
 
