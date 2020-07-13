@@ -69,7 +69,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             Converter<BaseBlockLink, String> converter = new AbstractConverter<>() {
                 @Override
                 protected String convert(BaseBlockLink sourceArg) {
-                    return sourceArg.getBaseBlockCopy() == null ? sourceArg.getBaseBlock().getHtml() : sourceArg.getBaseBlockCopy().getHtml();
+                    // TODO Change this logic. It is need because may be deleted block while he used in template.
+                    if (sourceArg.getBaseBlockCopy() == null && sourceArg.getBaseBlock() == null) {
+                        return "";
+                    }
+                    else {
+                        return sourceArg.getBaseBlockCopy() == null ? sourceArg.getBaseBlock().getHtml() : sourceArg.getBaseBlockCopy().getHtml();
+                    }
                 }
             };
 
