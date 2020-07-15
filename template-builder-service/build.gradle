@@ -43,9 +43,12 @@ dependencies {
     implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
     implementation('org.springframework.cloud:spring-cloud-starter-bus-amqp')
     implementation('org.modelmapper:modelmapper:2.3.8')
+    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     compile('org.apache.logging.log4j:log4j-core')
     compile('org.apache.logging.log4j:log4j-api')
-    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+    compile('org.javassist:javassist:3.27.0-GA')
+    compile('org.mongodb:mongo-java-driver:3.12.6')
+    compile('com.github.mongobee:mongobee:0.13')
     compileOnly('org.projectlombok:lombok:1.18.10')
     annotationProcessor('org.projectlombok:lombok:1.18.10')
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
