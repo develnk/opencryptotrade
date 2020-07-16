@@ -3,7 +3,9 @@ package com.opencryptotrade.templatebuilder;
 import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlock;
 import com.opencryptotrade.templatebuilder.enums.BaseBlockType;
+import com.opencryptotrade.templatebuilder.exception.BaseBlockInTemplate;
 import com.opencryptotrade.templatebuilder.repository.BaseBlockRepository;
+import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import com.opencryptotrade.templatebuilder.service.impl.BaseBlockServiceImpl;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +28,9 @@ public class BaseBlockServiceImplTest {
 
     @Mock
     private BaseBlockRepository baseBlockRepository;
+
+    @Mock
+    private EmailTemplateService emailTemplateService;
 
     @Mock
     private ModelMapper modelMapper;
@@ -100,7 +105,7 @@ public class BaseBlockServiceImplTest {
         // save
         doAnswer(invocation -> newBaseBlockHeader).when(baseBlockRepository).save(any());
 
-        baseBlockService = new BaseBlockServiceImpl(baseBlockRepository, modelMapper);
+        baseBlockService = new BaseBlockServiceImpl(baseBlockRepository, emailTemplateService, modelMapper);
     }
 
     @Test
@@ -135,7 +140,7 @@ public class BaseBlockServiceImplTest {
     }
 
     @Test
-    public void whenDeleteBaseBlock_thenBaseBlockShouldBeDeleted() {
+    public void whenDeleteBaseBlock_thenBaseBlockShouldBeDeleted() throws BaseBlockInTemplate {
         BaseBlockDTO baseBlockDTO = new BaseBlockDTO();
         baseBlockDTO.setId(baseBlockHeaderId.toString());
         boolean result = baseBlockService.delete(baseBlockDTO);

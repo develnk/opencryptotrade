@@ -2,7 +2,7 @@ package com.opencryptotrade.templatebuilder.controller;
 
 import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
 import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
-import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
+import com.opencryptotrade.templatebuilder.exception.BaseBlockInTemplate;
 import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
 import com.opencryptotrade.templatebuilder.service.BaseBlockService;
 import org.springframework.http.MediaType;
@@ -38,7 +38,7 @@ public class BaseBlockController {
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @RequestMapping(path = "/base_block", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean delete(@Valid @RequestBody BaseBlockDTO baseBlockDTO) {
+    public boolean delete(@Valid @RequestBody BaseBlockDTO baseBlockDTO) throws BaseBlockInTemplate {
         return baseBlockService.delete(baseBlockDTO);
     }
 

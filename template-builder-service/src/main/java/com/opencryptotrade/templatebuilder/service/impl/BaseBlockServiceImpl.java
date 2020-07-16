@@ -1,13 +1,16 @@
 package com.opencryptotrade.templatebuilder.service.impl;
 
+import com.opencryptotrade.templatebuilder.exception.BaseBlockInTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Lazy;
 import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlock;
 import com.opencryptotrade.templatebuilder.enums.BaseBlockType;
 import com.opencryptotrade.templatebuilder.repository.BaseBlockRepository;
 import com.opencryptotrade.templatebuilder.service.BaseBlockService;
+import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -16,10 +19,13 @@ public class BaseBlockServiceImpl implements BaseBlockService {
 
     private final BaseBlockRepository baseBlockRepository;
 
+    private final EmailTemplateService emailTemplateService;
+
     private final ModelMapper modelMapper;
 
-    public BaseBlockServiceImpl(BaseBlockRepository baseBlockRepository, ModelMapper modelMapper) {
+    public BaseBlockServiceImpl(BaseBlockRepository baseBlockRepository, @Lazy EmailTemplateService emailTemplateService, ModelMapper modelMapper) {
         this.baseBlockRepository = baseBlockRepository;
+        this.emailTemplateService = emailTemplateService;
         this.modelMapper = modelMapper;
     }
 
@@ -42,10 +48,15 @@ public class BaseBlockServiceImpl implements BaseBlockService {
     }
 
     @Override
-    public boolean delete(BaseBlockDTO baseBlockDTO) {
+    public boolean delete(BaseBlockDTO baseBlockDTO) throws BaseBlockInTemplate {
         BaseBlock baseBlock = baseBlockRepository.findById(new ObjectId(baseBlockDTO.getId())).orElseThrow();
-        // @TODO need check to use base block in templates.
-        baseBlockRepository.delete(baseBlock);
+        boolean check = emailTemplateService.checkExistBaseBlockInTemplates(baseBlock);
+        if (check) {
+            throw new BaseBlockInTemplate("Base block found in templates");
+        }
+        else {
+            baseBlockRepository.delete(baseBlock);
+        }
         return true;
     }
 

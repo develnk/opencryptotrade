@@ -2,6 +2,7 @@ package com.opencryptotrade.templatebuilder.service;
 
 import com.opencryptotrade.templatebuilder.dto.BaseBlockDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlock;
+import com.opencryptotrade.templatebuilder.exception.BaseBlockInTemplate;
 import org.bson.types.ObjectId;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface BaseBlockService {
      *
      * @return Result of operation.
      */
-    boolean delete(BaseBlockDTO baseBlockDTO);
+    boolean delete(BaseBlockDTO baseBlockDTO) throws BaseBlockInTemplate;
 
     /**
      * Get list of base blocks by type.

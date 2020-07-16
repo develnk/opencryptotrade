@@ -1,6 +1,10 @@
 package com.opencryptotrade.templatebuilder.service.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Lazy;
+
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
+import com.opencryptotrade.templatebuilder.entity.BaseBlock;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
 import com.opencryptotrade.templatebuilder.entity.Folder;
@@ -9,10 +13,10 @@ import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
 import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
 import com.opencryptotrade.templatebuilder.service.FolderService;
 import org.bson.types.ObjectId;
-import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +30,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     final ModelMapper modelMapper;
 
-    public EmailTemplateServiceImpl(EmailTemplateRepository emailTemplateRepository, BaseBlockLinkService baseBlockLinkService, FolderService folderService, ModelMapper modelMapper) {
+    public EmailTemplateServiceImpl(EmailTemplateRepository emailTemplateRepository, @Lazy BaseBlockLinkService baseBlockLinkService, @Lazy FolderService folderService, ModelMapper modelMapper) {
         this.emailTemplateRepository = emailTemplateRepository;
         this.baseBlockLinkService = baseBlockLinkService;
         this.folderService = folderService;
@@ -98,6 +102,16 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
         template.setBaseBlockLinks(template.getBaseBlockLinks().stream().map(baseBlockLinkService::save).collect(Collectors.toList()));
         EmailTemplate savedTemplate = emailTemplateRepository.save(template);
         return modelMapper.map(savedTemplate, EmailTemplateDTO.class);
+    }
+
+    public boolean checkExistBaseBlockInTemplates(BaseBlock baseBlock) {
+        List<EmailTemplateDTO> emailTemplates = getEmailTemplates();
+        AtomicLong count = new AtomicLong(0);
+        emailTemplates.forEach(e -> {
+            count.addAndGet(e.getBaseBlockLinks().stream().filter(b -> b.getBaseBlockId().equals(baseBlock.getId().toHexString())).count());
+        });
+
+        return count.get() > 0;
     }
 
 }

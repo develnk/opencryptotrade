@@ -4,11 +4,9 @@ import com.opencryptotrade.templatebuilder.dto.BaseBlockLinkDTO;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockCopy;
 import com.opencryptotrade.templatebuilder.entity.BaseBlockLink;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
+import com.opencryptotrade.templatebuilder.entity.Folder;
 import com.opencryptotrade.templatebuilder.repository.BaseBlockLinkRepository;
-import com.opencryptotrade.templatebuilder.service.BaseBlockCopyService;
-import com.opencryptotrade.templatebuilder.service.BaseBlockLinkService;
-import com.opencryptotrade.templatebuilder.service.BaseBlockService;
-import com.opencryptotrade.templatebuilder.service.EmailTemplateService;
+import com.opencryptotrade.templatebuilder.service.*;
 import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
@@ -25,13 +23,16 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
 
     final EmailTemplateService emailTemplateService;
 
+    final FolderService folderService;
+
     final ModelMapper modelMapper;
 
-    public BaseBlockLinkServiceImpl(BaseBlockService baseBlockService, BaseBlockCopyService baseBlockCopyService, BaseBlockLinkRepository baseBlockLinkRepository, @Lazy EmailTemplateService emailTemplateService, ModelMapper modelMapper) {
+    public BaseBlockLinkServiceImpl(BaseBlockService baseBlockService, BaseBlockCopyService baseBlockCopyService, BaseBlockLinkRepository baseBlockLinkRepository, @Lazy FolderService folderService, @Lazy EmailTemplateService emailTemplateService, ModelMapper modelMapper) {
         this.baseBlockService = baseBlockService;
         this.baseBlockCopyService = baseBlockCopyService;
         this.baseBlockLinkRepository = baseBlockLinkRepository;
         this.emailTemplateService = emailTemplateService;
+        this.folderService = folderService;
         this.modelMapper = modelMapper;
     }
 
@@ -40,6 +41,10 @@ public class BaseBlockLinkServiceImpl implements BaseBlockLinkService {
         BaseBlockLink baseBlockLink = addNewBaseBlockLink(baseBlockLinkDTO);
         BaseBlockLink savedBaseBlockLink = save(baseBlockLink);
         EmailTemplate template = emailTemplateService.findById(new ObjectId(baseBlockLinkDTO.getTemplateId()));
+        Folder defaultFolder = folderService.getDefaultFolder();
+        if (template.getFolder() == null) {
+            template.setFolder(defaultFolder);
+        }
         template.addBaseBlockLink(savedBaseBlockLink);
         emailTemplateService.save(template);
         // @TODO Add custom exception.

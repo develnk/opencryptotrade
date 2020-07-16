@@ -1,6 +1,7 @@
 package com.opencryptotrade.templatebuilder.service;
 
 import com.opencryptotrade.templatebuilder.dto.EmailTemplateDTO;
+import com.opencryptotrade.templatebuilder.entity.BaseBlock;
 import com.opencryptotrade.templatebuilder.entity.EmailTemplate;
 import org.bson.types.ObjectId;
 
@@ -19,5 +20,7 @@ public interface EmailTemplateService {
     void save(EmailTemplate template);
 
     EmailTemplate findById(ObjectId id);
+
+    boolean checkExistBaseBlockInTemplates(BaseBlock baseBlock);
 
 }
