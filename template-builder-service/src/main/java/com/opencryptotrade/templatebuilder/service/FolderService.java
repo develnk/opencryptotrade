@@ -47,4 +47,20 @@ public interface FolderService {
      */
     Folder findFolderById(ObjectId id);
 
+    /**
+     * Find folder by name
+     *
+     * @param name
+     *   Folder name.
+     * @return Found folder.
+     */
+    Folder findFolderByName(String name);
+
+    /**
+     * Return default folder if necessary will be create.
+     *
+     * @return Default folder.
+     */
+    Folder getDefaultFolder();
+
 }

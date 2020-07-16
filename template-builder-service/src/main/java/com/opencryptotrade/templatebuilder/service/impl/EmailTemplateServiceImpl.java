@@ -59,8 +59,13 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
     @Override
     public List<EmailTemplateDTO> getEmailTemplates() {
-        List<EmailTemplateDTO> emailTemplates = new LinkedList<>();
+        List<EmailTemplateDTO> emailTemplates = new ArrayList<>();
+        Folder defaultFolder = folderService.getDefaultFolder();
         emailTemplateRepository.findAll().forEach(e -> {
+            if (e.getFolder() == null) {
+                e.setFolder(defaultFolder);
+            }
+
             EmailTemplateDTO template = modelMapper.map(e, EmailTemplateDTO.class);
             Collections.sort(template.getBaseBlockLinks());
             emailTemplates.add(template);

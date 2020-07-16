@@ -9,9 +9,8 @@ import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class FolderServiceImpl implements FolderService {
@@ -34,7 +33,9 @@ public class FolderServiceImpl implements FolderService {
             throw new FolderAlreadyExist("Folder already exist");
         }
 
-        return saveNewFolder(folderDTO.getName());
+        Folder savedFolder = saveNewFolder(folderDTO.getName());
+        return modelMapper.map(savedFolder, FolderDTO.class);
+
     }
 
     @Override
@@ -59,20 +60,43 @@ public class FolderServiceImpl implements FolderService {
         folderRepository.findAll().forEach(folder -> {
             folders.add(modelMapper.map(folder, FolderDTO.class));
         });
+        folders.sort(Comparator.comparing(FolderDTO::getName));
+        folders.stream().filter(f -> f.getName().equals("Default")).findFirst().ifPresentOrElse(f -> {
+            folders.remove(f);
+            folders.add(0, f);
+        }, () -> {
+            // Create default folder and add to first position in ArrayList.
+            Folder newFolder = this.saveNewFolder("Default");
+            FolderDTO newFolderDto = modelMapper.map(newFolder, FolderDTO.class);
+            folders.add(0, newFolderDto);
+        });
         return folders;
     }
 
     @Override
     public Folder findFolderById(ObjectId id) {
         return folderRepository.findById(id).orElseGet(() -> folderRepository.findByName("Default"));
-
     }
 
-    private FolderDTO saveNewFolder(String name) {
+    @Override
+    public Folder findFolderByName(String name) {
+        return folderRepository.findByName(name);
+    }
+
+    @Override
+    public Folder getDefaultFolder() {
+        AtomicReference<Folder> defaultFolder = new AtomicReference<>();
+        Optional.of(findFolderByName("Default")).ifPresentOrElse(
+            defaultFolder::set,
+            () -> defaultFolder.set(this.saveNewFolder("Default"))
+        );
+        return defaultFolder.get();
+    }
+
+    private Folder saveNewFolder(String name) {
         Folder newFolder = new Folder();
         newFolder.setName(name);
-        Folder savedFolder = folderRepository.save(newFolder);
-        return modelMapper.map(savedFolder, FolderDTO.class);
+        return folderRepository.save(newFolder);
     }
 
 }
