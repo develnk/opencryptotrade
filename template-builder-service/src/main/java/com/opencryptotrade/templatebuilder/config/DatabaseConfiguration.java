@@ -28,7 +28,7 @@ public class DatabaseConfiguration extends AbstractMongoClientConfiguration {
     private String connectionString;
 
     @Override
-    @Bean
+    @Bean(name = "mongoClient")
     public MongoClient mongoClient() {
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
