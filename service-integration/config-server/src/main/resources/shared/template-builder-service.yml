@@ -11,7 +11,7 @@ spring:
   data:
     mongodb:
       database: templatebuilder
-      uri: mongodb://test:test@localhost:27017/templatebuilder
+      uri: mongodb://root:root@localhost:27017/templatebuilder
 
 server:
   servlet:
