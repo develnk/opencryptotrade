@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.opencryptotrade</groupId>
+    <artifactId>exchange</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <name>Open Crypto Trade Parent</name>
+    <description>The open source crypto trade system</description>
+
+
+    <properties>
+        <java.version>15</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
+        <jaxb2-maven-plugin.version>2.3.1</jaxb2-maven-plugin.version>
+        <minify-maven-plugin.version>1.7.6</minify-maven-plugin.version>
+        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <javers-core.version>5.14.0</javers-core.version>
+        <spring-boot.version>2.4.1</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-cloud-starter-netflix-eureka-server.version>2.2.6.RELEASE</spring-cloud-starter-netflix-eureka-server.version>
+        <spring-openfeign.version>2.2.6.RELEASE</spring-openfeign.version>
+        <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
+        <commons-io.version>2.8.0</commons-io.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <mockito-core.vesion>3.6.28</mockito-core.vesion>
+        <mockito-junit-jupiter.version>3.6.28</mockito-junit-jupiter.version>
+        <junit-jupiter.version>5.7.0</junit-jupiter.version>
+        <junit-jupiter-api.version>5.7.0</junit-jupiter-api.version>
+        <junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
+        <junit-jupiter-params.version>5.7.0</junit-jupiter-params.version>
+        <apache-commons-dbcp2.version>2.7.0</apache-commons-dbcp2.version>
+        <modelmapper.version>2.3.9</modelmapper.version>
+    </properties>
+
+    <!--
+    This section provides centralized configuration for dependency libraries (Maven best practices).
+    These entries DO NOT pull the actual libraries into the project but provide the declarations of versions, scopes,
+    exclusions, etc. Each module within the parent project must include the libraries that are only relevant to the
+    module while only specifying the groupId and artifactId for each included dependency.  That ensures consistency
+    in dependency versions and scope definitions across multiple modules.
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot -->
+
+            <!-- When creating Spring Boot applications, one of the options is to inherit the project from the Spring Boot parent -->
+            <!-- since we are NOT doing that in favor of our own Parent, we must import Spring Boot's dependency management -->
+            <!-- NOTE: Spring Boot provides many commonly used dependency definitions, so we only need to add a few -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${spring-openfeign.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-war-plugin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-dbcp2</artifactId>
+                <version>${apache-commons-dbcp2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${modelmapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.javers</groupId>
+                <artifactId>javers-core</artifactId>
+                <version>${javers-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter-api.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit-jupiter-params.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito-core.vesion}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito-junit-jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>service-integration</module>
+        <module>account</module>
+        <module>smtp-service</module>
+        <module>template-builder-service</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <release>15</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

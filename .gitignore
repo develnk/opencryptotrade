@@ -1,8 +1,8 @@
-.gradle
-.gradle/*
+### IntelliJ IDEA ###
 .idea
-/build/
-!gradle/wrapper/gradle-wrapper.jar
+*.iws
+*.iml
+*.ipr
 
 ### STS ###
 .apt_generated
@@ -11,18 +11,76 @@
 .project
 .settings
 .springBeans
-.sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-/out/
+### Eclipse ###
+*.pydevproject
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# TeXlipse plugin
+.texlipse
+
+
+### Gradle ###
+.gradle
+build/
+
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
+.mvn/
+mvnw
+mvnw.cmd
+
+### Project-specific ###
+application-default.yml
+web/logs/*
+logs
+*-logs
+*-logs.*.gz
+
+
+.DS_Store
+
+### Docker ###
+*/.env
+
+node/
+node_modules/
+**/package-lock.json
+.idea/
