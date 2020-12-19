@@ -43,6 +43,7 @@ dependencies {
     implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
     implementation('org.springframework.cloud:spring-cloud-starter-bus-amqp')
     implementation('org.modelmapper:modelmapper:2.3.8')
+    compile('org.apache.commons:commons-dbcp2:2.7.0')
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     compile('org.apache.logging.log4j:log4j-core')
     compile('org.apache.logging.log4j:log4j-api')

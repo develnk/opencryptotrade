@@ -11,7 +11,7 @@ import org.springframework.core.env.MutablePropertySources;
 @Configuration
 public class ReloadablePropertySourceConfig {
 
-    private ConfigurableEnvironment env;
+    private final ConfigurableEnvironment env;
 
     public ReloadablePropertySourceConfig(@Autowired ConfigurableEnvironment env) {
         this.env = env;

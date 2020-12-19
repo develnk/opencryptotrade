@@ -4,7 +4,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -21,13 +20,15 @@ public class SmtpConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(SmtpConfiguration.class);
 
-    @Autowired
-    private ConfigurableEnvironment env;
+    private final ConfigurableEnvironment env;
+
+    public SmtpConfiguration(ConfigurableEnvironment env) {
+        this.env = env;
+    }
 
     @Bean
     @ConditionalOnProperty(name = "spring.config.location")
-    public PropertiesConfiguration propertiesConfiguration(
-            @Value("${spring.config.location}") String path) throws Exception {
+    public PropertiesConfiguration propertiesConfiguration(@Value("${spring.config.location}") String path) throws Exception {
         String filePath = new File(path.substring("file:".length())).getCanonicalPath();
         PropertiesConfiguration configuration = new PropertiesConfiguration(new File(filePath));
         FileChangedReloadingStrategy strategy = new FileChangedReloadingStrategy();
