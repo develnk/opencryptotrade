@@ -155,6 +155,7 @@
         <module>account</module>
         <module>smtp-service</module>
         <module>template-builder-service</module>
+        <module>commons</module>
     </modules>
 
     <build>

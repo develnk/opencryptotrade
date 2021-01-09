@@ -7,9 +7,8 @@ import com.opencryptotrade.accountservice.dto.User;
 import com.opencryptotrade.accountservice.dto.UserAuth;
 import com.opencryptotrade.accountservice.repository.AccountRepository;
 import com.opencryptotrade.accountservice.service.AccountService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -19,15 +18,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private final AuthServiceClient authClient;
 
-	@Autowired
-	private AuthServiceClient authClient;
-
-	@Autowired
-	private AccountRepository repository;
+	private final AccountRepository repository;
 
 	/**
 	 * {@inheritDoc}

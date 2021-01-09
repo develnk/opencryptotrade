@@ -1,11 +1,8 @@
-package com.opencryptotrade.authservice.repository;
+package com.opencryptotrade.commons.user.repository;
 
-import com.opencryptotrade.authservice.domain.User;
+import com.opencryptotrade.commons.user.domain.User;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-
-@Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByUsername(String username);

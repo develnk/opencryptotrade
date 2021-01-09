@@ -1,7 +1,6 @@
 package com.opencryptotrade.authservice.config;
 
 import com.opencryptotrade.authservice.service.impl.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,28 +22,29 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableAuthorizationServer
+@RequiredArgsConstructor
 public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60;
     private static final int REFRESH_TOKEN_VALIDITY_SECONDS = 6 * 60 * 60;
 
-    @Autowired
     @Qualifier("authenticationManagerBean")
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    private final TokenStore tokenStore;
+
+    private final Environment env;
 
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Autowired
-    private TokenStore tokenStore;
 
     @Bean
     public TokenEnhancer tokenEnhancer() {
@@ -68,9 +68,6 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
             }
         };
     }
-
-    @Autowired
-    private Environment env;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {

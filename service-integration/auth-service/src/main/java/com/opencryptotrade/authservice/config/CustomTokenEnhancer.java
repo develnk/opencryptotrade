@@ -1,6 +1,6 @@
 package com.opencryptotrade.authservice.config;
 
-import com.opencryptotrade.authservice.domain.User;
+import com.opencryptotrade.commons.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

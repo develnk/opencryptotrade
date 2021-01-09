@@ -1,4 +1,4 @@
-package com.opencryptotrade.authservice.dto;
+package com.opencryptotrade.commons.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,15 +7,18 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public class UserAccount implements Serializable {
+public class UserDto implements Serializable {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 1L;
 
     @Setter @Getter
     private long id;
 
     @Setter @Getter
     private String login;
+
+    @Setter @Getter
+    private String password;
 
     @Setter @Getter
     private String email;
@@ -29,4 +32,11 @@ public class UserAccount implements Serializable {
     @Setter @Getter
     private OffsetDateTime updated;
 
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                '}';
+    }
 }

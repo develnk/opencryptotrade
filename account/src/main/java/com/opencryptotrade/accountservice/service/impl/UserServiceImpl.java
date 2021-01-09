@@ -1,18 +1,17 @@
-package com.opencryptotrade.authservice.service.impl;
+package com.opencryptotrade.accountservice.service.impl;
 
-import com.opencryptotrade.authservice.domain.Role;
-import com.opencryptotrade.authservice.domain.RoleType;
-import com.opencryptotrade.authservice.domain.User;
-import com.opencryptotrade.authservice.dto.UserAccount;
-import com.opencryptotrade.authservice.dto.UserDto;
-import com.opencryptotrade.authservice.repository.RoleRepository;
-import com.opencryptotrade.authservice.repository.UserRepository;
-import com.opencryptotrade.authservice.service.UserService;
+import com.opencryptotrade.commons.user.domain.Role;
+import com.opencryptotrade.commons.user.domain.RoleType;
+import com.opencryptotrade.commons.user.domain.User;
+import com.opencryptotrade.commons.user.dto.UserAccount;
+import com.opencryptotrade.commons.user.dto.UserDto;
+import com.opencryptotrade.commons.user.repository.RoleRepository;
+import com.opencryptotrade.commons.user.repository.UserRepository;
+import com.opencryptotrade.accountservice.service.UserService;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.javers.core.diff.Diff;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,9 +28,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserDetailsService, UserService {
-
-	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

@@ -1,6 +1,6 @@
-package com.opencryptotrade.authservice.repository;
+package com.opencryptotrade.commons.user.repository;
 
-import com.opencryptotrade.authservice.domain.Role;
+import com.opencryptotrade.commons.user.domain.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

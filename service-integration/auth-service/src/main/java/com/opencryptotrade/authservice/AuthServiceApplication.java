@@ -2,7 +2,9 @@ package com.opencryptotrade.authservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
@@ -10,6 +12,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableResourceServer
 @EnableDiscoveryClient
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableJpaRepositories({
+        "com.opencryptotrade.commons.user.repository"
+})
+@EntityScan({
+        "com.opencryptotrade.commons.user.domain"
+})
 public class AuthServiceApplication {
 
     public static void main(String[] args) {

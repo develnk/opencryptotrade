@@ -1,8 +1,8 @@
-package com.opencryptotrade.authservice.domain;
+package com.opencryptotrade.commons.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.opencryptotrade.authservice.dto.UserAccount;
-import com.opencryptotrade.authservice.dto.UserDto;
+import com.opencryptotrade.commons.user.dto.UserAccount;
+import com.opencryptotrade.commons.user.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Users")
+@Setter
+@Getter
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -25,33 +27,26 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
-	@Setter @Getter
 	@JsonIgnore
 	private Long id;
 
 	@Column(name = "login")
-	@Setter @Getter
 	private String username;
 
 	@Column(name = "password")
-	@Setter @Getter
 	private String password;
 
 	@Column(name = "email")
-	@Setter @Getter
 	private String email;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "User_ROLES", joinColumns = @JoinColumn(name ="user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
-	@Setter @Getter
 	private Set<Role> roles;
 
 	@Column(name = "created", columnDefinition= "TIMESTAMP WITH TIME ZONE")
-	@Setter @Getter
 	private OffsetDateTime created;
 
 	@Column(name = "updated", columnDefinition= "TIMESTAMP WITH TIME ZONE")
-	@Setter @Getter
 	private OffsetDateTime updated;
 
 	@Override
