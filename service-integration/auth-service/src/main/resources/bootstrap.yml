@@ -3,7 +3,7 @@ spring:
     name: auth-service
   cloud:
     config:
-      uri: http://127.0.0.1:8890
+      uri: http://config:8890
       fail-fast: true
       password: root
       username: user
@@ -12,3 +12,5 @@ spring:
       hibernate:
         jdbc:
           time_zone: UTC
+  main:
+    allow-bean-definition-overriding: true

@@ -1,24 +1,24 @@
-package com.opencryptotrade.accountservice.service.impl;
+package com.opencryptotrade.authservice.service.impl;
 
+import com.opencryptotrade.authservice.service.UserService;
 import com.opencryptotrade.commons.user.domain.Role;
 import com.opencryptotrade.commons.user.domain.RoleType;
 import com.opencryptotrade.commons.user.domain.User;
-import com.opencryptotrade.commons.user.dto.UserAccount;
+import com.opencryptotrade.commons.user.dto.AccountDto;
 import com.opencryptotrade.commons.user.dto.UserDto;
 import com.opencryptotrade.commons.user.repository.RoleRepository;
 import com.opencryptotrade.commons.user.repository.UserRepository;
-import com.opencryptotrade.accountservice.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.javers.core.Javers;
 import org.javers.core.JaversBuilder;
 import org.javers.core.diff.Diff;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -29,19 +29,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
 
-	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	private final PasswordEncoder passwordEncoder;
 
 	private final UserRepository userRepository;
 
 	private final RoleRepository roleRepository;
-
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
-		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-	}
 
 	@Override
 	public UserDto create(UserDto userDto) {
@@ -95,8 +90,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public List<UserAccount> findAll() {
-		List<UserAccount> users = new ArrayList<>();
+	public List<AccountDto> findAll() {
+		List<AccountDto> users = new ArrayList<>();
 		userRepository.findAll().iterator().forEachRemaining(user -> users.add(user.toUserAccount()));
 		return users;
 	}

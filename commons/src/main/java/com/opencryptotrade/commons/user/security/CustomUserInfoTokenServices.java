@@ -1,4 +1,4 @@
-package com.opencryptotrade.accountservice.service.security;
+package com.opencryptotrade.commons.user.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

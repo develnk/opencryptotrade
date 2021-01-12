@@ -1,7 +1,7 @@
 package com.opencryptotrade.commons.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.opencryptotrade.commons.user.dto.UserAccount;
+import com.opencryptotrade.commons.user.dto.AccountDto;
 import com.opencryptotrade.commons.user.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @Getter
 public class User implements UserDetails {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -85,15 +87,15 @@ public class User implements UserDetails {
 		return userDto;
 	}
 
-	public UserAccount toUserAccount() {
-		UserAccount userAccount = new UserAccount();
-		userAccount.setId(this.getId());
-		userAccount.setLogin(this.getUsername());
-		userAccount.setEmail(this.getEmail());
-		userAccount.setCreated(this.getCreated());
-		userAccount.setUpdated(this.getUpdated());
-		userAccount.setRole(this.roles.stream().map(role -> role.getName().toString()).collect(Collectors.toList()));
-		return userAccount;
+	public AccountDto toUserAccount() {
+		AccountDto accountDto = new AccountDto();
+		accountDto.setId(this.getId());
+		accountDto.setLogin(this.getUsername());
+		accountDto.setEmail(this.getEmail());
+		accountDto.setCreated(this.getCreated());
+		accountDto.setUpdated(this.getUpdated());
+		accountDto.setRole(this.roles.stream().map(role -> role.getName().toString()).collect(Collectors.toList()));
+		return accountDto;
 	}
 
 	public UserDto toShortUserDto() {

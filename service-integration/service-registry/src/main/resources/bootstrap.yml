@@ -3,25 +3,14 @@ spring:
     name: service-registry
   cloud:
     config:
-      uri: http://localhost:8890
+      uri: http://config:8890
       fail-fast: true
       password: root
       username: user
 
-management:
-  trace:
-    http:
-      enabled: true
-
 eureka:
   instance:
-    hostname: localhost
     prefer-ip-address: true
   client:
     registerWithEureka: false
     fetchRegistry: false
-    server:
-      waitTimeInMsWhenSyncEmpty: 0
-    serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-    g-zip-content: true

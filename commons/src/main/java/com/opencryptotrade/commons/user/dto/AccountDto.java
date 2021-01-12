@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public class UserAccount implements Serializable {
+public class AccountDto implements Serializable {
 
     private static final long serialVersionUID = 2L;
 

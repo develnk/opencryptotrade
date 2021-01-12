@@ -1,15 +1,14 @@
 package com.opencryptotrade.authservice.config;
 
-import com.opencryptotrade.authservice.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -27,24 +26,17 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableAuthorizationServer
 @RequiredArgsConstructor
-public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
-
-    private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60;
-    private static final int REFRESH_TOKEN_VALIDITY_SECONDS = 6 * 60 * 60;
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Qualifier("authenticationManagerBean")
     private final AuthenticationManager authenticationManager;
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     private final TokenStore tokenStore;
 
-    private final Environment env;
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public TokenEnhancer tokenEnhancer() {
@@ -74,33 +66,9 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         // TODO persist clients details
         configurer.inMemory()
                 .withClient("browser")
-                .secret(encoder().encode("xxx"))
+                .secret(passwordEncoder.encode("xxx"))
                 .authorizedGrantTypes("refresh_token", "password")
-                .scopes("ui")
-                .and()
-                .withClient("account-service")
-                .secret(encoder().encode("xxx"))
-                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
-                .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
-                .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
-                .scopes("server")
-                .and()
-                .withClient("smtp-service")
-                .secret(encoder().encode("xxx"))
-                .authorizedGrantTypes("client_credentials", "refresh_token", "password")
-                .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
-                .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
-                .scopes("server")
-                .and()
-                .withClient("statistics-service")
-                .secret(env.getProperty("STATISTICS_SERVICE_PASSWORD"))
-                .authorizedGrantTypes("client_credentials", "refresh_token")
-                .scopes("server")
-                .and()
-                .withClient("notification-service")
-                .secret(env.getProperty("NOTIFICATION_SERVICE_PASSWORD"))
-                .authorizedGrantTypes("client_credentials", "refresh_token")
-                .scopes("server");
+                .scopes("ui");
     }
 
     @Override
@@ -116,7 +84,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         oauthServer
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()")
-                .passwordEncoder(encoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean

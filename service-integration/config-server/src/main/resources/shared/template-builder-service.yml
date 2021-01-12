@@ -1,9 +1,9 @@
 security:
   oauth2:
     client:
-      clientId: smtp-service
+      clientId: template-builder-service
       clientSecret: xxx
-      accessTokenUri: http://localhost:5000/uaa/oauth/token
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
       grant-type: client_credentials
       scope: server
 

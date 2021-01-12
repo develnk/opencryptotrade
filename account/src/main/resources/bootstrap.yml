@@ -5,8 +5,13 @@ spring:
     name: account-service
   cloud:
     config:
-      uri: http://127.0.0.1:8890
+      uri: http://config:8890
       fail-fast: true
       password: root
       username: user
 
+jpa:
+  properties:
+    hibernate:
+      jdbc:
+        time_zone: UTC

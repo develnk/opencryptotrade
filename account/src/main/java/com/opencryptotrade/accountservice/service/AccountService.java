@@ -1,8 +1,8 @@
 package com.opencryptotrade.accountservice.service;
 
 import com.opencryptotrade.accountservice.domain.Account;
-import com.opencryptotrade.accountservice.dto.AccountUser;
-import com.opencryptotrade.accountservice.dto.User;
+import com.opencryptotrade.accountservice.dto.AccountDto;
+import com.opencryptotrade.commons.user.dto.UserDto;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface AccountService {
 	 * @param user
 	 * @return created account
 	 */
-	Account create(User user);
+	Account create(UserDto user);
 
 	/**
 	 * Validates and applies incoming account updates
@@ -33,9 +33,9 @@ public interface AccountService {
 	 * @param name
 	 * @param update
 	 */
-	void saveChanges(String name, Account update);
+	void saveChanges(String name, AccountDto update);
 
-	List<AccountUser> allAccounts();
+	List<AccountDto> allAccounts();
 
-	AccountUser updateAccountUser(AccountUser accountUser);
+	AccountDto updateAccount(AccountDto accountDto);
 }

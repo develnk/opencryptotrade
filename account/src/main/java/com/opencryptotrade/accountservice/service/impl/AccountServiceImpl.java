@@ -1,12 +1,12 @@
 package com.opencryptotrade.accountservice.service.impl;
 
-import com.opencryptotrade.accountservice.client.AuthServiceClient;
 import com.opencryptotrade.accountservice.domain.Account;
-import com.opencryptotrade.accountservice.dto.AccountUser;
-import com.opencryptotrade.accountservice.dto.User;
-import com.opencryptotrade.accountservice.dto.UserAuth;
+import com.opencryptotrade.accountservice.dto.AccountDto;
 import com.opencryptotrade.accountservice.repository.AccountRepository;
 import com.opencryptotrade.accountservice.service.AccountService;
+import com.opencryptotrade.authservice.service.impl.UserServiceImpl;
+import com.opencryptotrade.commons.user.domain.User;
+import com.opencryptotrade.commons.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-	private final AuthServiceClient authClient;
+	private final UserServiceImpl authClient;
 
-	private final AccountRepository repository;
+	private final AccountRepository accountRepository;
 
 	/**
 	 * {@inheritDoc}
@@ -32,25 +32,25 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account findByName(String login) {
 		Assert.hasLength(login);
-		return repository.findByLogin(login);
+		return accountRepository.findByLogin(login);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Account create(User user) {
-		Account existing = repository.findByLogin(user.getLogin());
+	public Account create(UserDto user) {
+		Account existing = accountRepository.findByLogin(user.getLogin());
 		Assert.isNull(existing, "account already exists: " + user.getLogin());
 
-		UserAuth userAuth = authClient.createUser(user);
+		UserDto userAuth = authClient.create(user);
 		Account account = new Account();
 		account.setLogin(userAuth.getLogin());
 		account.setFirstName(user.getFirstName());
 		account.setLastName(user.getLastName());
 		account.setLastSeen(OffsetDateTime.now());
 		account.setNote(user.getNote());
-		repository.save(account);
+		accountRepository.save(account);
 
 		log.info("New account has been created: " + account.getLogin());
 		return account;
@@ -60,37 +60,37 @@ public class AccountServiceImpl implements AccountService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void saveChanges(String login, Account update) {
-		Account account = repository.findByLogin(login);
+	public void saveChanges(String login, AccountDto accountDto) {
+		Account account = accountRepository.findByLogin(login);
 		Assert.notNull(account, "Can't find account with login: " + login);
 
-		account.setNote(update.getNote());
+		account.setNote(accountDto.getNote());
 		account.setLastSeen(OffsetDateTime.now());
-		repository.save(account);
+		accountRepository.save(account);
 
 		log.debug("Account {} changes has been saved", login);
 	}
 
 	@Override
-	public List<AccountUser> allAccounts() {
-		List<Account> accountList = (List<Account>) repository.findAll();
-		List<AccountUser> accounts = authClient.getUsers().stream().map(user -> {
+	public List<AccountDto> allAccounts() {
+		List<Account> accountList = (List<Account>) accountRepository.findAll();
+		List<AccountDto> accounts = authClient.findAll().stream().map(user -> {
 			Account account = accountList.stream().filter(account1 -> user.getLogin().equals(account1.getLogin())).findFirst().orElse(null);
 			if (account == null) {
 				return null;
 			}
-			AccountUser accountUser = new AccountUser();
-			accountUser.setId(account.getId());
-			accountUser.setEmail(user.getEmail());
-			accountUser.setCreated(user.getCreated());
-			accountUser.setUpdated(user.getUpdated());
-			accountUser.setLogin(user.getLogin());
-			accountUser.setRole(user.getRole());
-			accountUser.setFirstName(account.getFirstName());
-			accountUser.setLastName(account.getLastName());
-			accountUser.setNote(account.getNote());
-			accountUser.setLastSeen(account.getLastSeen());
-			return accountUser;
+			AccountDto accountDto = new AccountDto();
+			accountDto.setId(account.getId());
+			accountDto.setEmail(user.getEmail());
+			accountDto.setCreated(user.getCreated());
+			accountDto.setUpdated(user.getUpdated());
+			accountDto.setLogin(user.getLogin());
+			accountDto.setRole(user.getRole());
+			accountDto.setFirstName(account.getFirstName());
+			accountDto.setLastName(account.getLastName());
+			accountDto.setNote(account.getNote());
+			accountDto.setLastSeen(account.getLastSeen());
+			return accountDto;
 		}).collect(Collectors.toList());
 
 		accounts.removeAll(Collections.singleton(null));
@@ -98,26 +98,26 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public AccountUser updateAccountUser(AccountUser accountUser) {
-		Account account = repository.findAccountById(accountUser.getId());
-		Assert.notNull(account, "Can't find account with account id: " + accountUser.getId());
+	public AccountDto updateAccount(AccountDto accountDto) {
+		OffsetDateTime dateTime = OffsetDateTime.now();
+		Account account = accountRepository.findAccountById(accountDto.getId());
+		Assert.notNull(account, "Can't find account with account id: " + accountDto.getId());
 
-		account.setFirstName(accountUser.getFirstName());
-		account.setLastName(accountUser.getLastName());
+		account.setFirstName(accountDto.getFirstName());
+		account.setLastName(accountDto.getLastName());
 //		account.setLogin(accountUser.getLogin());
-		account.setNote(accountUser.getNote());
-		account.setLastSeen(OffsetDateTime.now());
-		repository.save(account);
+		account.setNote(accountDto.getNote());
+		account.setLastSeen(dateTime);
+		accountRepository.save(account);
+		accountDto.setUpdated(dateTime);
 
-		// Update account user object.
-		accountUser.setLastSeen(account.getLastSeen());
-
-		User user = new User();
-		user.setLogin(accountUser.getLogin());
-		user.setEmail(accountUser.getEmail());
-		user.setRole(accountUser.getRole());
-		UserAuth updatedUserAuth = authClient.updateUser(user);
-		accountUser.setUpdated(updatedUserAuth.getUpdated());
-		return accountUser;
+		UserDto user = new UserDto();
+		user.setPassword(accountDto.getPassword());
+		user.setLogin(accountDto.getLogin());
+		user.setNote(account.getNote());
+		user.setEmail(accountDto.getEmail());
+		user.setRole(accountDto.getRole());
+		authClient.update(user);
+		return accountDto;
 	}
 }

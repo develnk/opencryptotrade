@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
 public class SmtpController {
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";

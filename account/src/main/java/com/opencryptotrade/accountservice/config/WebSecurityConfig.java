@@ -1,15 +1,16 @@
 package com.opencryptotrade.accountservice.config;
 
-import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
+import com.opencryptotrade.authservice.config.Encoders;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -17,7 +18,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Collections;
 
 @Configuration
-@EnableWebSecurity
+@Order(SecurityProperties.BASIC_AUTH_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -26,6 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .csrf().disable();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return Encoders.passwordEncoder();
     }
 
     @Bean
