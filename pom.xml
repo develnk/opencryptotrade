@@ -13,7 +13,6 @@
     <name>Open Crypto Trade Parent</name>
     <description>The open source crypto trade system</description>
 
-
     <properties>
         <java.version>15</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,29 +20,20 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
-        <jaxb2-maven-plugin.version>2.3.1</jaxb2-maven-plugin.version>
-        <minify-maven-plugin.version>1.7.6</minify-maven-plugin.version>
-        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
-        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-        <javers-core.version>5.14.0</javers-core.version>
-        <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
-        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
-        <spring-cloud-starter-netflix-eureka-server.version>2.2.6.RELEASE</spring-cloud-starter-netflix-eureka-server.version>
-        <spring-openfeign.version>2.2.6.RELEASE</spring-openfeign.version>
+        <javers-core.version>6.2.4</javers-core.version>
+        <spring-boot.version>2.5.4</spring-boot.version>
+        <spring-cloud.version>2020.0.3</spring-cloud.version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
-        <commons-io.version>2.8.0</commons-io.version>
+        <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <mockito-core.vesion>3.6.28</mockito-core.vesion>
-        <mockito-junit-jupiter.version>3.6.28</mockito-junit-jupiter.version>
+        <mockito-core.vesion>3.12.4</mockito-core.vesion>
+        <mockito-junit-jupiter.version>3.12.4</mockito-junit-jupiter.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
-        <junit-jupiter-api.version>5.7.0</junit-jupiter-api.version>
-        <junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
-        <junit-jupiter-params.version>5.7.0</junit-jupiter-params.version>
-        <apache-commons-dbcp2.version>2.7.0</apache-commons-dbcp2.version>
-        <modelmapper.version>2.3.9</modelmapper.version>
+        <junit-jupiter-api.version>5.7.2</junit-jupiter-api.version>
+        <junit-jupiter-engine.version>5.7.2</junit-jupiter-engine.version>
+        <junit-jupiter-params.version>5.7.2</junit-jupiter-params.version>
+        <apache-commons-dbcp2.version>2.9.0</apache-commons-dbcp2.version>
+        <modelmapper.version>2.4.4</modelmapper.version>
     </properties>
 
     <!--
@@ -71,13 +61,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>${spring-openfeign.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -161,6 +144,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
@@ -174,5 +161,43 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>

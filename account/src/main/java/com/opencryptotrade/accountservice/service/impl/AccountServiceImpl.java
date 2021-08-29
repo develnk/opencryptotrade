@@ -5,7 +5,6 @@ import com.opencryptotrade.accountservice.dto.AccountDto;
 import com.opencryptotrade.accountservice.repository.AccountRepository;
 import com.opencryptotrade.accountservice.service.AccountService;
 import com.opencryptotrade.authservice.service.impl.UserServiceImpl;
-import com.opencryptotrade.commons.user.domain.User;
 import com.opencryptotrade.commons.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
