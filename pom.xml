@@ -13,15 +13,25 @@
 
     <groupId>com.opencryptotrade</groupId>
     <artifactId>exchange</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <packaging>pom</packaging>
 
     <name>Open Crypto Trade Parent</name>
     <description>The open source crypto trade system</description>
 
+    <modules>
+        <module>commons</module>
+        <module>auth-service</module>
+        <module>account-service</module>
+        <module>smtp-service</module>
+        <module>template-builder-service</module>
+    </modules>
+
     <properties>
-        <java.version>15</java.version>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
@@ -36,6 +46,11 @@
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
+        <image>registry.asofe.org/root/open-crypto-trade/${project.artifactId}:${project.version}</image>
+        <docker-skip>true</docker-skip>
+        <docker-goal>build</docker-goal>
+        <docker-main-class></docker-main-class>
         <mockito-core.vesion>3.12.4</mockito-core.vesion>
         <mockito-junit-jupiter.version>3.12.4</mockito-junit-jupiter.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
@@ -111,6 +126,11 @@
                 <version>${javers-core.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit-jupiter.version}</version>
@@ -149,14 +169,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <modules>
-        <module>commons</module>
-        <module>auth-service</module>
-        <module>account-service</module>
-        <module>smtp-service</module>
-        <module>template-builder-service</module>
-    </modules>
-
     <build>
         <plugins>
             <plugin>
@@ -166,6 +178,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -173,6 +186,45 @@
                 <artifactId>jib-maven-plugin</artifactId>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- jib-maven-plugin is used to build and publish Docker images -->
+                <!-- see individual pom.xml within this project for configuration -->
+                <!-- to run local build add `docker-local` profile to default maven build -->
+                <!-- to build and publish images, add `docker` profile to default maven build -->
+                <!-- Ex.: `mvn clean install -P docker` -->
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>${docker-goal}</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <container>
+                            <mainClass>${docker-main-class}</mainClass>
+                            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        </container>
+                        <from>
+                            <image>gcr.io/distroless/java:11</image>
+                        </from>
+                        <to>
+                            <image>${image}</image>
+                            <auth>
+                                <username>root</username>
+                                <password>eoLj3PgTBf2ow3wc</password>
+                            </auth>
+                        </to>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
@@ -212,5 +264,26 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>docker-local</id>
+            <properties>
+                <docker-goal>dockerBuild</docker-goal>
+                <docker-image>${image}</docker-image>
+            </properties>
+        </profile>
+        <profile>
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.GIT_BRANCH</name>
+                </property>
+            </activation>
+            <properties>
+                <docker-image-tag>${env.GIT_BRANCH}</docker-image-tag>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
