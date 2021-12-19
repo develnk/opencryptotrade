@@ -22,9 +22,6 @@ public class SmtpController {
     Mail mail;
 
     @Autowired
-    private MailConfig mailConfig;
-
-    @Autowired
     private TriggerService triggerService;
 
     @PreAuthorize("#oauth2.hasScope('ui')")
@@ -36,15 +33,15 @@ public class SmtpController {
     @PreAuthorize("#oauth2.hasScope('ui')")
     @Secured({ROLE_ADMIN})
     @RequestMapping(path = "/", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean updateSettings(@RequestBody Smtp data) {
-        return mailConfig.updateConfiguration(data);
+    public Boolean updateSettings(@RequestBody Smtp data) {
+        return null;
     }
 
     @PreAuthorize("#oauth2.hasScope('ui')")
     @Secured({ROLE_ADMIN})
     @RequestMapping(path = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Smtp getSettings() {
-        return mailConfig.getSettings();
+        return null;
     }
 
     @PreAuthorize("#oauth2.hasScope('server')")

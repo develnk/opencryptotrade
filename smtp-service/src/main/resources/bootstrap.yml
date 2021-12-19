@@ -1,26 +1,18 @@
 spring:
   main:
     allow-bean-definition-overriding: true
-    lazy-initialization: false
-
-  config:
-    location: file:./smtp-service/smtp.properties
-
   application:
     name: smtp-service
-
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: user
-    password: password
-
   cloud:
-    config:
-      uri: http://127.0.0.1:8890
-      fail-fast: true
-      password: root
-      username: user
+    kubernetes:
+      config:
+        namespace: development
+        name: smtp-service
+        sources:
+          - name: smtp-service
 
-
-debug: false
+jpa:
+  properties:
+    hibernate:
+      jdbc:
+        time_zone: UTC

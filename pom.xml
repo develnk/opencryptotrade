@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.5</version>
+        <version>2.6.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -22,27 +22,25 @@
 
     <modules>
         <module>commons</module>
-        <module>auth-service</module>
         <module>account-service</module>
         <module>smtp-service</module>
         <module>template-builder-service</module>
     </modules>
 
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <javers-core.version>6.2.4</javers-core.version>
-        <spring-boot.version>2.5.5</spring-boot.version>
-        <spring-cloud.version>2020.0.4</spring-cloud.version>
-        <spring-cloud-starter-oauth2.version>2.2.5.RELEASE</spring-cloud-starter-oauth2.version>
+        <spring-boot.version>2.6.1</spring-boot.version>
+        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-vault.version>2.3.2</spring-vault.version>
+        <spring-oauth2-resource-server.version>5.6.0</spring-oauth2-resource-server.version>
+        <spring-security-oauth2-jose.version>5.6.0</spring-security-oauth2-jose.version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -50,7 +48,12 @@
         <image>registry.asofe.org/root/open-crypto-trade/${project.artifactId}:${project.version}</image>
         <docker-skip>true</docker-skip>
         <docker-goal>build</docker-goal>
-        <docker-main-class></docker-main-class>
+        <apache.commons.version>3.12.0</apache.commons.version>
+        <keycloak.version>15.0.2</keycloak.version>
+        <jjwt.version>0.11.2</jjwt.version>
+        <java-jwt.version>3.18.2</java-jwt.version>
+        <jackson-datatype-hibernate5.version>2.12.3</jackson-datatype-hibernate5.version>
+        <bouncycastle.version>1.70</bouncycastle.version>
         <mockito-core.vesion>3.12.4</mockito-core.vesion>
         <mockito-junit-jupiter.version>3.12.4</mockito-junit-jupiter.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
@@ -90,15 +93,50 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-resource-server</artifactId>
+                <version>${spring-oauth2-resource-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-jose</artifactId>
+                <version>${spring-security-oauth2-jose.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-oauth2</artifactId>
-                <version>${spring-cloud-starter-oauth2.version}</version>
+                <artifactId>spring-cloud-starter-kubernetes</artifactId>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.vault</groupId>
+                <artifactId>spring-vault-core</artifactId>
+                <version>${spring-vault.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>3.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <type>maven-plugin</type>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
@@ -114,6 +152,55 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-dbcp2</artifactId>
                 <version>${apache-commons-dbcp2.version}</version>
+            </dependency>
+            <!-- Java JWT: JSON Web Token for Java and Android -->
+            <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-hibernate5</artifactId>
+                <version>${jackson-datatype-hibernate5.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-core</artifactId>
+                <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-spring-boot-starter</artifactId>
+                <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak.bom</groupId>
+                <artifactId>keycloak-adapter-bom</artifactId>
+                <version>${keycloak.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.modelmapper</groupId>
@@ -172,6 +259,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
@@ -208,11 +299,11 @@
                     </executions>
                     <configuration>
                         <container>
-                            <mainClass>${docker-main-class}</mainClass>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         </container>
+<!--                        <allowInsecureRegistries>true</allowInsecureRegistries>-->
                         <from>
-                            <image>gcr.io/distroless/java:11</image>
+                            <image>openjdk:17-jdk-slim</image>
                         </from>
                         <to>
                             <image>${image}</image>
