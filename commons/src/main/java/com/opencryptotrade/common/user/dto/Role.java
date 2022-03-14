@@ -1,4 +1,4 @@
-package com.opencryptotrade.commons.user.dto;
+package com.opencryptotrade.common.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

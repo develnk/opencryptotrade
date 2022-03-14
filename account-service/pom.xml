@@ -36,6 +36,10 @@
             <artifactId>spring-cloud-starter-kubernetes-fabric8-all</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
@@ -58,6 +62,14 @@
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.keycloak.bom</groupId>
+                <artifactId>keycloak-adapter-bom</artifactId>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
 </project>

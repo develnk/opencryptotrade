@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.1</version>
+        <version>2.6.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -36,11 +36,11 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <javers-core.version>6.2.4</javers-core.version>
-        <spring-boot.version>2.6.1</spring-boot.version>
+        <spring-boot.version>2.6.4</spring-boot.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
         <spring-vault.version>2.3.2</spring-vault.version>
-        <spring-oauth2-resource-server.version>5.6.0</spring-oauth2-resource-server.version>
-        <spring-security-oauth2-jose.version>5.6.0</spring-security-oauth2-jose.version>
+<!--        <spring-oauth2-resource-server.version>5.6.0</spring-oauth2-resource-server.version>-->
+<!--        <spring-security-oauth2-jose.version>5.6.0</spring-security-oauth2-jose.version>-->
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -92,16 +92,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-oauth2-resource-server</artifactId>
-                <version>${spring-oauth2-resource-server.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-oauth2-jose</artifactId>
-                <version>${spring-security-oauth2-jose.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.security</groupId>-->
+<!--                <artifactId>spring-security-oauth2-resource-server</artifactId>-->
+<!--                <version>${spring-oauth2-resource-server.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.security</groupId>-->
+<!--                <artifactId>spring-security-oauth2-jose</artifactId>-->
+<!--                <version>${spring-security-oauth2-jose.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-kubernetes</artifactId>
@@ -193,6 +193,11 @@
             <dependency>
                 <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-spring-boot-starter</artifactId>
+                <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-spring-boot-adapter-core</artifactId>
                 <version>${keycloak.version}</version>
             </dependency>
             <dependency>
