@@ -5,10 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({
-        "com.opencryptotrade.accountservice",
-        "com.opencryptotrade.commons"
-})
+@ComponentScan({"com.opencryptotrade"})
 public class AccountServiceApplication {
 
     public static void main(String[] args) {

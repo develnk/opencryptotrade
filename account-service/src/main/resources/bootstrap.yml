@@ -18,6 +18,13 @@ jpa:
       jdbc:
         time_zone: UTC
 
+keycloak:
+  auth-server-url: http://localhost:8484/auth
+  realm: test
+  public-client: true
+  resource: main
+  use-resource-role-mappings: false
+  principal-attribute: preferred_username
 ---
 spring:
   profiles:
@@ -26,25 +33,25 @@ spring:
     kubernetes:
       config:
         enabled: false
-    vault:
-      host: localhost
-      port: 8200
-      scheme: http
-      authentication: APPROLE
-      app-role:
-        role-id: 4f2dbfbd-8108-8615-e534-e9455141b470
-        secret-id: 807c418a-d0bc-470e-c986-92b6fa319caf
-        role: oct
-        app-role-path: approle
-      generic:
-        enabled: true
-      kv:
-        enabled: true
-        backend: secret
-        profile-separator: '/'
-        default-context: application
-        application-name: oct
-        profiles: local
+#    vault:
+#      host: localhost
+#      port: 8200
+#      scheme: http
+#      authentication: APPROLE
+#      app-role:
+#        role-id: 4f2dbfbd-8108-8615-e534-e9455141b470
+#        secret-id: 807c418a-d0bc-470e-c986-92b6fa319caf
+#        role: oct
+#        app-role-path: approle
+#      generic:
+#        enabled: true
+#      kv:
+#        enabled: true
+#        backend: secret
+#        profile-separator: '/'
+#        default-context: application
+#        application-name: oct
+#        profiles: local
 
   jpa:
     database: postgresql

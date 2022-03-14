@@ -22,7 +22,7 @@ public class MainRequestContext {
 
     public static void setCurrentUser() {
         KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.isAuthenticated()) {
+        if(authentication != null && authentication.isAuthenticated()) {
             AccessToken accessToken = ((KeycloakPrincipal) authentication.getPrincipal()).getKeycloakSecurityContext().getToken();
             User user = User.builder()
                     .name(accessToken.getPreferredUsername())
