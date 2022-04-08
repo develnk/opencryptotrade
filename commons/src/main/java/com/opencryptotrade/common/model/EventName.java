@@ -1,4 +1,4 @@
-package com.opencryptotrade.commons.model;
+package com.opencryptotrade.common.model;
 
 import lombok.Getter;
 

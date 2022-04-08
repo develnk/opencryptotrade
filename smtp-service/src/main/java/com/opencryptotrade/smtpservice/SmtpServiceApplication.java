@@ -10,14 +10,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableJpaRepositories({
-        "com.opencryptotrade.commons.user.repository"
+        "com.opencryptotrade.common.user.repository"
 })
 @EntityScan({
         "com.opencryptotrade.commons.user.domain"
 })
 @ComponentScan({
         "com.opencryptotrade.smtpservice",
-        "com.opencryptotrade.commons.user.config"
+        "com.opencryptotrade.common.user.config"
 })
 public class SmtpServiceApplication {
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('REGULAR')")
+    @PreAuthorize("hasRole('MANAGER')")
     public String getUserInfo() {
         return "user info";
     }

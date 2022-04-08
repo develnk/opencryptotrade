@@ -21,6 +21,10 @@ public class User {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    private Long authTime;
+
+    private String sessionId;
+
     private boolean active;
 
 }

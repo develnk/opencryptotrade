@@ -1,6 +1,6 @@
-package com.opencryptotrade.commons.events.annotation;
+package com.opencryptotrade.common.events.annotation;
 
-import com.opencryptotrade.commons.model.EventName;
+import com.opencryptotrade.common.model.EventName;
 
 import java.lang.annotation.*;
 

@@ -32,6 +32,8 @@ public class MainRequestContext {
                     .id(accessToken.getId())
                     .authorities(authentication.getAuthorities())
                     .active(accessToken.isActive())
+                    .authTime(accessToken.getAuth_time())
+                    .sessionId(accessToken.getSessionId())
                     .build();
             CURRENT_USER.set(user);
         }

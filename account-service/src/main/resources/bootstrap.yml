@@ -1,16 +1,20 @@
+server:
+  port : 8081
+
 spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
   application:
     name: account-service
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8484/auth/realms/test/protocol/openid-connect/certs}
-          issuer-uri: ${KEYCLOAK_REALM_CERT_URL:http://localhost:8484/auth/realms/test}
+  mvc:
+    log-request-details: true
 
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
 
 jpa:
   properties:

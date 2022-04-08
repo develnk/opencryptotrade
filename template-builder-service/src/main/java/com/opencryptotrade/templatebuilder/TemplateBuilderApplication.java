@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 })
 @ComponentScan({
         "com.opencryptotrade.templatebuilder",
-        "com.opencryptotrade.commons.user.config"
+        "com.opencryptotrade.common.user.config"
 })
 @EnableMongoRepositories
 public class TemplateBuilderApplication {
