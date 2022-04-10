@@ -60,6 +60,7 @@
         <junit-jupiter-engine.version>5.7.2</junit-jupiter-engine.version>
         <junit-jupiter-params.version>5.7.2</junit-jupiter-params.version>
         <apache-commons-dbcp2.version>2.9.0</apache-commons-dbcp2.version>
+        <eventuate-local.version>0.37.0.RELEASE</eventuate-local.version>
         <modelmapper.version>2.4.4</modelmapper.version>
     </properties>
 
@@ -188,6 +189,26 @@
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.eventuate.local.java</groupId>
+                <artifactId>eventuate-client-java</artifactId>
+                <version>${eventuate-local.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.eventuate.local.java</groupId>
+                <artifactId>eventuate-local-java-spring-jdbc-starter</artifactId>
+                <version>${eventuate-local.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.eventuate.local.java</groupId>
+                <artifactId>eventuate-local-java-spring-jdbc</artifactId>
+                <version>${eventuate-local.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.eventuate.local.java</groupId>
+                <artifactId>eventuate-local-java-spring-events-starter</artifactId>
+                <version>${eventuate-local.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

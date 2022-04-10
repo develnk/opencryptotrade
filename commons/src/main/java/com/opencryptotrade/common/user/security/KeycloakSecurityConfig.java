@@ -11,7 +11,10 @@ import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
@@ -20,6 +23,8 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 @EnableConfigurationProperties(KeycloakSpringBootProperties.class)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
 public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**
@@ -64,9 +69,14 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.addFilterAfter(new UserVerificationFilter(), SecurityContextHolderAwareRequestFilter.class);
-        http.authorizeRequests()
-                .antMatchers("/api/**").authenticated()
+        http
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
+                .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().denyAll();
     }
 }

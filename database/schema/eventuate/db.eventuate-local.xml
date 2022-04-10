@@ -1,0 +1,54 @@
+<?xml version='1.1' encoding='UTF-8' standalone='no'?>
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd'>
+
+    <changeSet id="eventuate-local" author="Nikolay">
+        <createTable tableName="events">
+            <column name="event_id" type="varchar(1000)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="event_type" type="varchar(1000)"/>
+            <column name="event_data" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_type" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entity_id" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="triggering_event" type="varchar(1000)"/>
+        </createTable>
+        <createTable tableName="entities">
+            <column name="entity_type" type="varchar(1000)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="entity_id" type="varchar(1000)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="entity_version" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="snapshots">
+            <column name="entity_type" type="varchar(1000)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="entity_id" type="varchar(1000)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="entity_version" type="varchar(1000)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="snapshot_type" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="snapshot_json" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="triggering_events" type="varchar(1000)"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

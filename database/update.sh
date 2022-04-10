@@ -65,3 +65,14 @@ java -cp $CLASSPATH \
      --username=$DB_USER \
      --password=$DB_PASS \
      $CMD
+
+echo -e "\n ::: $CMD on schema eventuate:::"
+cd $SCRIPTPATH/schema/eventuate
+java -cp $CLASSPATH \
+     liquibase.integration.commandline.Main \
+     --logLevel=warning \
+     --changeLogFile=db.changelog.xml \
+     --url="jdbc:postgresql://${DB_HOST_PORT}/eventuate" \
+     --username=$DB_USER \
+     --password=$DB_PASS \
+     $CMD
