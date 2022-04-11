@@ -1,4 +1,4 @@
-package com.opencryptotrade.cryptocurrencyservice.domain;
+package com.opencryptotrade.cryptocurrencyservice.domain.command;
 
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonStatus;
 import lombok.Getter;

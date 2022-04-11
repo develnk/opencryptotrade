@@ -1,5 +1,9 @@
 package com.opencryptotrade.cryptocurrencyservice.domain;
 
+import com.opencryptotrade.cryptocurrencyservice.domain.command.CreateCryptoCurrencyCommand;
+import com.opencryptotrade.cryptocurrencyservice.domain.command.CryptoCurrencyCommand;
+import com.opencryptotrade.cryptocurrencyservice.domain.command.UpdateCryptoCurrencyCommand;
+import com.opencryptotrade.cryptocurrencyservice.domain.command.UpdateCryptoCurrencyDaemonStatusCommand;
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonStatus;
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyType;
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonSettings;
@@ -9,9 +13,11 @@ import com.opencryptotrade.cryptocurrencyservice.events.CryptocurrencyUpdatedSta
 import io.eventuate.Event;
 import io.eventuate.EventUtil;
 import io.eventuate.ReflectiveMutableCommandProcessingAggregate;
+import lombok.Getter;
 import java.util.List;
 
 @SuppressWarnings("all")
+@Getter
 public class CryptoCurrency extends ReflectiveMutableCommandProcessingAggregate<CryptoCurrency, CryptoCurrencyCommand> {
 
     private CryptoCurrencyType type;

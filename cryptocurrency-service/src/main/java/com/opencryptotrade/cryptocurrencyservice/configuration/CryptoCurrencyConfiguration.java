@@ -1,7 +1,8 @@
 package com.opencryptotrade.cryptocurrencyservice.configuration;
 
 import com.opencryptotrade.cryptocurrencyservice.domain.CryptoCurrency;
-import com.opencryptotrade.cryptocurrencyservice.domain.CryptoCurrencyCommand;
+import com.opencryptotrade.cryptocurrencyservice.domain.command.CryptoCurrencyCommand;
+import com.opencryptotrade.cryptocurrencyservice.domain.snapshot.CryptoCurrencySnapshotStrategy;
 import com.opencryptotrade.cryptocurrencyservice.service.CryptoCurrencyService;
 import com.opencryptotrade.cryptocurrencyservice.service.CryptoCurrencyServiceImpl;
 import io.eventuate.sync.AggregateRepository;
@@ -20,5 +21,10 @@ public class CryptoCurrencyConfiguration {
     @Bean
     public AggregateRepository<CryptoCurrency, CryptoCurrencyCommand> cryptocurrencyRepository(EventuateAggregateStore eventStore) {
         return new AggregateRepository<>(CryptoCurrency.class, eventStore);
+    }
+
+    @Bean
+    public CryptoCurrencySnapshotStrategy cryptoCurrencySnapshotStrategy() {
+        return new CryptoCurrencySnapshotStrategy();
     }
 }
