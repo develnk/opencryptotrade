@@ -49,7 +49,7 @@
         <docker-skip>true</docker-skip>
         <docker-goal>build</docker-goal>
         <apache.commons.version>3.12.0</apache.commons.version>
-        <keycloak.version>15.0.2</keycloak.version>
+        <keycloak.version>17.0.1</keycloak.version>
         <jjwt.version>0.11.2</jjwt.version>
         <java-jwt.version>3.18.2</java-jwt.version>
         <jackson-datatype-hibernate5.version>2.12.3</jackson-datatype-hibernate5.version>
