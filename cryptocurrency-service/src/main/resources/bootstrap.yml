@@ -9,6 +9,11 @@ spring:
     name: cryptocurrency-service
   mvc:
     log-request-details: true
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
+    producer:
+      bootstrap-servers: localhost:29092
 
 logging:
   level:
@@ -17,7 +22,7 @@ logging:
         web: DEBUG
     io:
       eventuate:
-        activity: DEBUG
+        activity: INFO
 
 jpa:
   properties:
@@ -36,10 +41,10 @@ keycloak:
 eventuatelocal:
   kafka:
     bootstrap:
-      servers: ${DOCKER_HOST_IP:localhost}:9092
+      servers: localhost:29092, localhost:39092
   zookeeper:
     connection:
-      string: ${DOCKER_HOST_IP:localhost}:2181
+      string: ${DOCKER_HOST_IP:localhost}:22181
 
 ---
 spring:
