@@ -1,6 +1,5 @@
 package com.opencryptotrade.cryptocurrencyservice.service;
 
-import com.opencryptotrade.common.validator.ErrorResponse;
 import com.opencryptotrade.cryptocurrencyservice.domain.*;
 import com.opencryptotrade.cryptocurrencyservice.domain.command.CreateCryptoCurrencyCommand;
 import com.opencryptotrade.cryptocurrencyservice.domain.command.CryptoCurrencyCommand;
