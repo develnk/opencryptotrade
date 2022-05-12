@@ -73,10 +73,10 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
-                .and()
                 .authorizeRequests()
                 .antMatchers("/api/**").authenticated()
-                .anyRequest().denyAll();
+                .anyRequest().denyAll()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
     }
 }

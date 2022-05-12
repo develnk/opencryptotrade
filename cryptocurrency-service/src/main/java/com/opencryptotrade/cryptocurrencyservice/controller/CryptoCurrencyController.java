@@ -2,6 +2,7 @@ package com.opencryptotrade.cryptocurrencyservice.controller;
 
 import com.opencryptotrade.common.validator.ErrorResponse;
 import com.opencryptotrade.cryptocurrencyservice.domain.CryptoCurrency;
+import com.opencryptotrade.cryptocurrencyservice.exceptions.CryptoCurrencyDuplicateException;
 import com.opencryptotrade.cryptocurrencyservice.service.CryptoCurrencyService;
 import com.opencryptotrade.cryptocurrencyservice.webapi.request.CreateCryptoCurrencyRequest;
 import com.opencryptotrade.cryptocurrencyservice.webapi.request.UpdateCryptoCurrencyRequest;
@@ -42,6 +43,12 @@ public class CryptoCurrencyController {
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleTwilioException(EntityNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(CryptoCurrencyDuplicateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleCommonCryptoCurrency(RuntimeException e) {
         return new ErrorResponse(e.getMessage());
     }
 }

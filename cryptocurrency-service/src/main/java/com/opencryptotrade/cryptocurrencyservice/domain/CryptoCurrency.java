@@ -26,6 +26,8 @@ public class CryptoCurrency extends ReflectiveMutableCommandProcessingAggregate<
     private CryptoCurrencyDaemonStatus status;
 
     public List<Event> process(CreateCryptoCurrencyCommand cmd) {
+
+
         return EventUtil.events(new CryptoCurrencyCreatedEvent(cmd.getSymbol(), cmd.getType(), cmd.getCryptoCurrencyDaemonSettings()));
     }
 

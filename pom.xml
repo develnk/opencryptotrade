@@ -210,6 +210,29 @@
                 <artifactId>eventuate-local-java-spring-events-starter</artifactId>
                 <version>${eventuate-local.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/io.eventuate.tram.core/eventuate-tram-jdbc-kafka -->
+            <dependency>
+                <groupId>io.eventuate.tram.core</groupId>
+                <artifactId>eventuate-tram-jdbc-kafka</artifactId>
+                <version>0.20.0.M9</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/io.eventuate.tram.core/eventuate-tram-events -->
+            <dependency>
+                <groupId>io.eventuate.tram.core</groupId>
+                <artifactId>eventuate-tram-events</artifactId>
+                <version>0.29.0.RELEASE</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/io.eventuate.tram.core/eventuate-tram-messaging -->
+            <dependency>
+                <groupId>io.eventuate.tram.core</groupId>
+                <artifactId>eventuate-tram-messaging</artifactId>
+                <version>0.29.0.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>io.eventuate.common</groupId>
+                <artifactId>eventuate-common-eventuate-local</artifactId>
+                <version>0.14.0.RELEASE</version>
+            </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
