@@ -22,5 +22,110 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="cryptocurrency-history-entity-id" author="Nikolay">
+        <addColumn tableName="crypto_currency_view">
+            <column name="entity_id" type="VARCHAR(1000)" afterColumn="symbol">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="cryptocurrency-SagaEntry" author="Nikolay">
+        <createTable tableName="saga_entry">
+            <column name="saga_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="revision" type="VARCHAR(255)"/>
+            <column name="sagaType" type="VARCHAR(255)"/>
+            <column name="serialized_saga" type="BYTEA"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="cryptocurrency-AssociationValueEntry" author="Nikolay">
+        <createTable tableName="association_value_entry">
+            <column name="id" type="BIGSERIAL">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="association_key" type="VARCHAR(255)"/>
+            <column name="association_value" type="VARCHAR(255)"/>
+            <column name="saga_id" type="VARCHAR(255)"/>
+            <column name="saga_type" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="cryptocurrency-TokenEntry" author="Nikolay">
+        <createTable tableName="token_entry">
+            <column name="processor_Name" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="segment" type="INTEGER">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="token" type="BYTEA">
+                <constraints nullable="true"/>
+            </column>
+            <column name="token_type" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="timestamp" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="owner" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="cryptocurrency-DomainEventEntry" author="Nikolay">
+        <createTable tableName="domain_event_entry">
+            <column name="global_index" type="BIGSERIAL">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="aggregate_identifier" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sequence_number" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="event_identifier" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="meta_data" type="BYTEA"/>
+            <column name="payload" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload_revision" type="VARCHAR(255)"/>
+            <column name="payload_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="cryptocurrency-SnapshotEventEntry" author="Nikolay">
+        <createTable tableName="snapshot_event_entry">
+            <column name="aggregate_identifier" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="sequenceNumber" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_identifier" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="meta_data" type="BYTEA"/>
+            <column name="payload" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload_revision" type="VARCHAR(255)"/>
+            <column name="payload_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

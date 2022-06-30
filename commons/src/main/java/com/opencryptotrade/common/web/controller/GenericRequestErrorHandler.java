@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,15 +48,15 @@ public class GenericRequestErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public void handleAccessDeniedException(AccessDeniedException e, HttpServletResponse response) throws IOException {
-        LOGGER.warn("Request not authorized.", e);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.FORBIDDEN.value());
-        response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse(e.getMessage())));
-        response.getWriter().flush();
-        response.getWriter().close();
-    }
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public void handleAccessDeniedException(AccessDeniedException e, HttpServletResponse response) throws IOException {
+//        LOGGER.warn("Request not authorized.", e);
+//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//        response.setStatus(HttpStatus.FORBIDDEN.value());
+//        response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse(e.getMessage())));
+//        response.getWriter().flush();
+//        response.getWriter().close();
+//    }
 
     @PostConstruct
     private void initLog() {

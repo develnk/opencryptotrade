@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
+        <version>2.7.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -37,11 +37,14 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <javers-core.version>6.2.4</javers-core.version>
-        <spring-boot.version>2.6.6</spring-boot.version>
-        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-oauth2-resource-server>2.7.0</spring-oauth2-resource-server>
+        <spring-boot.version>2.7.1</spring-boot.version>
+        <spring-cloud.version>2021.0.2</spring-cloud.version>
+        <spring-data-r2dbc.version>1.5.0</spring-data-r2dbc.version>
         <spring-vault.version>2.3.2</spring-vault.version>
-<!--        <spring-oauth2-resource-server.version>5.6.0</spring-oauth2-resource-server.version>-->
-<!--        <spring-security-oauth2-jose.version>5.6.0</spring-security-oauth2-jose.version>-->
+        <axonframework.version>4.5.12</axonframework.version>
+        <axon-reactor.version>4.5.1</axon-reactor.version>
+        <projectreactor.version>3.4.18</projectreactor.version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -51,7 +54,6 @@
         <docker-goal>build</docker-goal>
         <apache.commons.version>3.12.0</apache.commons.version>
         <keycloak.version>17.0.1</keycloak.version>
-        <jackson-datatype-hibernate5.version>2.12.3</jackson-datatype-hibernate5.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <mockito-core.vesion>3.12.4</mockito-core.vesion>
         <mockito-junit-jupiter.version>3.12.4</mockito-junit-jupiter.version>
@@ -60,8 +62,7 @@
         <junit-jupiter-engine.version>5.7.2</junit-jupiter-engine.version>
         <junit-jupiter-params.version>5.7.2</junit-jupiter-params.version>
         <apache-commons-dbcp2.version>2.9.0</apache-commons-dbcp2.version>
-        <eventuate-local.version>0.37.0.RELEASE</eventuate-local.version>
-        <modelmapper.version>2.4.4</modelmapper.version>
+        <modelmapper.version>3.1.0</modelmapper.version>
     </properties>
 
     <!--
@@ -86,6 +87,41 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-data-r2dbc</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.data</groupId>-->
+<!--                <artifactId>spring-data-r2dbc</artifactId>-->
+<!--                <version>${spring-data-r2dbc.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>io.r2dbc</groupId>-->
+<!--                <artifactId>r2dbc-postgresql</artifactId>-->
+<!--                <version>0.8.12.RELEASE</version>-->
+<!--            </dependency>-->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
@@ -103,19 +139,40 @@
                 <version>${spring-vault.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-core</artifactId>
-                <version>3.0.2</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+                <version>${spring-oauth2-resource-server}</version>
             </dependency>
             <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>2.3.1</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+                <version>${spring-boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>3.0.2</version>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-core</artifactId>
+                <version>${projectreactor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-spring-boot-starter</artifactId>
+                <version>${axonframework.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.axonframework</groupId>
+                        <artifactId>axon-server-connector</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework.extensions.reactor</groupId>
+                <artifactId>axon-reactor-spring-boot-starter</artifactId>
+                <version>${axon-reactor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.13.3</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -142,11 +199,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-dbcp2</artifactId>
                 <version>${apache-commons-dbcp2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-hibernate5</artifactId>
-                <version>${jackson-datatype-hibernate5.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
@@ -189,49 +241,6 @@
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.eventuate.local.java</groupId>
-                <artifactId>eventuate-client-java</artifactId>
-                <version>${eventuate-local.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.eventuate.local.java</groupId>
-                <artifactId>eventuate-local-java-spring-jdbc-starter</artifactId>
-                <version>${eventuate-local.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.eventuate.local.java</groupId>
-                <artifactId>eventuate-local-java-spring-jdbc</artifactId>
-                <version>${eventuate-local.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.eventuate.local.java</groupId>
-                <artifactId>eventuate-local-java-spring-events-starter</artifactId>
-                <version>${eventuate-local.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/io.eventuate.tram.core/eventuate-tram-jdbc-kafka -->
-            <dependency>
-                <groupId>io.eventuate.tram.core</groupId>
-                <artifactId>eventuate-tram-jdbc-kafka</artifactId>
-                <version>0.20.0.M9</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/io.eventuate.tram.core/eventuate-tram-events -->
-            <dependency>
-                <groupId>io.eventuate.tram.core</groupId>
-                <artifactId>eventuate-tram-events</artifactId>
-                <version>0.29.0.RELEASE</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/io.eventuate.tram.core/eventuate-tram-messaging -->
-            <dependency>
-                <groupId>io.eventuate.tram.core</groupId>
-                <artifactId>eventuate-tram-messaging</artifactId>
-                <version>0.29.0.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>io.eventuate.common</groupId>
-                <artifactId>eventuate-common-eventuate-local</artifactId>
-                <version>0.14.0.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

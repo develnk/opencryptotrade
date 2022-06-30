@@ -1,6 +1,7 @@
 package com.opencryptotrade.common.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.opencryptotrade.common.user.model.RoleName;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
@@ -21,6 +22,6 @@ public abstract class Person implements SystemUser {
     private boolean active;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<RoleName> roles;
 
 }

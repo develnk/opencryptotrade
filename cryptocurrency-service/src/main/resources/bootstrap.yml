@@ -1,58 +1,75 @@
 server:
   port : 8082
+  http2:
+    enabled: true
+  forward-headers-strategy: native
+
+app:
+  security:
+    clientId: "main"
 
 spring:
-  main:
-    allow-bean-definition-overriding: true
-    allow-circular-references: true
   application:
     name: cryptocurrency-service
   aop:
     proxy-target-class: true
-  mvc:
-    log-request-details: true
   kafka:
     consumer:
       bootstrap-servers: localhost:29092
     producer:
       bootstrap-servers: localhost:29092
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${DOCKER_HOST_IP:localhost}:8484/auth/realms/test
+  datasource:
+    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+    username: root
+    password: root
+    hikari:
+      minimum-idle: 1
+      maximumPoolSize: 20
+      jdbcUrl: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+      username: root
+      password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    #    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+    #    username: root
+    #    password: root
+    driver-class-name: org.postgresql.Driver
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    initialization-mode: never
+#  jackson:
+#    serialization:
+#      wrap-root-value: true
 
 logging:
   level:
     org:
       springframework:
         web: DEBUG
-    io:
-      eventuate:
-        activity: INFO
+
+axon:
+  serializer:
+    general: jackson
+    messages: jackson
+    events: jackson
 
 jpa:
   properties:
     hibernate:
-      dialect: org.hibernate.dialect.PostgreSQL10Dialect
       jdbc:
         time_zone: UTC
-
-keycloak:
-  auth-server-url: http://${DOCKER_HOST_IP:localhost}:8484/auth
-  realm: test
-  public-client: true
-  resource: main
-  use-resource-role-mappings: false
-  principal-attribute: preferred_username
-
-eventuatelocal:
-  kafka:
-    bootstrap:
-      servers: localhost:29092, localhost:39092
-  zookeeper:
-    connection:
-      string: ${DOCKER_HOST_IP:localhost}:22181
 
 ---
 spring:
   profiles:
     active: local
+#  r2dbc:
+#    url: r2dbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+#    username: root
+#    password: root
   cloud:
     kubernetes:
       config:
@@ -62,29 +79,27 @@ spring:
     database: postgresql
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
         ddl-auto: none
-        show_sql: true
-        generate_statistics: true
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true
+#        generate_statistics: true
         temp:
           use_jdbc_metadata_defaults: false
         jdbc:
           time_zone: UTC
 
-  datasource:
-    hikari:
-      minimum-idle: 1
-      maximumPoolSize: 20
-      jdbcUrl: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-      username: root
-      password: root
-    type: com.zaxxer.hikari.HikariDataSource
-#    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-#    username: root
-#    password: root
-    driver-class-name: org.postgresql.Driver
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
-#    initialization-mode: never
+eventuate:
+  outbox:
+    id: 1
+
+logging:
+  level:
+    org:
+#      hibernate:
+#        type: trace
+#      springframework:
+#        r2dbc: DEBUG
 
 ---
 spring:

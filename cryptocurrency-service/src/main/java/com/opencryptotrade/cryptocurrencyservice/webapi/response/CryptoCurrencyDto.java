@@ -1,17 +1,13 @@
-package com.opencryptotrade.cryptocurrencyservice.webapi.request;
+package com.opencryptotrade.cryptocurrencyservice.webapi.response;
 
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonSettings;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UpdateCryptoCurrencyRequest implements Serializable {
+public class CryptoCurrencyDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
