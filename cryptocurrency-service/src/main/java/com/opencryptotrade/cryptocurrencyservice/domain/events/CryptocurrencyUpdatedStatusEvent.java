@@ -1,6 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.domain.events;
 
-import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonStatus;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyDaemonStatus;
 
 public record CryptocurrencyUpdatedStatusEvent(CryptoCurrencyDaemonStatus status) {
 }

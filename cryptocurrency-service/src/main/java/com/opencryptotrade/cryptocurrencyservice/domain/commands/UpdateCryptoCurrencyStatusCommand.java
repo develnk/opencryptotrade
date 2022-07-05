@@ -1,6 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.domain.commands;
 
-import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonStatus;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyDaemonStatus;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.util.UUID;

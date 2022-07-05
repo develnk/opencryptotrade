@@ -1,6 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.webapi.response;
 
-import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonSettings;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyDaemonSettings;
 import lombok.Data;
 
 import java.io.Serializable;

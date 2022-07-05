@@ -1,6 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.domain.queries;
 
-import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyType;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyType;
 
 import java.util.UUID;
 

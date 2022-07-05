@@ -1,7 +1,7 @@
 package com.opencryptotrade.cryptocurrencyservice.webapi.request;
 
-import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyDaemonSettings;
-import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrencyType;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyDaemonSettings;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

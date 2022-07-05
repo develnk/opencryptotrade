@@ -3,7 +3,6 @@ package com.opencryptotrade.cryptocurrencyservice.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrency;
-import com.opencryptotrade.cryptocurrencyservice.util.LoggingReactorMessageDispatchInterceptor;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
@@ -41,7 +40,6 @@ import org.axonframework.common.transaction.TransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.concurrent.Executors;
-
 
 @Configuration
 @ConfigurationPropertiesScan

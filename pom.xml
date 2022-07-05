@@ -44,7 +44,8 @@
         <spring-vault.version>2.3.2</spring-vault.version>
         <axonframework.version>4.5.12</axonframework.version>
         <axon-reactor.version>4.5.1</axon-reactor.version>
-        <projectreactor.version>3.4.18</projectreactor.version>
+        <projectreactor.version>3.4.19</projectreactor.version>
+        <projectreactor-netty-http.version>1.0.20</projectreactor-netty-http.version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -152,6 +153,11 @@
                 <groupId>io.projectreactor</groupId>
                 <artifactId>reactor-core</artifactId>
                 <version>${projectreactor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.projectreactor.netty</groupId>
+                <artifactId>reactor-netty-http</artifactId>
+                <version>${projectreactor-netty-http.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.axonframework</groupId>

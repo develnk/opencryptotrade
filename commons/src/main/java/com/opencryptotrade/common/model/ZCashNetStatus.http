@@ -1,0 +1,14 @@
+POST http://127.0.0.1:8232
+Authorization: Basic dXNlcjpyb290
+Content-Type: application/json
+
+{
+"jsonrpc": "1.0",
+"id":"curltest",
+"method": "getpeerinfo",
+"params": []
+}
+
+<> 2022-07-05T122108.200.json
+<> 2022-07-05T110936.200.json
+<> 2022-07-05T110440.200.json

@@ -1,5 +1,8 @@
 package com.opencryptotrade.cryptocurrencyservice.domain.model;
 
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyDaemonSettings;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyDaemonStatus;
+import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyType;
 import com.opencryptotrade.cryptocurrencyservice.domain.commands.CreateCryptoCurrencyCommand;
 import com.opencryptotrade.cryptocurrencyservice.domain.commands.UpdateCryptoCurrencyCommand;
 import com.opencryptotrade.cryptocurrencyservice.domain.commands.UpdateCryptoCurrencyStatusCommand;
