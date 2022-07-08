@@ -19,6 +19,6 @@ public class CryptoCurrencyQueryHandler {
     @QueryHandler
     public Mono<CryptoCurrencyView> handle(CryptoCurrencyQuery query) {
         LOGGER.info("Handling CryptoCurrencyQuery: {}", query);
-        return Mono.just(cryptoCurrencyViewRepository.findBySymbolAndType(query.symbol(), query.type().name()).get());
+        return cryptoCurrencyViewRepository.findBySymbolAndType(query.symbol(), query.type().name());
     }
 }

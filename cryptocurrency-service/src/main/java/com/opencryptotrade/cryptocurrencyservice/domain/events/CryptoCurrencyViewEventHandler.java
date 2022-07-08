@@ -2,23 +2,23 @@ package com.opencryptotrade.cryptocurrencyservice.domain.events;
 
 import com.opencryptotrade.cryptocurrencyservice.domain.projections.CryptoCurrencyView;
 import com.opencryptotrade.cryptocurrencyservice.domain.projections.CryptoCurrencyViewRepository;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class CryptoCurrencyViewEventHandler {
 
-    private final @NonNull CryptoCurrencyViewRepository cryptoCurrencyViewRepository;
+    @Autowired
+    private CryptoCurrencyViewRepository cryptoCurrencyViewRepository;
 
     @EventHandler
+    @Transactional
     public void cryptoCurrencyCreatedEventHandler(CryptoCurrencyCreatedEvent event) {
         LOGGER.info("EventHandler: Applying CryptoCurrencyCreatedEvent: {}", event);
 
@@ -34,14 +34,14 @@ public class CryptoCurrencyViewEventHandler {
     public void cryptoCurrencyUpdatedEventHandler(CryptoCurrencyUpdatedEvent event) {
         LOGGER.info("EventHandler: Applying CryptoCurrencyUpdatedEvent: {}", event);
 
-        CryptoCurrencyView cryptoCurrencyView = getCryptoCurrencyView(event.id().toString()).orElseThrow();
+        CryptoCurrencyView cryptoCurrencyView = getCryptoCurrencyView(event.id().toString());
         cryptoCurrencyView.setSymbol(event.symbol());
         cryptoCurrencyViewRepository.save(cryptoCurrencyView);
     }
 
 
-    private Optional<CryptoCurrencyView> getCryptoCurrencyView(String entityId) {
-        return cryptoCurrencyViewRepository.findByEntityId(entityId);
+    private CryptoCurrencyView getCryptoCurrencyView(String entityId) {
+        return cryptoCurrencyViewRepository.findByEntityId(entityId).block();
     }
 
 }

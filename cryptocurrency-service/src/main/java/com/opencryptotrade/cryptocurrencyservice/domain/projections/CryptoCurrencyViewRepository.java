@@ -1,12 +1,12 @@
 package com.opencryptotrade.cryptocurrencyservice.domain.projections;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Mono;
 
-import java.util.Optional;
 
-public interface CryptoCurrencyViewRepository extends JpaRepository<CryptoCurrencyView, Integer> {
+public interface CryptoCurrencyViewRepository extends ReactiveCrudRepository<CryptoCurrencyView, Integer> {
 
-    Optional<CryptoCurrencyView> findBySymbolAndType(String symbol, String type);
+    Mono<CryptoCurrencyView> findBySymbolAndType(String symbol, String type);
 
-    Optional<CryptoCurrencyView> findByEntityId(String entityId);
+    Mono<CryptoCurrencyView> findByEntityId(String entityId);
 }

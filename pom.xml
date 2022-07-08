@@ -40,12 +40,14 @@
         <spring-oauth2-resource-server>2.7.0</spring-oauth2-resource-server>
         <spring-boot.version>2.7.1</spring-boot.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
-        <spring-data-r2dbc.version>1.5.0</spring-data-r2dbc.version>
+        <spring-data-r2dbc.version>1.5.1</spring-data-r2dbc.version>
         <spring-vault.version>2.3.2</spring-vault.version>
         <axonframework.version>4.5.12</axonframework.version>
-        <axon-reactor.version>4.5.1</axon-reactor.version>
+        <axon-reactor.version>4.6.0-SNAPSHOT</axon-reactor.version>
         <projectreactor.version>3.4.19</projectreactor.version>
         <projectreactor-netty-http.version>1.0.20</projectreactor-netty-http.version>
+        <postgresql-driver-version>42.4.0</postgresql-driver-version>
+        <r2dbc-postgresql-version>0.8.12.RELEASE</r2dbc-postgresql-version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -87,35 +89,35 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--                <version>${spring-boot.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-data-r2dbc</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.data</groupId>-->
-<!--                <artifactId>spring-data-r2dbc</artifactId>-->
-<!--                <version>${spring-data-r2dbc.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.r2dbc</groupId>-->
-<!--                <artifactId>r2dbc-postgresql</artifactId>-->
-<!--                <version>0.8.12.RELEASE</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-r2dbc</artifactId>
+                <version>${spring-data-r2dbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.r2dbc</groupId>
+                <artifactId>r2dbc-postgresql</artifactId>
+                <version>${r2dbc-postgresql-version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>42.4.0</version>
+                <version>${postgresql-driver-version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>

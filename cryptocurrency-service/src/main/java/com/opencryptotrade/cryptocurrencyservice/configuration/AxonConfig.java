@@ -3,20 +3,20 @@ package com.opencryptotrade.cryptocurrencyservice.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrency;
+import com.opencryptotrade.cryptocurrencyservice.util.LoggingReactorMessageDispatchInterceptor;
+import com.zaxxer.hikari.HikariDataSource;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
 import org.axonframework.commandhandling.gateway.ExponentialBackOffIntervalRetryScheduler;
 import org.axonframework.common.caching.Cache;
 import org.axonframework.common.caching.WeakReferenceCache;
-import org.axonframework.common.jdbc.PersistenceExceptionResolver;
-import org.axonframework.common.jpa.EntityManagerProvider;
+import org.axonframework.common.jdbc.ConnectionProvider;
+import org.axonframework.common.jdbc.DataSourceConnectionProvider;
 import org.axonframework.config.Configurer;
 import org.axonframework.eventsourcing.*;
-import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
-import org.axonframework.eventsourcing.eventstore.EventStore;
-import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine;
+import org.axonframework.eventsourcing.eventstore.jdbc.JdbcEventStorageEngine;
 import org.axonframework.extensions.reactor.commandhandling.gateway.DefaultReactorCommandGateway;
 import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway;
 import org.axonframework.lifecycle.Phase;
@@ -24,29 +24,28 @@ import org.axonframework.messaging.Message;
 import org.axonframework.messaging.interceptors.LoggingInterceptor;
 import org.axonframework.modelling.command.Repository;
 import org.axonframework.serialization.Serializer;
-import org.axonframework.serialization.json.JacksonSerializer;
-import org.axonframework.spring.config.AxonConfiguration;
+import org.axonframework.spring.config.SpringAxonConfiguration;
+import org.axonframework.spring.config.SpringConfigurer;
 import org.axonframework.spring.eventsourcing.SpringAggregateSnapshotterFactoryBean;
+import org.axonframework.spring.eventsourcing.SpringPrototypeAggregateFactory;
 import org.axonframework.spring.messaging.unitofwork.SpringTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.axonframework.common.transaction.TransactionManager;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
 import java.util.concurrent.Executors;
 
 @Configuration
-@ConfigurationPropertiesScan
 public class AxonConfig {
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     public void configureLoggingInterceptor(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") Configurer configurer) {
@@ -69,25 +68,19 @@ public class AxonConfig {
                 .registerDefaultHandlerInterceptor((config, processorName) -> loggingInterceptor);
     }
 
-    @Bean
-    public Repository<CryptoCurrency> cryptoCurrencyRepository(AxonConfiguration axonConfig, SnapshotTriggerDefinition cryptoCurrencySnapshotTrigger, Cache cache) {
-        return EventSourcingRepository.builder(CryptoCurrency.class)
-                .eventStore(axonConfig.eventStore())
-                .parameterResolverFactory(axonConfig.parameterResolverFactory())
-                .handlerDefinition(axonConfig.handlerDefinition(CryptoCurrency.class))
-                .repositoryProvider(axonConfig::repository)
-                .snapshotTriggerDefinition(cryptoCurrencySnapshotTrigger)
-                //.aggregateFactory(aggregateFactory)
-                .cache(cache)
-                .build();
-    }
-
-//    @Bean("cryptoCurrencyAggregateFactory")
-//    public AggregateFactory<CryptoCurrency> cryptoCurrencyAggregateFactory() {
-//        SpringPrototypeAggregateFactory<CryptoCurrency> aggregateFactory = new SpringPrototypeAggregateFactory<CryptoCurrency>();
-//        aggregateFactory.setBeanName("cryptoCurrencyAggregateFactory");
-//        return aggregateFactory;
+//    @Bean
+//    public Repository<CryptoCurrency> cryptoCurrencyRepository(SpringConfigurer axonConfig, Cache cache) {
+//        return EventSourcingRepository.builder(CryptoCurrency.class)
+//                .eventStore(axonConfig.buildConfiguration().eventStore())
+//                .parameterResolverFactory(axonConfig.buildConfiguration().parameterResolverFactory())
+////                .handlerDefinition(axonConfig.registerHandlerDefinition(CryptoCurrency.class))
+////                .repositoryProvider(axonConfig.buildConfiguration().repository())
+////                .snapshotTriggerDefinition(cryptoCurrencySnapshotTrigger)
+//                //.aggregateFactory(aggregateFactory)
+//                .cache(cache)
+//                .build();
 //    }
+
 
 
     /***********************************************************/
@@ -125,46 +118,26 @@ public class AxonConfig {
         return new EventCountSnapshotTriggerDefinition(snapshotter, 3);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean(PlatformTransactionManager.class)
-    public TransactionManager axonTransactionManager(PlatformTransactionManager transactionManager) {
-        return new SpringTransactionManager(transactionManager);
-    }
-
-    @Bean
-    public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-        return EmbeddedEventStore.builder()
-                .storageEngine(storageEngine)
-                .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-                .build();
-    }
+//    @Bean
+//    public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
+//        return EmbeddedEventStore.builder()
+//                .storageEngine(storageEngine)
+//                .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
+//                .build();
+//    }
 
     @Bean
     public EventStorageEngine storageEngine(Serializer defaultSerializer,
-                                            PersistenceExceptionResolver persistenceExceptionResolver,
                                             @Qualifier("defaultSerializer") Serializer eventSerializer,
-                                            AxonConfiguration configuration,
-                                            EntityManagerProvider entityManagerProvider,
-                                            TransactionManager transactionManager) {
-        return JpaEventStorageEngine.builder()
+                                            SpringAxonConfiguration configuration,
+                                            TransactionManager transactionManager,
+                                            ConnectionProvider connectionProvider) {
+        return JdbcEventStorageEngine.builder()
                 .eventSerializer(eventSerializer)
                 .snapshotSerializer(defaultSerializer)
-                .upcasterChain(configuration.upcasterChain())
-                .persistenceExceptionResolver(persistenceExceptionResolver)
-                .entityManagerProvider(entityManagerProvider)
+                .upcasterChain(configuration.getObject().upcasterChain())
+                .connectionProvider(connectionProvider)
                 .transactionManager(transactionManager)
-                .build();
-    }
-
-    @Bean
-    @Primary
-    @Qualifier("defaultSerializer")
-    public Serializer defaultSerializer() {
-        return JacksonSerializer.builder()
-                .defaultTyping()
-                .lenientDeserialization()
-                .objectMapper(objectMapper)
                 .build();
     }
 
@@ -201,6 +174,5 @@ public class AxonConfig {
     public DuplicateCommandHandlerResolver duplicateCommandHandlerResolver() {
         return DuplicateCommandHandlerResolution.rejectDuplicates();
     }
-
 
 }

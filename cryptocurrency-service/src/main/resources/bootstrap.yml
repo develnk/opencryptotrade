@@ -24,43 +24,52 @@ spring:
         jwt:
           issuer-uri: http://${DOCKER_HOST_IP:localhost}:8484/auth/realms/test
   datasource:
-    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-    username: root
-    password: root
-    hikari:
-      minimum-idle: 1
-      maximumPoolSize: 20
-      jdbcUrl: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+    axon:
+      url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
       username: root
       password: root
-    type: com.zaxxer.hikari.HikariDataSource
-    #    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-    #    username: root
-    #    password: root
-    driver-class-name: org.postgresql.Driver
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
-    initialization-mode: never
-#  jackson:
-#    serialization:
-#      wrap-root-value: true
+  #    hikari:
+  #      minimum-idle: 1
+  #      maximumPoolSize: 20
+  #      jdbcUrl: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+  #      username: root
+  #      password: root
+  #    type: com.zaxxer.hikari.HikariDataSource
+      #    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+      #    username: root
+      #    password: root
+      driver-class-name: org.postgresql.Driver
+      database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+      initialization-mode: never
+  r2dbc:
+    url: r2dbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+    username: root
+    password: root
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+
 
 logging:
   level:
     org:
       springframework:
         web: DEBUG
+    io:
+      axoniq:
+        axonconfiguration: DEBUG
 
 axon:
   serializer:
     general: jackson
     messages: jackson
     events: jackson
-
-jpa:
-  properties:
-    hibernate:
-      jdbc:
-        time_zone: UTC
 
 ---
 spring:
@@ -74,24 +83,6 @@ spring:
     kubernetes:
       config:
         enabled: false
-
-  jpa:
-    database: postgresql
-    properties:
-      hibernate:
-        ddl-auto: none
-#        show_sql: true
-#        format_sql: true
-#        use_sql_comments: true
-#        generate_statistics: true
-        temp:
-          use_jdbc_metadata_defaults: false
-        jdbc:
-          time_zone: UTC
-
-eventuate:
-  outbox:
-    id: 1
 
 logging:
   level:
