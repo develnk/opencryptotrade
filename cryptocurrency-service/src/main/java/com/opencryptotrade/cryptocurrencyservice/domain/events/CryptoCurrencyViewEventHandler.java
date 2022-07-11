@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.reactive.TransactionalOperator;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -17,8 +18,10 @@ public class CryptoCurrencyViewEventHandler {
     @Autowired
     private CryptoCurrencyViewRepository cryptoCurrencyViewRepository;
 
+    @Autowired
+    private TransactionalOperator operator;
+
     @EventHandler
-    @Transactional
     public void cryptoCurrencyCreatedEventHandler(CryptoCurrencyCreatedEvent event) {
         LOGGER.info("EventHandler: Applying CryptoCurrencyCreatedEvent: {}", event);
 
@@ -26,17 +29,16 @@ public class CryptoCurrencyViewEventHandler {
         cryptoCurrencyView.setSymbol(event.symbol());
         cryptoCurrencyView.setType(event.type().name());
         cryptoCurrencyView.setEntityId(event.id().toString());
-        cryptoCurrencyViewRepository.save(cryptoCurrencyView);
+        cryptoCurrencyViewRepository.save(cryptoCurrencyView).as(operator::transactional).then().subscribe();
     }
 
     @EventHandler
-    @Transactional
     public void cryptoCurrencyUpdatedEventHandler(CryptoCurrencyUpdatedEvent event) {
         LOGGER.info("EventHandler: Applying CryptoCurrencyUpdatedEvent: {}", event);
 
         CryptoCurrencyView cryptoCurrencyView = getCryptoCurrencyView(event.id().toString());
         cryptoCurrencyView.setSymbol(event.symbol());
-        cryptoCurrencyViewRepository.save(cryptoCurrencyView);
+        cryptoCurrencyViewRepository.save(cryptoCurrencyView).as(operator::transactional).then().subscribe();
     }
 
 

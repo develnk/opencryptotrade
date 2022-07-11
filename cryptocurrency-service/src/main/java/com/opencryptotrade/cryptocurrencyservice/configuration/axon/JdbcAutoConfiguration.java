@@ -1,6 +1,5 @@
 package com.opencryptotrade.cryptocurrencyservice.configuration.axon;
 
-import com.opencryptotrade.cryptocurrencyservice.configuration.axon.util.RegisterDefaultEntities;
 import com.zaxxer.hikari.HikariDataSource;
 import org.axonframework.common.jdbc.ConnectionProvider;
 import org.axonframework.common.jdbc.PersistenceExceptionResolver;
@@ -30,9 +29,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
-@RegisterDefaultEntities(packages = {
-        "org.axonframework.eventhandling.tokenstore",
-})
 @Configuration
 public class JdbcAutoConfiguration {
 

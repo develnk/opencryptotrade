@@ -34,13 +34,13 @@ public class CryptoCurrencyController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Mono<UUID> createCryptoCurrency(@Valid @RequestBody CreateCryptoCurrencyRequest request) {
         // Checking aggregate invariants before saving it to DB.
-        cryptoCurrencyService.checkCryptoCurrencyExist(request.getSymbol(), request.getType()).subscribe(r -> {
-            if (r) {
-                throw new CryptoCurrencyDuplicateException("This aggregate already exist!");
-            }
-        });
-
-        return reactiveCommandGateway.send(new CreateCryptoCurrencyCommand(UUID.randomUUID(), request.getType(), request.getSymbol(), request.getSettings()));
+        return cryptoCurrencyService.checkCryptoCurrencyExist(request.getSymbol(), request.getType())
+                .handle((res, sink) -> {
+                    if (res) {
+                        sink.error(new CryptoCurrencyDuplicateException("This aggregate already exist!"));
+                    }
+                })
+                .then(reactiveCommandGateway.send(new CreateCryptoCurrencyCommand(UUID.randomUUID(), request.getType(), request.getSymbol(), request.getSettings())));
     }
 
     @PreAuthorize("hasAuthority('ROLE_SUPER')")
