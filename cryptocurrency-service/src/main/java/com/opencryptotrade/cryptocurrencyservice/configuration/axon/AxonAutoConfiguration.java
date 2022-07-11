@@ -135,8 +135,8 @@ public class AxonAutoConfiguration implements BeanClassLoaderAware {
                 .build();
     }
 
-    @ConditionalOnMissingBean
     @Bean
+    @ConditionalOnMissingBean
     public CommandGateway commandGateway(CommandBus commandBus) {
         return DefaultCommandGateway.builder().commandBus(commandBus).build();
     }
@@ -266,7 +266,6 @@ public class AxonAutoConfiguration implements BeanClassLoaderAware {
     @ConditionalOnMissingBean(
             ignoredType = {
                     "org.axonframework.commandhandling.distributed.DistributedCommandBus",
-                    "org.axonframework.axonserver.connector.command.AxonServerCommandBus",
                     "org.axonframework.extensions.multitenancy.components.commandhandeling.MultiTenantCommandBus"
             },
             value = CommandBus.class
