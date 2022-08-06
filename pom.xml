@@ -46,7 +46,7 @@
         <axon-reactor.version>4.6.0-SNAPSHOT</axon-reactor.version>
         <projectreactor.version>3.4.19</projectreactor.version>
         <projectreactor-netty-http.version>1.0.20</projectreactor-netty-http.version>
-        <postgresql-driver-version>42.4.0</postgresql-driver-version>
+        <postgresql-driver-version>42.4.1</postgresql-driver-version>
         <r2dbc-postgresql-version>0.8.12.RELEASE</r2dbc-postgresql-version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
