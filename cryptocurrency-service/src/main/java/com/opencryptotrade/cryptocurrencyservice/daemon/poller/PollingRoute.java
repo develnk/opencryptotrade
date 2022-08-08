@@ -49,8 +49,7 @@ public class PollingRoute extends RouteBuilder {
     private TargetCryptocurrencySplitter targetCryptocurrencySplitter;
 
     /**
-     * The apache camel route from the given URI input; by default uses Camel Timer with a random start delay between 5 an 60 seconds and fixed rate
-     * set to {@code true}.
+     * The apache camel route from the given URI input.
      */
     @Setter
     protected String fromEndpointUri =
