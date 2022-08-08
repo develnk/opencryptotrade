@@ -1,5 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.configuration;
 
+import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrency;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolution;
 import org.axonframework.commandhandling.DuplicateCommandHandlerResolver;
@@ -9,6 +10,7 @@ import org.axonframework.common.caching.WeakReferenceCache;
 import org.axonframework.common.jdbc.ConnectionProvider;
 import org.axonframework.config.Configurer;
 import org.axonframework.eventsourcing.*;
+import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.eventsourcing.eventstore.jdbc.JdbcEventStorageEngine;
 import org.axonframework.extensions.reactor.commandhandling.gateway.DefaultReactorCommandGateway;
@@ -36,7 +38,7 @@ public class AxonConfig {
 
         // Registers the LoggingInterceptor on all infrastructure once they've been initialized by the Configurer:
         configurer.onInitialize(config -> {
-            config.onStart(Phase.INSTRUCTION_COMPONENTS + 1, () -> {
+            config.onStart(Phase.LOCAL_MESSAGE_HANDLER_REGISTRATIONS, () -> {
                 config.commandBus().registerHandlerInterceptor(loggingInterceptor);
                 config.commandBus().registerDispatchInterceptor(loggingInterceptor);
                 config.eventBus().registerDispatchInterceptor(loggingInterceptor);
@@ -51,20 +53,13 @@ public class AxonConfig {
                 .registerDefaultHandlerInterceptor((config, processorName) -> loggingInterceptor);
     }
 
-//    @Bean
-//    public Repository<CryptoCurrency> cryptoCurrencyRepository(SpringConfigurer axonConfig, Cache cache) {
-//        return EventSourcingRepository.builder(CryptoCurrency.class)
-//                .eventStore(axonConfig.buildConfiguration().eventStore())
-//                .parameterResolverFactory(axonConfig.buildConfiguration().parameterResolverFactory())
-////                .handlerDefinition(axonConfig.registerHandlerDefinition(CryptoCurrency.class))
-////                .repositoryProvider(axonConfig.buildConfiguration().repository())
-////                .snapshotTriggerDefinition(cryptoCurrencySnapshotTrigger)
-//                //.aggregateFactory(aggregateFactory)
-//                .cache(cache)
-//                .build();
-//    }
-
-
+    @Bean
+    public EventSourcingRepository<CryptoCurrency> eventSourcingRepository(EmbeddedEventStore eventStore) {
+        return EventSourcingRepository.builder(CryptoCurrency.class)
+                .eventStore(eventStore)
+                .cache(cache())
+                .build();
+    }
 
     /***********************************************************/
     /* Register a dispatch interceptors on the command gateway */
@@ -101,13 +96,12 @@ public class AxonConfig {
         return new EventCountSnapshotTriggerDefinition(snapshotter, 3);
     }
 
-//    @Bean
-//    public EmbeddedEventStore eventStore(EventStorageEngine storageEngine, AxonConfiguration configuration) {
-//        return EmbeddedEventStore.builder()
-//                .storageEngine(storageEngine)
-//                .messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
-//                .build();
-//    }
+    @Bean
+    public EmbeddedEventStore eventStore(EventStorageEngine storageEngine) {
+        return EmbeddedEventStore.builder()
+                .storageEngine(storageEngine)
+                .build();
+    }
 
     @Bean
     public EventStorageEngine storageEngine(Serializer defaultSerializer,

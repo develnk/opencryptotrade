@@ -1,7 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.service;
 
 import com.opencryptotrade.common.cryptocurrency.daemon.model.CryptoCurrencyType;
-import com.opencryptotrade.cryptocurrencyservice.domain.projections.CryptoCurrencyView;
 import com.opencryptotrade.cryptocurrencyservice.domain.projections.CryptoCurrencyViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.daemon;
 
 import com.opencryptotrade.cryptocurrencyservice.domain.model.CryptoCurrency;
-import com.opencryptotrade.cryptocurrencyservice.domain.projections.CryptoCurrencyViewRepository;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -103,3 +103,9 @@ spring:
         name: cryptocurrency-service
         sources:
           - name: cryptocurrency-service
+
+#camel:
+#  cluster:
+#    kubernetes:
+#      enabled: true
+#      pod-name: cryptocurrency-service

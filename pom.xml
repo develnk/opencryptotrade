@@ -42,8 +42,12 @@
         <spring-cloud.version>2021.0.2</spring-cloud.version>
         <spring-data-r2dbc.version>1.5.1</spring-data-r2dbc.version>
         <spring-vault.version>2.3.2</spring-vault.version>
-        <axonframework.version>4.5.12</axonframework.version>
+        <axonframework.version>4.5.15</axonframework.version>
         <axon-reactor.version>4.6.0-SNAPSHOT</axon-reactor.version>
+        <camel-spring-boot-starter.version>3.18.0</camel-spring-boot-starter.version>
+        <camel-quartz.version>3.18.0</camel-quartz.version>
+        <camel-core.version>3.18.0</camel-core.version>
+        <camel-kubernetes.version>3.18.0</camel-kubernetes.version>
         <projectreactor.version>3.4.19</projectreactor.version>
         <projectreactor-netty-http.version>1.0.20</projectreactor-netty-http.version>
         <postgresql-driver-version>42.4.0</postgresql-driver-version>
@@ -89,11 +93,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
@@ -234,6 +233,31 @@
                 <version>${keycloak.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-quartz</artifactId>
+                <version>${camel-quartz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-core</artifactId>
+                <version>${camel-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-spring-boot-starter</artifactId>
+                <version>${camel-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-kubernetes-starter</artifactId>
+                <version>${camel-kubernetes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-kubernetes</artifactId>
+                <version>${camel-kubernetes.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.modelmapper</groupId>
