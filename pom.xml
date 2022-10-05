@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.1</version>
+        <version>2.7.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -29,45 +29,46 @@
     </modules>
 
     <properties>
-        <java.version>18</java.version>
+        <java.version>19</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <javers-core.version>6.2.4</javers-core.version>
-        <spring-oauth2-resource-server>2.7.0</spring-oauth2-resource-server>
-        <spring-boot.version>2.7.1</spring-boot.version>
+        <jackson-databind.version>2.13.4</jackson-databind.version>
+        <spring-oauth2-resource-server.version>2.7.4</spring-oauth2-resource-server.version>
+        <spring-boot.version>2.7.4</spring-boot.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
-        <spring-data-r2dbc.version>1.5.1</spring-data-r2dbc.version>
+        <spring-data-r2dbc.version>1.5.3</spring-data-r2dbc.version>
         <spring-vault.version>2.3.2</spring-vault.version>
-        <axonframework.version>4.5.15</axonframework.version>
-        <axon-reactor.version>4.6.0-SNAPSHOT</axon-reactor.version>
-        <camel-spring-boot-starter.version>3.18.0</camel-spring-boot-starter.version>
-        <camel-quartz.version>3.18.0</camel-quartz.version>
-        <camel-core.version>3.18.0</camel-core.version>
-        <camel-kubernetes.version>3.18.0</camel-kubernetes.version>
-        <projectreactor.version>3.4.19</projectreactor.version>
-        <projectreactor-netty-http.version>1.0.20</projectreactor-netty-http.version>
-        <postgresql-driver-version>42.4.0</postgresql-driver-version>
-        <r2dbc-postgresql-version>0.8.12.RELEASE</r2dbc-postgresql-version>
+        <axonframework.version>4.6.0</axonframework.version>
+        <axon-reactor.version>4.6.0</axon-reactor.version>
+        <camel-spring-boot-starter.version>3.19.0</camel-spring-boot-starter.version>
+        <camel-quartz.version>3.19.0</camel-quartz.version>
+        <camel-core.version>3.19.0</camel-core.version>
+        <camel-kubernetes.version>3.19.0</camel-kubernetes.version>
+        <projectreactor.version>3.4.23</projectreactor.version>
+        <projectreactor-netty-http.version>1.0.23</projectreactor-netty-http.version>
+        <postgresql-driver-version>42.5.0</postgresql-driver-version>
+        <r2dbc-postgresql-version>0.8.13.RELEASE</r2dbc-postgresql-version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.3.0</jib-maven-plugin.version>
         <image>registry.asofe.org/root/open-crypto-trade/${project.artifactId}:${project.version}</image>
         <docker-skip>true</docker-skip>
         <docker-goal>build</docker-goal>
         <apache.commons.version>3.12.0</apache.commons.version>
-        <keycloak.version>17.0.1</keycloak.version>
+        <keycloak.version>19.0.2</keycloak.version>
         <bouncycastle.version>1.70</bouncycastle.version>
-        <mockito-core.vesion>3.12.4</mockito-core.vesion>
-        <mockito-junit-jupiter.version>3.12.4</mockito-junit-jupiter.version>
-        <junit-jupiter.version>5.7.0</junit-jupiter.version>
-        <junit-jupiter-api.version>5.7.2</junit-jupiter-api.version>
-        <junit-jupiter-engine.version>5.7.2</junit-jupiter-engine.version>
-        <junit-jupiter-params.version>5.7.2</junit-jupiter-params.version>
+        <mockito-core.vesion>4.8.0</mockito-core.vesion>
+        <mockito-junit-jupiter.version>4.8.0</mockito-junit-jupiter.version>
+        <junit-jupiter.version>5.9.1</junit-jupiter.version>
+        <junit-jupiter-api.version>5.9.1</junit-jupiter-api.version>
+        <junit-jupiter-engine.version>5.9.1</junit-jupiter-engine.version>
+        <junit-jupiter-params.version>5.9.1</junit-jupiter-params.version>
         <apache-commons-dbcp2.version>2.9.0</apache-commons-dbcp2.version>
         <modelmapper.version>3.1.0</modelmapper.version>
     </properties>
@@ -143,7 +144,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-                <version>${spring-oauth2-resource-server}</version>
+                <version>${spring-oauth2-resource-server.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -177,14 +178,29 @@
                 <version>${axon-reactor.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-messaging</artifactId>
+                <version>${axonframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-configuration</artifactId>
+                <version>${axonframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-spring</artifactId>
+                <version>${axonframework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.13.3</version>
+                <version>${jackson-databind.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <type>maven-plugin</type>
             </dependency>
             <dependency>
