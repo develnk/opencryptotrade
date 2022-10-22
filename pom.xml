@@ -26,6 +26,10 @@
         <module>smtp-service</module>
         <module>template-builder-service</module>
         <module>cryptocurrency-service</module>
+        <module>auth-commons</module>
+        <module>auth-service</module>
+        <module>commons-reactive</module>
+        <module>client-service</module>
     </modules>
 
     <properties>
@@ -42,6 +46,8 @@
         <spring-boot.version>2.7.4</spring-boot.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
         <spring-data-r2dbc.version>1.5.3</spring-data-r2dbc.version>
+        <spring-data-mongodb.version>3.4.5</spring-data-mongodb.version>
+        <mongodb-driver-reactivestreams.version>4.7.2</mongodb-driver-reactivestreams.version>
         <spring-vault.version>2.3.2</spring-vault.version>
         <axonframework.version>4.6.0</axonframework.version>
         <axon-reactor.version>4.6.0</axon-reactor.version>
@@ -49,8 +55,9 @@
         <camel-quartz.version>3.19.0</camel-quartz.version>
         <camel-core.version>3.19.0</camel-core.version>
         <camel-kubernetes.version>3.19.0</camel-kubernetes.version>
-        <projectreactor.version>3.4.23</projectreactor.version>
-        <projectreactor-netty-http.version>1.0.23</projectreactor-netty-http.version>
+        <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
+        <projectreactor.version>3.4.24</projectreactor.version>
+        <projectreactor-netty-http.version>1.0.24</projectreactor-netty-http.version>
         <postgresql-driver-version>42.5.0</postgresql-driver-version>
         <r2dbc-postgresql-version>0.8.13.RELEASE</r2dbc-postgresql-version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
@@ -61,7 +68,7 @@
         <docker-skip>true</docker-skip>
         <docker-goal>build</docker-goal>
         <apache.commons.version>3.12.0</apache.commons.version>
-        <keycloak.version>19.0.2</keycloak.version>
+        <apache-commons-collections4.version>4.4</apache-commons-collections4.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <mockito-core.vesion>4.8.0</mockito-core.vesion>
         <mockito-junit-jupiter.version>4.8.0</mockito-junit-jupiter.version>
@@ -82,11 +89,6 @@
     -->
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Boot -->
-
-            <!-- When creating Spring Boot applications, one of the options is to inherit the project from the Spring Boot parent -->
-            <!-- since we are NOT doing that in favor of our own Parent, we must import Spring Boot's dependency management -->
-            <!-- NOTE: Spring Boot provides many commonly used dependency definitions, so we only need to add a few -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -108,6 +110,16 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-r2dbc</artifactId>
                 <version>${spring-data-r2dbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-mongodb</artifactId>
+                <version>${spring-data-mongodb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver-reactivestreams</artifactId>
+                <version>${mongodb-driver-reactivestreams.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.r2dbc</groupId>
@@ -140,11 +152,6 @@
                 <groupId>org.springframework.vault</groupId>
                 <artifactId>spring-vault-core</artifactId>
                 <version>${spring-vault.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-                <version>${spring-oauth2-resource-server.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -205,6 +212,11 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${apache-commons-collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons.version}</version>
             </dependency>
@@ -227,28 +239,6 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15on</artifactId>
                 <version>${bouncycastle.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.keycloak</groupId>
-                <artifactId>keycloak-core</artifactId>
-                <version>${keycloak.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.keycloak</groupId>
-                <artifactId>keycloak-spring-boot-starter</artifactId>
-                <version>${keycloak.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.keycloak</groupId>
-                <artifactId>keycloak-spring-boot-adapter-core</artifactId>
-                <version>${keycloak.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.keycloak.bom</groupId>
-                <artifactId>keycloak-adapter-bom</artifactId>
-                <version>${keycloak.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.camel</groupId>
@@ -279,6 +269,21 @@
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
                 <version>${modelmapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.javers</groupId>
@@ -331,10 +336,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

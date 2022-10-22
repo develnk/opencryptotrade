@@ -9,14 +9,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>account-service</artifactId>
-    <name>Account Service</name>
+    <artifactId>client-service</artifactId>
+
+    <name>Client Service</name>
     <description></description>
 
     <dependencies>
         <dependency>
             <groupId>com.opencryptotrade</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>auth-commons</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencryptotrade</groupId>
+            <artifactId>commons-reactive</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
@@ -25,32 +31,19 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-kubernetes-fabric8-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 

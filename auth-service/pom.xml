@@ -9,11 +9,25 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>account-service</artifactId>
-    <name>Account Service</name>
-    <description></description>
+    <artifactId>auth-service</artifactId>
+
+    <name>Authentication Service</name>
+    <description>
+        The global authentication/authorization service that validates the credentials of the incoming requests, generates JWT tokens for valid
+        requests or rejects any requests that lack valid credentials.
+    </description>
 
     <dependencies>
+        <dependency>
+            <groupId>com.opencryptotrade</groupId>
+            <artifactId>auth-commons</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencryptotrade</groupId>
+            <artifactId>commons-reactive</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>com.opencryptotrade</groupId>
             <artifactId>commons</artifactId>
@@ -25,32 +39,15 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-kubernetes-fabric8-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 

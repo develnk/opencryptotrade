@@ -1,7 +1,5 @@
 package com.opencryptotrade.accountservice.controller;
 
-import com.opencryptotrade.common.user.dto.SystemUser;
-import com.opencryptotrade.common.web.MainRequestContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +18,5 @@ public class AccountController {
     public String getAdminInfo() {
         return "admin info";
     }
-
-    @GetMapping("/me")
-	public SystemUser getCurrentAccount() {
-        return MainRequestContext.getUser();
-	}
 
 }
