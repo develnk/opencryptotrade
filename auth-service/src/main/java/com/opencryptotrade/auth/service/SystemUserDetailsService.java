@@ -2,7 +2,6 @@ package com.opencryptotrade.auth.service;
 
 import com.opencryptotrade.common.reactive.repository.CustomerRepository;
 import com.opencryptotrade.common.reactive.repository.EmployeeRepository;
-import com.opencryptotrade.common.reactive.repository.ProtectedUserRepository;
 import com.opencryptotrade.auth.commons.user.model.SystemUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 public class SystemUserDetailsService implements ReactiveUserDetailsService {
-
-    private final ProtectedUserRepository protectedUserRepository;
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
 

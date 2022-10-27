@@ -35,6 +35,7 @@ public class WebSecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/api/auth/login").permitAll()
+                .pathMatchers("/api/auth/refreshToken").authenticated()
                 .anyExchange().authenticated()
                 .and().build();
     }
