@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -71,7 +69,7 @@ public class JWTUtil {
     }
 
     public String generateRefreshToken(SystemUserDetails user) {
-        return doGenerateRefreshToken(generateClaims(user), user.getUsername());
+        return doGenerateRefreshToken(Collections.singletonMap("id", user.getId()), user.getUsername());
     }
 
     private String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
