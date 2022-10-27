@@ -7,10 +7,13 @@ import com.opencryptotrade.auth.commons.web.model.RefreshTokenRequest;
 import com.opencryptotrade.auth.service.SystemUserDetailsService;
 import com.opencryptotrade.auth.commons.config.JWTUtil;
 import com.opencryptotrade.auth.commons.config.PBKDF2Encoder;
+import com.opencryptotrade.common.model.user.UserDto;
+import com.opencryptotrade.common.user.security.annotation.PreAuthorizeAnyEmployeeAndCustomer;
 import com.opencryptotrade.common.validator.ErrorResponse;
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -60,7 +63,17 @@ public class AuthController {
                 .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails), jwtUtil.generateRefreshToken(userDetails))));
     }
 
-    // me
+    // Me
+    @PreAuthorizeAnyEmployeeAndCustomer
+    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<UserDto>> me() {
+        return ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getPrincipal)
+                .flatMap(userName -> userService.findByUsername(String.valueOf(userName)).cast(SystemUserDetails.class))
+                .map(ResponseEntity::ok);
+    }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

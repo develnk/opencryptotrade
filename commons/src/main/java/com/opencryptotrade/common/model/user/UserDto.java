@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"authorities", "grantedAuthorityNames"}, ignoreUnknown = true)
 @Validated
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,6 +44,7 @@ public class UserDto implements Principal, Serializable {
     private String password;
 
     @NotEmpty
+    @JsonIgnore
     private String salt;
 
     /**
