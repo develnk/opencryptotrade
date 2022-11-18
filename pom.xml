@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.4</version>
+        <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -42,22 +42,21 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <javers-core.version>6.2.4</javers-core.version>
         <jackson-databind.version>2.13.4</jackson-databind.version>
-        <spring-oauth2-resource-server.version>2.7.4</spring-oauth2-resource-server.version>
-        <spring-boot.version>2.7.4</spring-boot.version>
-        <spring-cloud.version>2021.0.2</spring-cloud.version>
-        <spring-data-r2dbc.version>1.5.3</spring-data-r2dbc.version>
+        <spring-boot.version>2.7.5</spring-boot.version>
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <spring-data-r2dbc.version>1.5.5</spring-data-r2dbc.version>
         <spring-data-mongodb.version>3.4.5</spring-data-mongodb.version>
-        <mongodb-driver-reactivestreams.version>4.7.2</mongodb-driver-reactivestreams.version>
+        <mongodb-driver-reactivestreams.version>4.8.0</mongodb-driver-reactivestreams.version>
         <spring-vault.version>2.3.2</spring-vault.version>
-        <axonframework.version>4.6.0</axonframework.version>
+        <axonframework.version>4.6.2</axonframework.version>
         <axon-reactor.version>4.6.0</axon-reactor.version>
         <camel-spring-boot-starter.version>3.19.0</camel-spring-boot-starter.version>
         <camel-quartz.version>3.19.0</camel-quartz.version>
         <camel-core.version>3.19.0</camel-core.version>
         <camel-kubernetes.version>3.19.0</camel-kubernetes.version>
         <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
-        <projectreactor.version>3.4.24</projectreactor.version>
-        <projectreactor-netty-http.version>1.0.24</projectreactor-netty-http.version>
+        <projectreactor.version>3.5.0</projectreactor.version>
+        <projectreactor-netty-http.version>1.1.0</projectreactor-netty-http.version>
         <postgresql-driver-version>42.5.0</postgresql-driver-version>
         <r2dbc-postgresql-version>0.8.13.RELEASE</r2dbc-postgresql-version>
         <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
