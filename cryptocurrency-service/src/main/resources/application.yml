@@ -18,31 +18,16 @@ spring:
       bootstrap-servers: localhost:29092
     producer:
       bootstrap-servers: localhost:29092
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://${DOCKER_HOST_IP:localhost}:8484/auth/realms/test
   datasource:
     axon:
       url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
       username: root
       password: root
-  #    hikari:
-  #      minimum-idle: 1
-  #      maximumPoolSize: 20
-  #      jdbcUrl: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-  #      username: root
-  #      password: root
-  #    type: com.zaxxer.hikari.HikariDataSource
-      #    url: jdbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-      #    username: root
-      #    password: root
       driver-class-name: org.postgresql.Driver
       database-platform: org.hibernate.dialect.PostgreSQL10Dialect
       initialization-mode: never
   r2dbc:
-    url: r2dbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
+    url: r2dbc:pool:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency?schema=public
     username: root
     password: root
     pool:
@@ -70,15 +55,17 @@ axon:
     general: jackson
     messages: jackson
     events: jackson
+  axonserver:
+    enabled: false
 
 ---
 spring:
   profiles:
     active: local
-#  r2dbc:
-#    url: r2dbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency
-#    username: root
-#    password: root
+  r2dbc:
+    url: r2dbc:postgresql://${DOCKER_HOST_IP:localhost}:5434/cryptocurrency?schema=public
+    username: root
+    password: root
   cloud:
     kubernetes:
       config:

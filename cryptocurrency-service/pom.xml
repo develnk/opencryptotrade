@@ -11,7 +11,7 @@
 
     <artifactId>cryptocurrency-service</artifactId>
     <name>Crypto Currency Service</name>
-    <description></description>
+    <description>The main cryptocurrency service for interaction with real cryptocurrency daemons.</description>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
@@ -25,20 +25,30 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+            <groupId>com.opencryptotrade</groupId>
+            <artifactId>auth-commons</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-kubernetes-fabric8-all</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-r2dbc -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-r2dbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-pool</artifactId>
         </dependency>
         <dependency>
             <groupId>io.r2dbc</groupId>
@@ -91,23 +101,7 @@
                     <groupId>org.axonframework</groupId>
                     <artifactId>axon-server-connector</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.axonframework</groupId>
-                    <artifactId>axon-spring-boot-autoconfigure</artifactId>
-                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.axonframework</groupId>
-            <artifactId>axon-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.axonframework</groupId>
-            <artifactId>axon-configuration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.axonframework</groupId>
-            <artifactId>axon-messaging</artifactId>
         </dependency>
         <dependency>
             <groupId>org.axonframework.extensions.reactor</groupId>

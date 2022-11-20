@@ -8,54 +8,32 @@ import org.axonframework.commandhandling.gateway.ExponentialBackOffIntervalRetry
 import org.axonframework.common.caching.Cache;
 import org.axonframework.common.caching.WeakReferenceCache;
 import org.axonframework.common.jdbc.ConnectionProvider;
-import org.axonframework.config.Configurer;
 import org.axonframework.eventsourcing.*;
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
+import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.eventsourcing.eventstore.jdbc.JdbcEventStorageEngine;
 import org.axonframework.extensions.reactor.commandhandling.gateway.DefaultReactorCommandGateway;
 import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorCommandGateway;
-import org.axonframework.lifecycle.Phase;
-import org.axonframework.messaging.Message;
-import org.axonframework.messaging.interceptors.LoggingInterceptor;
 import org.axonframework.serialization.Serializer;
 import org.axonframework.spring.config.SpringAxonConfiguration;
 import org.axonframework.spring.eventsourcing.SpringAggregateSnapshotterFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.axonframework.common.transaction.TransactionManager;
 
+import javax.sql.DataSource;
 import java.util.concurrent.Executors;
 
 @Configuration
 public class AxonConfig {
 
-    @Autowired
-    public void configureLoggingInterceptor(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") Configurer configurer) {
-        LoggingInterceptor<Message<?>> loggingInterceptor = new LoggingInterceptor<>();
-
-        // Registers the LoggingInterceptor on all infrastructure once they've been initialized by the Configurer:
-        configurer.onInitialize(config -> {
-            config.onStart(Phase.LOCAL_MESSAGE_HANDLER_REGISTRATIONS, () -> {
-                config.commandBus().registerHandlerInterceptor(loggingInterceptor);
-                config.commandBus().registerDispatchInterceptor(loggingInterceptor);
-                config.eventBus().registerDispatchInterceptor(loggingInterceptor);
-                config.queryBus().registerHandlerInterceptor(loggingInterceptor);
-                config.queryBus().registerDispatchInterceptor(loggingInterceptor);
-                config.queryUpdateEmitter().registerDispatchInterceptor(loggingInterceptor);
-            });
-        });
-
-        // Registers a default Handler Interceptor for all Event Processors:
-        configurer.eventProcessing()
-                .registerDefaultHandlerInterceptor((config, processorName) -> loggingInterceptor);
-    }
-
     @Bean
-    public EventSourcingRepository<CryptoCurrency> eventSourcingRepository(EmbeddedEventStore eventStore) {
+    public EventSourcingRepository<CryptoCurrency> eventSourcingRepository(EventStore eventStore) {
         return EventSourcingRepository.builder(CryptoCurrency.class)
+                .aggregateFactory(new GenericAggregateFactory<>(CryptoCurrency.class))
                 .eventStore(eventStore)
                 .cache(cache())
                 .build();
@@ -85,11 +63,10 @@ public class AxonConfig {
 
     @Bean
     public SpringAggregateSnapshotterFactoryBean snapshotFactoryBean() {
-        var springAggregateSnapshotterFactoryBean = new SpringAggregateSnapshotterFactoryBean();
-        springAggregateSnapshotterFactoryBean.setExecutor(Executors.newSingleThreadExecutor());
-        return springAggregateSnapshotterFactoryBean;
+        var aggregateSnapshotter = new SpringAggregateSnapshotterFactoryBean();
+        aggregateSnapshotter.setExecutor(Executors.newSingleThreadExecutor());
+        return aggregateSnapshotter;
     }
-
 
     @Bean("cryptoCurrencySnapshotTriggerDefinition")
     EventCountSnapshotTriggerDefinition cryptoCurrencySnapshotTriggerDefinition(Snapshotter snapshotter) {
@@ -97,15 +74,14 @@ public class AxonConfig {
     }
 
     @Bean
-    public EmbeddedEventStore eventStore(EventStorageEngine storageEngine) {
+    public EventStore eventStore(EventStorageEngine storageEngine) {
         return EmbeddedEventStore.builder()
                 .storageEngine(storageEngine)
                 .build();
     }
-
     @Bean
     public EventStorageEngine storageEngine(Serializer defaultSerializer,
-                                            @Qualifier("defaultSerializer") Serializer eventSerializer,
+                                            @Qualifier("eventSerializer") Serializer eventSerializer,
                                             SpringAxonConfiguration configuration,
                                             TransactionManager transactionManager,
                                             ConnectionProvider connectionProvider) {

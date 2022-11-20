@@ -47,7 +47,7 @@ public class CryptoCurrency {
     }
 
     @CommandHandler
-    public static void handle(UpdateCryptoCurrencyCommand command) {
+    public void handle(UpdateCryptoCurrencyCommand command) {
         LOGGER.info("Handling UpdateCryptoCurrencyCommand: {}", command);
         //Some command validation
         // ...
@@ -55,7 +55,7 @@ public class CryptoCurrency {
     }
 
     @CommandHandler
-    public static void handle(UpdateCryptoCurrencyStatusCommand command) {
+    public void handle(UpdateCryptoCurrencyStatusCommand command) {
         LOGGER.info("Handling UpdateCryptoCurrencyDaemonStatusCommand: {}", command);
         //Some command validation
         // ...

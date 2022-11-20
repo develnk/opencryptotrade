@@ -1,5 +1,6 @@
 package com.opencryptotrade.cryptocurrencyservice.controller;
 
+import com.opencryptotrade.common.user.security.annotation.PreAuthorizeSuper;
 import com.opencryptotrade.common.validator.ErrorResponse;
 import com.opencryptotrade.cryptocurrencyservice.domain.commands.CreateCryptoCurrencyCommand;
 import com.opencryptotrade.cryptocurrencyservice.domain.commands.UpdateCryptoCurrencyCommand;
@@ -13,7 +14,6 @@ import org.axonframework.extensions.reactor.commandhandling.gateway.ReactorComma
 import org.axonframework.extensions.reactor.queryhandling.gateway.ReactorQueryGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +30,7 @@ public class CryptoCurrencyController {
     private final ReactorQueryGateway reactiveQueryGateway;
     private final CryptoCurrencyService cryptoCurrencyService;
 
-    @PreAuthorize("hasAuthority('ROLE_SUPER')")
+    @PreAuthorizeSuper
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Mono<UUID> createCryptoCurrency(@Valid @RequestBody CreateCryptoCurrencyRequest request) {
         // Checking aggregate invariants before saving it to DB.
@@ -43,7 +43,7 @@ public class CryptoCurrencyController {
                 .then(reactiveCommandGateway.send(new CreateCryptoCurrencyCommand(UUID.randomUUID(), request.getType(), request.getSymbol(), request.getSettings())));
     }
 
-    @PreAuthorize("hasAuthority('ROLE_SUPER')")
+    @PreAuthorizeSuper
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Mono<Void> updateCryptoCurrency(@Valid @RequestBody UpdateCryptoCurrencyRequest request) {
        return reactiveCommandGateway.send(new UpdateCryptoCurrencyCommand(request.getId(), request.getSymbol(), request.getSettings()));

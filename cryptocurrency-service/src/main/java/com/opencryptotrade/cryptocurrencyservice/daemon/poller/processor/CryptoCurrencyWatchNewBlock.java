@@ -20,12 +20,12 @@ public class CryptoCurrencyWatchNewBlock extends TaskProcessor {
     @Override
     @SuppressWarnings("unchecked")
     public void process(String cryptoCurrencyUuid, Exchange exchange) {
-        LOGGER.info("CryptoCurrencyProcessor started");
+        LOGGER.debug("CryptoCurrencyProcessor started");
         DefaultUnitOfWork<?> uow = DefaultUnitOfWork.startAndGet(new GenericMessage(cryptoCurrencyUuid));
         CryptoCurrency cryptoCurrency = eventSourcingRepository.load(cryptoCurrencyUuid).getWrappedAggregate().getAggregateRoot();
         cryptoCurrencyWatch(cryptoCurrency);
         uow.commit();
-        LOGGER.info("***** Finished processing metadata. ******");
+        LOGGER.debug("***** Finished processing metadata. ******");
     }
 
     private void cryptoCurrencyWatch(CryptoCurrency cryptoCurrency) {
