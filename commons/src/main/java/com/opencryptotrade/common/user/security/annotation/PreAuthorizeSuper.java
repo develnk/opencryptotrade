@@ -7,6 +7,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@PreAuthorize("hasAnyAuthority('ROLE_COMPANY_EMPLOYEE')")
-public @interface PreAuthorizeAnyEmployee {
+@PreAuthorize("hasAnyAuthority('ROLE_SUPER')")
+public @interface PreAuthorizeSuper {
 }

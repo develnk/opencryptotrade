@@ -1,7 +1,6 @@
 package com.opencryptotrade.common.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.opencryptotrade.common.model.user.SystemUser;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -43,7 +42,7 @@ public abstract class AuditableDeletableEntity implements Serializable {
     @JsonIgnore
     @CreatedBy
     @Getter(AccessLevel.PUBLIC)
-    protected SystemUser createdBy;
+    protected Object createdBy;
 
     /**
      * The the user/principal that updated the entity last; may be null if the entity is created by an anonymous user when there is no logged in
@@ -52,6 +51,6 @@ public abstract class AuditableDeletableEntity implements Serializable {
     @JsonIgnore
     @LastModifiedBy
     @Getter(AccessLevel.PUBLIC)
-    protected SystemUser updatedBy;
+    protected Object updatedBy;
 
 }

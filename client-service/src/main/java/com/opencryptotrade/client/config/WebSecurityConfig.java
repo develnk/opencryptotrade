@@ -37,6 +37,9 @@ public class WebSecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/api/client/register").permitAll()
+                .pathMatchers("/api/employee/register").permitAll()
+                .pathMatchers("/api/employee/register/admin").authenticated()
+                .pathMatchers("/api/employee/register/super").authenticated()
                 .anyExchange().authenticated()
                 .and().build();
     }

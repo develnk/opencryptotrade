@@ -46,7 +46,7 @@
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <spring-data-r2dbc.version>1.5.5</spring-data-r2dbc.version>
         <spring-data-mongodb.version>3.4.5</spring-data-mongodb.version>
-        <mongodb-driver-reactivestreams.version>4.8.0</mongodb-driver-reactivestreams.version>
+        <mongodb-driver-reactivestreams.version>4.7.2</mongodb-driver-reactivestreams.version>
         <spring-vault.version>2.3.2</spring-vault.version>
         <axonframework.version>4.6.2</axonframework.version>
         <axon-reactor.version>4.6.0</axon-reactor.version>
@@ -55,7 +55,7 @@
         <camel-core.version>3.19.0</camel-core.version>
         <camel-kubernetes.version>3.19.0</camel-kubernetes.version>
         <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
-        <projectreactor.version>3.5.0</projectreactor.version>
+        <projectreactor.version>3.4.25</projectreactor.version>
         <projectreactor-netty-http.version>1.1.0</projectreactor-netty-http.version>
         <postgresql-driver-version>42.5.0</postgresql-driver-version>
         <r2dbc-postgresql-version>0.8.13.RELEASE</r2dbc-postgresql-version>
@@ -196,6 +196,11 @@
             <dependency>
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-spring</artifactId>
+                <version>${axonframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-spring-boot-autoconfigure</artifactId>
                 <version>${axonframework.version}</version>
             </dependency>
             <dependency>

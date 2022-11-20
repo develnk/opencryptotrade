@@ -58,8 +58,4 @@ public class GenericRequestErrorHandler {
 //        response.getWriter().close();
 //    }
 
-    @PostConstruct
-    private void initLog() {
-        LOGGER.info("GenericRequestErrorHandler initialized to expose system errors info (HTTP Response Status 500) to clients! This feature should only be enabled in DEV and TEST environments. To disable, set 'elromco.global.errorHandling.exposeSystemErrorInfoToClientForTesting' property to 'false'.");
-    }
 }
