@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.opencryptotrade</groupId>
-            <artifactId>auth-commons</artifactId>
+            <artifactId>auth-commons-reactive</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
