@@ -26,10 +26,11 @@
         <module>smtp-service</module>
         <module>template-builder-service</module>
         <module>cryptocurrency-service</module>
-        <module>auth-commons</module>
+        <module>auth-commons-reactive</module>
         <module>auth-service</module>
         <module>commons-reactive</module>
         <module>client-service</module>
+        <module>communications</module>
     </modules>
 
     <properties>

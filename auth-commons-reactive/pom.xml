@@ -10,7 +10,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>auth-commons</artifactId>
+    <artifactId>auth-commons-reactive</artifactId>
 
     <dependencies>
         <dependency>

@@ -1,0 +1,16 @@
+server:
+  port : 8085
+  http2:
+    enabled: true
+  forward-headers-strategy: native
+
+
+spring:
+  application:
+    name: cryptocurrency-service
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
