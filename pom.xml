@@ -53,7 +53,7 @@
         <axon-reactor.version>4.6.0</axon-reactor.version>
         <camel-spring-boot-starter.version>3.19.0</camel-spring-boot-starter.version>
         <camel-quartz.version>3.19.0</camel-quartz.version>
-        <camel-core.version>3.19.0</camel-core.version>
+        <camel-core.version>3.21.4</camel-core.version>
         <camel-kubernetes.version>3.19.0</camel-kubernetes.version>
         <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
         <projectreactor.version>3.4.25</projectreactor.version>
