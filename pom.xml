@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.opencryptotrade</groupId>
     <artifactId>exchange</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 
     <packaging>pom</packaging>
 
@@ -49,8 +49,8 @@
         <spring-data-mongodb.version>3.4.5</spring-data-mongodb.version>
         <mongodb-driver-reactivestreams.version>4.7.2</mongodb-driver-reactivestreams.version>
         <spring-vault.version>2.3.2</spring-vault.version>
-        <axonframework.version>4.6.2</axonframework.version>
-        <axon-reactor.version>4.6.0</axon-reactor.version>
+        <axonframework.version>4.7.0</axonframework.version>
+        <axon-reactor.version>4.7.0</axon-reactor.version>
         <camel-spring-boot-starter.version>3.19.0</camel-spring-boot-starter.version>
         <camel-quartz.version>3.19.0</camel-quartz.version>
         <camel-core.version>3.19.0</camel-core.version>
@@ -82,9 +82,12 @@
 
     <!--
     This section provides centralized configuration for dependency libraries (Maven best practices).
-    These entries DO NOT pull the actual libraries into the project but provide the declarations of versions, scopes,
-    exclusions, etc. Each module within the parent project must include the libraries that are only relevant to the
-    module while only specifying the groupId and artifactId for each included dependency.  That ensures consistency
+    These entries DO NOT pull the actual libraries into the project but provide the declarations of
+    versions, scopes,
+    exclusions, etc. Each module within the parent project must include the libraries that are only
+    relevant to the
+    module while only specifying the groupId and artifactId for each included dependency.  That ensures
+    consistency
     in dependency versions and scope definitions across multiple modules.
     -->
     <dependencyManagement>
@@ -380,7 +383,7 @@
                         <container>
                             <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                         </container>
-<!--                        <allowInsecureRegistries>true</allowInsecureRegistries>-->
+                        <!--                        <allowInsecureRegistries>true</allowInsecureRegistries>-->
                         <from>
                             <image>openjdk:17-jdk-slim</image>
                         </from>
